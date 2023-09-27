@@ -4,30 +4,29 @@
 
 **Summary of our dataset and its metadata:**
 
-**	**Website:** [https://understat.com/league/EPL](https://understat.com/league/EPL)**
+**	**Website:** https://microdata.worldbank.org/index.php/catalog/4607/study-description**
 
     Date downloaded: Jul. 26, 2023
 
-	Author: understat
+	Author: World Bank
 
-	Suggested citation: understat, 26/06/2023, **[https://understat.com/league/EPL](https://understat.com/league/EPL)**
+	Suggested citation: worldbank, 10/13/2022, **https://microdata.worldbank.org/index.php/catalog/4607/study-description**
 
-	Terms of use: We searched the website and the website does not seem to have a terms of use statement.
+	Terms of use: https://microdata.worldbank.org/index.php/terms-of-use
 
 **Interesting/meaningful ways that a user could interact with the data:**
 
 
 
-1. Using the website as an interactive resource to draft players for a fantasy premier league. 
-2. It can be an interactive dashboard for football fans to quickly view interesting statistics.
-3. Users can sort/rank players based on stats like goals, assists, etc.
+1. Using the website as an interactive resource to get world wide statistics involving economic and household data. 
+2. It can be an interactive dashboard for accessing information about global economic and households statistics.
 
 **Team Contract:**
 
 
 
 1. **What are the goals of our team?**
-    a. We would like to create an aesthetic and functional website that returns top players in the premier league over the past five years. We can also explore using previous game performance for different players to predict the outcome of their next game. This could have applications with a fantasy futbol team. 
+    a. We would like to create an aesthetic and functional website that returns world wide economic and household data. This could have applications toward educational and research purposes especially for papers and comparative studies between countries economies.
 2. **What are the strengths of our team and its members?**
     a. Maddy is organized and writes good comments in the code.
     b. Albert has domain knowledge in football, which will meaningfully help us better understand the variables in the dataset.
