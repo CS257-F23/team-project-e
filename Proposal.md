@@ -1,6 +1,6 @@
-**World Bank Financial Inclusion Data**
+## Analyzing World Bank Financial Inclusion Data
 
-**Team members: Maddy, Helana, Colin, Albert**
+**Team members:** Maddy, Helana, Colin, Albert
 
 **Summary of our dataset and its metadata:**
 
