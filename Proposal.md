@@ -26,7 +26,7 @@
 
 
 1. **What are the goals of our team?**
-    a. We would like to create an aesthetic and functional website that returns world wide economic and household data. This could have applications toward educational and research purposes especially for papers and comparative studies between countries economies.
+    * We would like to create an aesthetic and functional website that returns world wide economic and household data. This could have applications toward educational and research purposes especially for papers and comparative studies between countries economies.
 2. **What are the strengths of our team and its members?**
     a. Maddy is organized and writes good comments in the code.
     b. Albert has domain knowledge in football, which will meaningfully help us better understand the variables in the dataset.
