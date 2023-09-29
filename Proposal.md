@@ -28,7 +28,7 @@
     * We would like to create an aesthetic and functional website that returns world wide economic and household data. This could have applications toward educational and research purposes, especially for papers and comparative studies between countries economies.
 2. **What are the strengths of our team and its members?**
     * Maddy is organized and writes good comments in the code.
-    * **Albert has domain knowledge in football**, which will meaningfully help us better understand the variables in the dataset.
+    * Albert has worked with datasets of this nature before, and also has experience with SQL.
     * Helana is good at taking notes.
     * Colin is able to work well in groups. Has knowledge of basic AI and ML techniques.
 3. **How will we capitalize on the strengths of each member?**
