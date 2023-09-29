@@ -21,6 +21,7 @@
 2. The user can make targeted comparisons between interesting or seemingly related variables.
 3. The user can draw conclusions about global variations in economic and household status through country comparisons.
 
+
 **Team Contract:**
 
 
