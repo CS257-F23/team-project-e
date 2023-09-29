@@ -22,7 +22,7 @@
 3. The user can draw conclusions about global variations in economic and household status through country comparisons.
 
 **Current team roles:**
-* Albert and Maddy will be writing and testing the function that gets the percentage of internet acces by country.
+* Albert and Maddy will be writing and testing the function that gets the percentage of internet access by country.
 * Helana and Coling will be writing and testing the function that compares education with gender by country.
 
 **Team Contract:**
