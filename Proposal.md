@@ -23,7 +23,7 @@
 
 **Current team roles:**
 * Albert and Maddy will be writing and testing the function that gets the percentage of internet access by country.
-* Helana and Coling will be writing and testing the function that compares education with gender by country.
+* Helana and Colin will be writing and testing the function that compares education with gender by country.
 
 **Team Contract:**
 
