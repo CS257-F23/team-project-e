@@ -48,6 +48,8 @@ data = load_data()
 print(percentage_with_internet_access(country))
 
 
+print(load_data())
+
     
     
     
