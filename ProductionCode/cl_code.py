@@ -22,27 +22,31 @@ def load_header():
 
     return column_names
 
-
-def percentage_with_internet_access(country):
-    # deal with 3 and 4 values of internet access
-    """Takes a country and returns a number representing the 
-    percentage of people from that country with internet access"""
+def group_by_country(country): 
     country_list = []
+    for row in data:
+        if row[0] == country:
+            country_list.append(row)
+    return country_list
+def group_by_internet_access(country_list): 
     internet_list = []
     column_names = load_header()
     col = column_names.index("internetaccess")
-    for row in data:
-        # group by country
-        if row[0] == country:
-            country_list.append(row)
     for row in country_list:
         internet_list.append(row[col])
-    return (internet_list.count("1")/len(internet_list)) * 100
+    return internet_list
+def percentage_with_internet_access(country):
+    yes_internet_access = "1"
+    country_list = group_by_country(country)
+    internet_list = group_by_internet_access(country_list)
+    percentage = (internet_list.count(yes_internet_access)/len(internet_list)) * 100
+    return percentage
+
 #put the sys argv stuff in a main function
 country = sys.argv[1]
 data = load_data()
 print(percentage_with_internet_access(country))
-    
+
 
     
     
