@@ -19,6 +19,8 @@ def percentage_with_internet_access(country):
     
     return
 
+print(load_data())
+
     
     
     
