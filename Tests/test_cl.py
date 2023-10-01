@@ -5,13 +5,13 @@ from ProductionCode.cl_code import *
 class test_dataset(unittest.TestCase):
     
     def setUp(self):
-        data = load_data()
+        self.data = load_data()
     
     def test_percent_internet_access1(self):
         """Given an existing country, percentage_with_internet_access returns the correct value"""
         
         country = "Afghanistan"
-        ratio = percentage_with_internet_access(country, data)
+        ratio = percentage_with_internet_access(country, self.data)
         
         self.assertAlmostEqual(ratio, 19.7)
         
@@ -19,7 +19,7 @@ class test_dataset(unittest.TestCase):
         """Given an existing country, percentage_with_internet_access returns the correct value"""
         
         country = "Nigeria"
-        ratio = percentage_with_internet_access(country, data)
+        ratio = percentage_with_internet_access(country, self.data)
         
         self.assertAlmostEqual(ratio, 41.6)
         
@@ -33,7 +33,7 @@ class test_dataset(unittest.TestCase):
         """Given a column name and a dataset, get_column correctly returns the
         column"""
         column_name = "regionwb"
-        column = get_column(column_name, data)
+        column = get_column(column_name, self.data)
 
         self.assertEqual(column[0], "South Asia")
     
@@ -44,7 +44,7 @@ class test_dataset(unittest.TestCase):
         key = "GEO"
         col_name = "economycode"
         
-        new_data = filter(key, col_name, data)
+        new_data = filter(key, col_name, self.data)
 
         self.assertEqual(new_data[2][0], "Georgia")
     
@@ -54,6 +54,9 @@ class test_dataset(unittest.TestCase):
         col_name = "age"
 
         self.assertEqual(get_column_index(col_name), 7)
+
+if __name__ == '__main__':
+    unittest.main()
 
     
     
