@@ -45,6 +45,8 @@ class test_dataset(unittest.TestCase):
         col_name = "economycode"
         
         new_data = filter(key, col_name, data)
+
+        self.assertEqual(new_data[2][0], "Georgia")
     
     def test_get_column_index(self):
         """Given a column name and a dataset, correctly returns the column's index"""
