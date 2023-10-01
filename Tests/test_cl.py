@@ -32,6 +32,10 @@ class test_dataset(unittest.TestCase):
     def test_get_column(self):
         """Given a column name and a dataset, get_column correctly returns the
         column"""
+        column_name = "regionwb"
+        column = get_column(column_name, data)
+
+        self.assertEqual(column[0], "South Asia")
     
     def test_filter(self):
         """Given a keyword, column, and dataset, filter correctly returns
@@ -41,13 +45,14 @@ class test_dataset(unittest.TestCase):
         col_name = "economycode"
         
         new_data = filter(key, col_name, data)
-        
-    
     
     def test_get_column_index(self):
-        """Given a column name and a dataset, correctly returns the column's name"""
+        """Given a column name and a dataset, correctly returns the column's index"""
         
-        
+        col_name = "age"
+
+        self.assertEqual(get_column_index(col_name), 7)
+
     
     
     

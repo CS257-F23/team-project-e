@@ -51,7 +51,6 @@ def get_column(column_name, data):
     
     for row in data:
         column.append(row[idx])
-        
     return column
     
 def percentage_with_internet_access(country, data):
