@@ -24,6 +24,8 @@ def load_header():
     return column_names
 
 def get_column_index(column_name):
+    """Given a column name, returns the index of the column"""
+    
     column_names = load_header()
     idx = column_names.index(column_name)
     
