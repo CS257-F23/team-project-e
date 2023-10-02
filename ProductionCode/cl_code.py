@@ -57,7 +57,7 @@ def get_column(column_name, data):
         column.append(row[idx])
     return column 
 
-def percentage_with_internet_access(country, data):
+def percentage_with_internet_access(country, data): # Instead of zero divide error, print the usage statement and tell them to try again
     """Takes a country name and a dataset, and returns the
     percentage of people that have access to the internet"""
     
@@ -105,15 +105,28 @@ def education_level_by_gender(country, data):
     
     return ratios
     
-def main():
-    """Loads in the dataset and calls the command line functions."""
-    data = load_data()
-    country = sys.argv[1]
-    percentage_internet_access_by_country = percentage_with_internet_access(country, data)
-    
-    print(str(percentage_internet_access_by_country) + " percent of " + str(country) + " has internet access.")
+def parse_arguments():
+    function_tag = sys.argv[1]
+    country_name = sys.argv[2]
 
-main()
+    return function_tag, country_name
+
+def main():
+    data = load_data()
+    arguments = parse_arguments()
+    tag = arguments[0]
+    country = arguments[1]
+
+    if tag == "--internet_access":
+        percentage_internet_access_by_country = percentage_with_internet_access(country, data)
+        print(str(percentage_internet_access_by_country) + " percent of " + country + " has internet access.")
+
+    elif tag == "--education_by_gender":
+        education_by_gender_levels = education_level_by_gender(country, data)
+        print(education_by_gender_levels)
+    
+if __name__ == "__main__":
+    main()
 
 
 
