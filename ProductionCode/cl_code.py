@@ -70,19 +70,18 @@ def percentage_with_internet_access(country, data):
     
     percentage = (num / total) * 100
     
-    return percentage
+    return round(percentage, 1)
 
 def main():
-    #put the sys argv stuff in a main function
-    #country = sys.argv[1]
-    
-    pass
-    #print(percentage_with_internet_access("United States", data))
+    """Loads in the dataset and calls the command line functions."""
+    data = load_data()
+    country = sys.argv[1]
+    percentage_internet_access_by_country = percentage_with_internet_access(country, data)
+    print(str(percentage_internet_access_by_country) + " percent of " + str(country) + " has internet access.")
+
+main()
 
 
-
-
-#print(load_data())
 
     
     
