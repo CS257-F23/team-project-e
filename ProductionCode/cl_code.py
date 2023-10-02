@@ -97,7 +97,7 @@ def education_level_by_gender(country, data):
     """Given a country and data, returns the education levels 
     """
     
-    country_data = filter(country, "economycode", data)
+    country_data = filter(country, "economy", data)
     
     educ_column = get_column("educ", country_data)
     
@@ -122,7 +122,10 @@ def main():
         print(str(percentage_internet_access_by_country) + " percent of " + country + " has internet access.")
 
     elif tag == "--education_by_gender":
-        education_by_gender_levels = education_level_by_gender(country, data)
+        education_levels_by_country = education_level_by_gender(country, data)
+        primary = education_levels_by_country[0]
+        secondary = education_levels_by_country[1]
+        tertiary = education_levels_by_country[2]
         print(education_by_gender_levels)
     
 if __name__ == "__main__":
