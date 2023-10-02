@@ -25,13 +25,13 @@ class test_dataset(unittest.TestCase):
         self.assertAlmostEqual(ratio, 41.6, 1)
         
     def test_load_header(self):
-        """Given the dataset, load_header correctly loads the header"""
+        """Given the dataset, load_header loads the header"""
         header = load_header()
         
         self.assertEqual(header[-1], "year")
     
     def test_get_column(self):
-        """Given a column name and a dataset, get_column correctly returns thee
+        """Given a column name and a dataset, get_column returns thee
         column"""
         column_name = "regionwb"
         column = get_column(column_name, self.data)
@@ -39,7 +39,7 @@ class test_dataset(unittest.TestCase):
         self.assertEqual(column[0], "South Asia")
     
     def test_filter(self):
-        """Given a keyword, column, and dataset, filter correctly returns
+        """Given a keyword, column, and dataset, filter returns
         the portion of the dataset where the column value matches the keyword"""
         
         key = "GEO"
@@ -48,13 +48,18 @@ class test_dataset(unittest.TestCase):
         new_data = filter(key, col_name, self.data)
 
         self.assertEqual(new_data[2][0], "Georgia")
+        
+    def test_filter_edge(self):
+        """Given a column name that does not exist, filter returns an error"""
     
     def test_get_column_index(self):
-        """Given a column name and a dataset, correctly returns the column's index"""
+        """Given a column name and a dataset, returns the column's index"""
         
         col_name = "age"
 
         self.assertEqual(get_column_index(col_name), 7)
+        
+    
 
 if __name__ == '__main__':
     unittest.main()
