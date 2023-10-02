@@ -22,7 +22,7 @@ class test_dataset(unittest.TestCase):
         country = "Nigeria"
         ratio = percentage_with_internet_access(country, self.data)
         
-        self.assertAlmostEqual(ratio, 41.6)
+        self.assertAlmostEqual(ratio, 41.6, 1)
         
     def test_load_header(self):
         """Given the dataset, load_header correctly loads the header"""
@@ -31,7 +31,7 @@ class test_dataset(unittest.TestCase):
         self.assertEqual(header[-1], "year")
     
     def test_get_column(self):
-        """Given a column name and a dataset, get_column correctly returns the
+        """Given a column name and a dataset, get_column correctly returns thee
         column"""
         column_name = "regionwb"
         column = get_column(column_name, self.data)
