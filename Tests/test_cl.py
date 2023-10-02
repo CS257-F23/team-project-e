@@ -51,6 +51,11 @@ class test_dataset(unittest.TestCase):
         
     def test_filter_edge(self):
         """Given a column name that does not exist, filter returns an error"""
+        
+        col_name = "Group E"
+        key = "Albert"
+        
+        self.assertRaises(ValueError, filter, key, col_name, self.data)
     
     def test_get_column_index(self):
         """Given a column name and a dataset, returns the column's index"""
@@ -58,7 +63,6 @@ class test_dataset(unittest.TestCase):
         col_name = "age"
 
         self.assertEqual(get_column_index(col_name), 7)
-        
     
 
 if __name__ == '__main__':
