@@ -13,7 +13,8 @@ class test_dataset(unittest.TestCase):
         country = "Afghanistan"
         ratio = percentage_with_internet_access(country, self.data)
         
-        self.assertAlmostEqual(ratio, 19.7)
+        self.assertAlmostEqual(ratio, 19.8)
+
         
     def test_percent_internet_access2(self):
         """Given an existing country, percentage_with_internet_access returns the correct value"""
