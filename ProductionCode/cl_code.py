@@ -57,6 +57,24 @@ def get_column(column_name, data):
         column.append(row[idx])
     return column 
 
+def get_columns (columns, data):
+    
+    new_data = []
+    indexs = []
+    
+    for column in columns:
+        idx = get_column_index(column)
+        indexs.append(idx)
+        
+    for row in data:
+        new_row = []
+        for idx in indexs:
+            new_row.append(row[idx])
+            
+        new_data.append(new_row)
+        
+    return new_data
+
 def percentage_with_internet_access(country, data):
     """Takes a country name and a dataset, and returns the
     percentage of people that have access to the internet"""
@@ -78,7 +96,7 @@ def get_ratio(key, column):
     num = column.count(key)
     total = len(column)
     
-    ratio = num / total
+    ratio = round(num / total, 2)
     
     return ratio
 
@@ -97,23 +115,32 @@ def education_level_by_gender(country, data):
     """Given a country and data, returns the education levels 
     """
     
-    country_data = filter(country, "economycode", data)
+    country_data = filter(country, "economy", data)
     
-    educ_column = get_column("educ", country_data)
+    female_data = filter("1", "female", country_data)
+    female_educ = get_column("educ", female_data)
     
-    ratios = get_ratios(educ_column)
+    male_data = filter("2", "female", country_data)
+    male_educ = get_column("educ", male_data)
+    
+    female_ratios = get_ratios(female_educ)
+    male_ratios = get_ratios(male_educ)
+    
+    ratios = [female_ratios, male_ratios]
     
     return ratios
     
 def main():
     """Loads in the dataset and calls the command line functions."""
     data = load_data()
+    
     country = sys.argv[1]
     percentage_internet_access_by_country = percentage_with_internet_access(country, data)
     
     print(str(percentage_internet_access_by_country) + " percent of " + str(country) + " has internet access.")
 
-main()
+if __name__ == "__main__":
+    main()
 
 
 
