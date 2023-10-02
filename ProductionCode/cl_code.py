@@ -110,6 +110,7 @@ def main():
     data = load_data()
     country = sys.argv[1]
     percentage_internet_access_by_country = percentage_with_internet_access(country, data)
+    
     print(str(percentage_internet_access_by_country) + " percent of " + str(country) + " has internet access.")
 
 main()
