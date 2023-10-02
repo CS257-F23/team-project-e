@@ -80,11 +80,17 @@ class test_dataset(unittest.TestCase):
 
         self.assertEqual(get_column_index(col_name), 7)
         
-    """def test_main(self):
-        code = subprocess.Popen(["python3", "-u", "Tests/test_cl.py", "Algeria"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
+    def test_main_1(self):
+        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--internet_access_by_country", "Algeria"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = 'utf8')
         output, err = code.communicate()
         self.assertEqual(output.strip(), "88.9 percent of Algeria has internet access.")
-        code.terminate()"""
+        code.terminate()
+    
+    def test_main_2(self):
+        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--education_levels_by_country", "Peru"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = 'utf8')
+        output, err = code.communicate()
+        self.assertEqual(output.strip(), "Education levels in Peru:\nPrimary school or less: 15.6 percent\nSecondary school: 74.3 percent\nTertiary education or more: 9.7 percent")
+        code.terminate()
 
 if __name__ == '__main__':
     unittest.main()

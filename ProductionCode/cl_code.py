@@ -67,7 +67,7 @@ def percentage_with_internet_access(country, data): # Instead of zero divide err
     
     internet_column = get_column("internetaccess", country_data)
     
-    percentage = get_ratio(has_internet_access, internet_column) * 100
+    percentage = get_ratio(has_internet_access, internet_column)
     
     return round(percentage, 1)
 
@@ -78,7 +78,7 @@ def get_ratio(key, column):
     num = column.count(key)
     total = len(column)
     
-    ratio = num / total
+    ratio = (num / total) * 100
     
     return ratio
 
@@ -89,7 +89,8 @@ def get_ratios(column):
     
     for item in set(column):
         ratio = get_ratio(item, column)
-        ratios.append(ratio)
+        ratios.append((int(item), round(ratio, 3)))
+        ratios.sort()
         
     return ratios
 
@@ -103,7 +104,7 @@ def education_level_by_gender(country, data):
     
     ratios = get_ratios(educ_column)
     
-    return ratios
+    return ratios 
     
 def parse_arguments():
     function_tag = sys.argv[1]
@@ -117,16 +118,20 @@ def main():
     tag = arguments[0]
     country = arguments[1]
 
-    if tag == "--internet_access":
+    if tag == "--internet_access_by_country":
         percentage_internet_access_by_country = percentage_with_internet_access(country, data)
         print(str(percentage_internet_access_by_country) + " percent of " + country + " has internet access.")
 
-    elif tag == "--education_by_gender":
+    elif tag == "--education_levels_by_country": # change gender function names
         education_levels_by_country = education_level_by_gender(country, data)
-        primary = education_levels_by_country[0]
-        secondary = education_levels_by_country[1]
-        tertiary = education_levels_by_country[2]
-        print(education_by_gender_levels)
+        primary = education_levels_by_country[0][1]
+        secondary = education_levels_by_country[1][1]
+        tertiary = education_levels_by_country[2][1]
+        #do_not_know = education_levels_by_country[3][1]
+        #refuse_to_answer = education_levels_by_country[4][1]
+        print("Education levels in " + country + ":" + "\nPrimary school or less: " + str(primary) + " percent"
+              + "\nSecondary school: " + str(secondary) + " percent" + "\nTertiary education or more: " + str(tertiary)
+              + " percent")
     
 if __name__ == "__main__":
     main()
