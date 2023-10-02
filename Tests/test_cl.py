@@ -23,7 +23,25 @@ class test_dataset(unittest.TestCase):
         ratio = percentage_with_internet_access(country, self.data)
         
         self.assertAlmostEqual(ratio, 41.6, 1)
-        
+    
+    def test_percent_internet_access_edge_case1(self):
+        """Edge case. Tests that percent_internet_access raises a ValueError if the user searches for a country that
+        does not exist in the dataset"""
+
+        country = "Nonexistent"
+        result = percentage_with_internet_access(country, self.data)
+
+        self.assertEqual(result, [], "Invalid country arguments should return an empty list.")
+
+    def test_percent_internet_access_edge_case2(self):
+        """Edge case. Tests that percent_internet_access raises a ValueError if the user searches for a country that
+        does not exist in the dataset. Specifically, shows that country name abbreviations are not permitted"""
+
+        country = "US"
+        result = percentage_with_internet_access(country, self.data)
+
+        self.assertEqual(result, [], "Invalid country arguments should return an empty list.")
+    
     def test_load_header(self):
         """Given the dataset, load_header correctly loads the header"""
         header = load_header()
