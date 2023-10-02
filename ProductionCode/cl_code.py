@@ -36,6 +36,7 @@ def filter(by, col, data):
     """Takes a keyword, a column name, and a dataset, and
     returns the portion of the dataset that matches the keyword 
     in the given column as a list"""
+    
     new_data = []
     idx = get_column_index(col)
     
@@ -65,12 +66,39 @@ def percentage_with_internet_access(country, data):
     
     internet_column = get_column("internetaccess", country_data)
     
-    num = internet_column.count(has_internet_access)
-    total = len(internet_column)
-    
-    percentage = (num / total) * 100
+    percentage = get_ratio(has_internet_access, internet_column) * 100
     
     return round(percentage, 1)
+
+def get_ratio(key, column):
+    
+    num = column.count(key)
+    total = len(column)
+    
+    ratio = num / total
+    
+    return ratio
+
+def get_ratios(column):
+    ratios = []
+    
+    for item in set(column):
+        ratio = get_ratio(item, column)
+        ratios.append(ratio)
+        
+    return ratios
+
+def education_level_by_gender(country, data):
+    
+    country_data = filter(country, "economycode", data)
+    
+    educ_column = get_column("educ", country_data)
+    
+    ratios = get_ratios(educ_column)
+    
+    return ratios
+    
+    
 
 def main():
     """Loads in the dataset and calls the command line functions."""
