@@ -5,7 +5,7 @@ from ProductionCode.cl_code import *
 class test_dataset(unittest.TestCase):
     
     def setUp(self):
-        data = load_data()
+        data = load_data()         
     
     def test_percent_internet_access1(self):
         """Given an existing country, percentage_with_internet_access returns the correct value"""
@@ -41,6 +41,8 @@ class test_dataset(unittest.TestCase):
         col_name = "economycode"
         
         new_data = filter(key, col_name, data)
+        
+        #self.assertEqual(new_data[0])
         
     
     
