@@ -49,13 +49,14 @@ def filter(by, col, data):
 
 def get_column(column_name, data):
     """Takes a dataset and a column name, and returns the column as a list""" 
+    
     column = []
     idx = get_column_index(column_name)
     
     for row in data:
         column.append(row[idx])
-    return column
-    
+    return column 
+
 def percentage_with_internet_access(country, data):
     """Takes a country name and a dataset, and returns the
     percentage of people that have access to the internet"""
@@ -71,6 +72,8 @@ def percentage_with_internet_access(country, data):
     return round(percentage, 1)
 
 def get_ratio(key, column):
+    """Given a key and a column, returns how often key appeared 
+    in the column as a ratio of the length of the column"""
     
     num = column.count(key)
     total = len(column)
@@ -80,6 +83,8 @@ def get_ratio(key, column):
     return ratio
 
 def get_ratios(column):
+    """Given a column, returns a list of counts of items in column
+    as a ratio"""
     ratios = []
     
     for item in set(column):
@@ -89,6 +94,8 @@ def get_ratios(column):
     return ratios
 
 def education_level_by_gender(country, data):
+    """Given a country and data, returns the education levels 
+    """
     
     country_data = filter(country, "economycode", data)
     
@@ -98,8 +105,6 @@ def education_level_by_gender(country, data):
     
     return ratios
     
-    
-
 def main():
     """Loads in the dataset and calls the command line functions."""
     data = load_data()
