@@ -74,10 +74,10 @@ def main():
     #put the sys argv stuff in a main function
     #country = sys.argv[1]
     
-    data = load_data()
-    print(percentage_with_internet_access("United States", data))
+    pass
+    #print(percentage_with_internet_access("United States", data))
 
-main()
+
 
 
 #print(load_data())
