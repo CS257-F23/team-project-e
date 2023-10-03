@@ -52,6 +52,7 @@ def filter(by, col, data):
     return new_data
 
 def check_country_validity(country, data):
+    """Checks if the country that the user entered is in the dataset or if it is an invalid country"""
     is_country_in_data = False
     idx = get_column_index("economy")
     
@@ -72,24 +73,6 @@ def get_column(column_name, data):
         column.append(row[idx])
     return column 
 
-def get_columns (columns, data): # where is this being called? and needs docstring
-    
-    new_data = []
-    indexs = []
-    
-    for column in columns:
-        idx = get_column_index(column)
-        indexs.append(idx)
-        
-    for row in data:
-        new_row = []
-        for idx in indexs:
-            new_row.append(row[idx])
-            
-        new_data.append(new_row)
-        
-    return new_data
-
 def percentage_with_internet_access(country, data):
     """Takes a country name and a dataset, and returns the
     percentage of people that have access to the internet"""
@@ -101,13 +84,13 @@ def percentage_with_internet_access(country, data):
     
     has_internet_access = "1"
     
-    country_data = filter(country, "economy", data)
+    country_data = filter(country, "economy", data) 
     
     internet_column = get_column("internetaccess", country_data)
     
     percentage = get_ratio(has_internet_access, internet_column)
     
-    return round(percentage, 1)
+    return percentage
 
 def get_ratio(key, column):
     """Given a key and a column, returns how often key appeared 
@@ -128,7 +111,7 @@ def get_ratios(column):
     
     for item in set(column):
         ratio = get_ratio(item, column)
-        ratios.append((int(item), round(ratio, 3)))
+        ratios.append((int(item), ratio, 3))
         ratios.sort()
         
     return ratios
@@ -136,6 +119,10 @@ def get_ratios(column):
 def education_level_by_gender(country, data):
     """Given a country and data, returns the education levels 
     """
+    country_validty = check_country_validity(country, data)
+
+    if country_validty == False:
+        return "Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes."
     
     country_data = filter(country, "economy", data)
     
@@ -153,7 +140,7 @@ def education_level_by_gender(country, data):
     return ratios 
 
 def print_education_results(ratios, country):
-    """Prints """
+    """Formats and prints the results of the education_level_by_gender function"""
     female_primary = ratios[0][0][1]
     female_secondary = ratios[0][1][1]
     female_tertiary = ratios[0][2][1]
@@ -174,6 +161,7 @@ def parse_arguments(data):
     return function_tag, country_name
 
 def main():
+    """Loads the data, parses the command line, and prints the results of the specified command line function"""
     data = load_data()
     arguments = parse_arguments(data)
     tag = arguments[0]

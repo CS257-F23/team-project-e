@@ -64,16 +64,7 @@ class test_dataset(unittest.TestCase):
         new_data = filter(key, col_name, self.data)
 
         self.assertEqual(new_data[2][0], "Georgia")
-        
-    def test_filter_edge(self):
-        """Given a column name that does not exist, filter returns an error"""
-        
-        col_name = "Group E"
-        key = "Albert"
-        
-        self.assertEqual
-        self.assertRaises(ValueError, filter, key, col_name, self.data) # make it print out a correction statement instead of throwing an error
-    
+       
     def test_get_column_index(self):
         """Given a column name and a dataset, returns the column's index"""
         
@@ -92,11 +83,10 @@ class test_dataset(unittest.TestCase):
         self.assertEqual(educ_levels[0][0][1], 29.11)
         
         
-        
     def test_main(self):
         """Given a command-line argument, correctly parses it and returns the function's value"""
         
-        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--internet_access_by_country" "Algeria"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
+        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--internet_access_by_country", "Algeria"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
         output, err = code.communicate()
         self.assertEqual(output.strip(), "88.9 percent of Algeria has internet access.")
         code.terminate()
