@@ -30,7 +30,7 @@ class test_dataset(unittest.TestCase):
 
         country = "Nonexistent"
 
-        self.assertRaises(SystemExit, percentage_with_internet_access, country, self.data)
+        self.assertEqual(percentage_with_internet_access(country, self.data), "Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes.")
 
     def test_percent_internet_access_edge_case2(self):
         """Edge case. Tests that percent_internet_access raises a ValueError if the user searches for a country that
@@ -38,8 +38,8 @@ class test_dataset(unittest.TestCase):
 
         country = "US"
 
-        self.assertRaises(SystemExit, percentage_with_internet_access, country, self.data)
-    
+        self.assertEqual(percentage_with_internet_access(country, self.data), "Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes.")
+
     def test_load_header(self):
         """Given the dataset, load_header loads the header"""
         header = load_header()
@@ -95,20 +95,23 @@ class test_dataset(unittest.TestCase):
         
         
         
-    '''def test_main(self):
-        code = subprocess.Popen(["python3", "-u", "Tests/test_cl.py", "Algeria"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
+    """def test_main(self):
+        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--internet_access_by_country" "Algeria"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
         output, err = code.communicate()
         self.assertEqual(output.strip(), "88.9 percent of Algeria has internet access.")
         code.terminate()
+        """
     
-    def test_main_2(self):
+    """def test_main_2(self):
         code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--education_levels_by_country_and_gender", "Peru"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = 'utf8')
         output, err = code.communicate()
-        self.assertEqual(output.strip(), "Education levels in Peru:\nPrimary school or less: 15.6 percent\nSecondary school: 74.3 percent\nTertiary education or more: 9.7 percent")
+        self.assertEqual(output.strip(), "Education levels in Peru:\nFor females:\nPrimary school or less: 16.94 percent\nSecondary school: 74.09 percent\nTertiary education or more: 8.47 percent\nFor males:\nPrimary school or less: 13.57 percent\nSecondary school: 74.62 percent\nTertiary education or more: 11.56 percent")
         code.terminate()
+        """
+        
 
 if __name__ == '__main__':
-    unittest.main()'''
+    unittest.main()
 
     
     

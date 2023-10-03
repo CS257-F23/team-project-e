@@ -94,6 +94,11 @@ def percentage_with_internet_access(country, data):
     """Takes a country name and a dataset, and returns the
     percentage of people that have access to the internet"""
     
+    country_validty = check_country_validity(country, data)
+
+    if country_validty == False:
+        return "Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes."
+    
     has_internet_access = "1"
     
     country_data = filter(country, "economy", data)
@@ -148,6 +153,7 @@ def education_level_by_gender(country, data):
     return ratios 
 
 def print_education_results(ratios, country):
+    """Prints """
     female_primary = ratios[0][0][1]
     female_secondary = ratios[0][1][1]
     female_tertiary = ratios[0][2][1]
@@ -173,10 +179,6 @@ def main():
     tag = arguments[0]
     country = arguments[1]
 
-    country_validty = check_country_validity(country, data)
-    if country_validty == False:
-        print("Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes.")
-        exit()
     if tag == "--internet_access_by_country":
         percentage_internet_access_by_country = percentage_with_internet_access(country, data)
         print(str(percentage_internet_access_by_country) + " percent of " + country + " has internet access.")
