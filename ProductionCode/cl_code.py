@@ -51,6 +51,17 @@ def filter(by, col, data):
 
     return new_data
 
+def check_country_validity(country, data):
+    is_country_in_data = False
+    idx = get_column_index("economy")
+    
+    for row in data:
+        
+        if row[idx] == country:
+            is_country_in_data = True
+
+    return is_country_in_data
+
 def get_column(column_name, data):
     """Takes a dataset and a column name, and returns the column as a list""" 
     
@@ -100,12 +111,8 @@ def get_ratio(key, column):
     num = column.count(key)
     total = len(column)
     ratio = 0
-    
-    if total == 0:
-        print("Please enter a valid country name. Hint: if the country name is multiple words, enclose the name in quotes.")
-        exit()
-    else:
-        ratio = round((num / total) * 100, 2)
+
+    ratio = round((num / total) * 100, 2)
     
     return ratio
 
@@ -153,7 +160,7 @@ def print_education_results(ratios, country):
               + "\nSecondary school: " + str(male_secondary) + " percent" + "\nTertiary education or more: " + str(male_tertiary)
               + " percent")
     
-def parse_arguments():
+def parse_arguments(data):
     """Stores the command line arguments in appropriate variables and returns them"""
     function_tag = sys.argv[1]
     country_name = sys.argv[2]
@@ -162,10 +169,14 @@ def parse_arguments():
 
 def main():
     data = load_data()
-    arguments = parse_arguments()
+    arguments = parse_arguments(data)
     tag = arguments[0]
     country = arguments[1]
 
+    country_validty = check_country_validity(country, data)
+    if country_validty == False:
+        print("Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes.")
+        exit()
     if tag == "--internet_access_by_country":
         percentage_internet_access_by_country = percentage_with_internet_access(country, data)
         print(str(percentage_internet_access_by_country) + " percent of " + country + " has internet access.")
