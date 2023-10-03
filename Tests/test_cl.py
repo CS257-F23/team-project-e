@@ -65,6 +65,17 @@ class test_dataset(unittest.TestCase):
 
         self.assertEqual(new_data[2][0], "Georgia")
         
+    def test_get_ratio(self):
+        """Given a key and column, get_ratio returns how often the key appears
+        in the column as a ratio"""
+        
+        column = ["a", "a", "b", "b"]
+        key = "a"
+        
+        rate = get_ratio(key, column)
+        
+        self.assertEqual(rate, 50)
+        
     def test_filter_edge(self):
         """Given a column name that does not exist, filter returns an error"""
         
@@ -90,13 +101,11 @@ class test_dataset(unittest.TestCase):
         educ_levels = education_level_by_gender(country, self.data)
         
         self.assertEqual(educ_levels[0][0][1], 29.11)
-        
-        
-        
+               
     def test_main(self):
         """Given a command-line argument, correctly parses it and returns the function's value"""
         
-        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--internet_access_by_country" "Algeria"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
+        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--internet_access_by_country", "Algeria"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
         output, err = code.communicate()
         self.assertEqual(output.strip(), "88.9 percent of Algeria has internet access.")
         code.terminate()
