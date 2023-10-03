@@ -100,7 +100,7 @@ def get_ratio(key, column):
     total = len(column)
     ratio = 0
 
-    ratio = round((num / total) * 100, 2)
+    ratio = round((num / total) * 100, 1)
     
     return ratio
 
@@ -111,10 +111,12 @@ def get_ratios(column):
     
     for item in set(column):
         ratio = get_ratio(item, column)
-        ratios.append((int(item), ratio, 3))
+        ratios.append((int(item), ratio))
         ratios.sort()
         
     return ratios
+
+
 
 def education_level_by_gender(country, data):
     """Given a country and data, returns the education levels 

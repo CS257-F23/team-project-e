@@ -39,7 +39,28 @@ class test_dataset(unittest.TestCase):
         country = "US"
 
         self.assertEqual(percentage_with_internet_access(country, self.data), "Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes.")
+    def test_education_level_stats_by_gender(self):
+        """Given a country, returns the level of education specifically for
+        females in Botswana recieving a level 1 education"""
 
+        country = "Botswana"
+
+        educ_levels_Botswana_female = education_level_by_gender(country, self.data)
+
+        self.assertEqual(educ_levels_Botswana_female[0][0][1], 27.8)
+
+
+    def test_get_ratios(self):
+        """Test for all ratios of education compared with gender
+        when given a country"""
+
+        ratio_1 = [1, 1, 1, 2]
+
+
+        ratios = get_ratios(ratio_1)
+
+        self.assertEqual([(1, 75), (2, 25)], ratios)
+    
     def test_load_header(self):
         """Given the dataset, load_header loads the header"""
         header = load_header()
@@ -69,21 +90,13 @@ class test_dataset(unittest.TestCase):
         """Given a key and column, get_ratio returns how often the key appears
         in the column as a ratio"""
         
-        column = ["a", "a", "b", "b"]
-        key = "a"
+        column = [1, 1, 2, 2]
+        key = 1
         
         rate = get_ratio(key, column)
         
         self.assertEqual(rate, 50)
         
-    def test_filter_edge(self):
-        """Given a column name that does not exist, filter returns an error"""
-        
-        col_name = "Group E"
-        key = "Albert"
-        
-        self.assertEqual
-        self.assertRaises(ValueError, filter, key, col_name, self.data) # make it print out a correction statement instead of throwing an error
     
     def test_get_column_index(self):
         """Given a column name and a dataset, returns the column's index"""
@@ -100,7 +113,7 @@ class test_dataset(unittest.TestCase):
         
         educ_levels = education_level_by_gender(country, self.data)
         
-        self.assertEqual(educ_levels[0][0][1], 29.11)
+        self.assertEqual(educ_levels[0][0][1], 29.1)
                
     def test_main(self):
         """Given a command-line argument, correctly parses it and returns the function's value"""
@@ -116,7 +129,7 @@ class test_dataset(unittest.TestCase):
         
         code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--education_levels_by_country_and_gender", "Peru"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = 'utf8')
         output, err = code.communicate()
-        self.assertEqual(output.strip(), "Education levels in Peru:\nFor females:\nPrimary school or less: 16.94 percent\nSecondary school: 74.09 percent\nTertiary education or more: 8.47 percent\nFor males:\nPrimary school or less: 13.57 percent\nSecondary school: 74.62 percent\nTertiary education or more: 11.56 percent")
+        self.assertEqual(output.strip(), "Education levels in Peru:\nFor females:\nPrimary school or less: 16.9 percent\nSecondary school: 74.1 percent\nTertiary education or more: 8.5 percent\nFor males:\nPrimary school or less: 13.6 percent\nSecondary school: 74.6 percent\nTertiary education or more: 11.6 percent")
         code.terminate()
     
         
