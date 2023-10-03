@@ -13,7 +13,7 @@ class test_dataset(unittest.TestCase):
         country = "Afghanistan"
         ratio = percentage_with_internet_access(country, self.data)
         
-        self.assertAlmostEqual(ratio, 20)
+        self.assertAlmostEqual(ratio, 19.8)
 
         
     def test_percent_internet_access2(self):
@@ -22,7 +22,7 @@ class test_dataset(unittest.TestCase):
         country = "Nigeria"
         ratio = percentage_with_internet_access(country, self.data)
         
-        self.assertAlmostEqual(ratio, 42)
+        self.assertAlmostEqual(ratio, 41.6)
     
     def test_percent_internet_access_edge_case1(self):
         """Edge case. Tests that percent_internet_access raises a ValueError if the user searches for a country that
@@ -30,7 +30,7 @@ class test_dataset(unittest.TestCase):
 
         country = "Nonexistent"
 
-        self.assertRaises(ZeroDivisionError, percentage_with_internet_access, country, self.data)
+        self.assertRaises(SystemExit, percentage_with_internet_access, country, self.data)
 
     def test_percent_internet_access_edge_case2(self):
         """Edge case. Tests that percent_internet_access raises a ValueError if the user searches for a country that
@@ -38,7 +38,7 @@ class test_dataset(unittest.TestCase):
 
         country = "US"
 
-        self.assertRaises(ZeroDivisionError, percentage_with_internet_access, country, self.data)
+        self.assertRaises(SystemExit, percentage_with_internet_access, country, self.data)
     
     def test_load_header(self):
         """Given the dataset, load_header loads the header"""
@@ -71,7 +71,7 @@ class test_dataset(unittest.TestCase):
         col_name = "Group E"
         key = "Albert"
         
-        self.assertRaises(ValueError, filter, key, col_name, self.data)
+        self.assertRaises(ValueError, filter, key, col_name, self.data) # make it print out a correction statement instead of throwing an error
     
     def test_get_column_index(self):
         """Given a column name and a dataset, returns the column's index"""
@@ -89,9 +89,9 @@ class test_dataset(unittest.TestCase):
         educ_levels = education_level_by_gender(country, self.data)
         
         # For some reason, need to print result to pass the test. Ask about later.
-        print(educ_levels)
+        #print(educ_levels)
         
-        self.assertEqual(educ_levels[0][0], 0.28)
+        self.assertEqual(educ_levels[0][0][1], 29.11)
         
         
         
@@ -102,7 +102,7 @@ class test_dataset(unittest.TestCase):
         code.terminate()
     
     def test_main_2(self):
-        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--education_levels_by_country", "Peru"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = 'utf8')
+        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--education_levels_by_country_and_gender", "Peru"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = 'utf8')
         output, err = code.communicate()
         self.assertEqual(output.strip(), "Education levels in Peru:\nPrimary school or less: 15.6 percent\nSecondary school: 74.3 percent\nTertiary education or more: 9.7 percent")
         code.terminate()

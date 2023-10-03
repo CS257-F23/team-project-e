@@ -1,6 +1,10 @@
 import sys
 import csv
 
+"""USAGE STATEMENTS:
+python3 ProductionCode/cl_code.py --internet_access_by_country country_name
+python3 ProductionCode/cl_code.py --education_levels_by_country_and_gender country_name"""
+
 def load_data():
     """Loads the data and returns it as a list"""
     
@@ -57,7 +61,7 @@ def get_column(column_name, data):
         column.append(row[idx])
     return column 
 
-def get_columns (columns, data):
+def get_columns (columns, data): # where is this being called? and needs docstring
     
     new_data = []
     indexs = []
@@ -95,8 +99,13 @@ def get_ratio(key, column):
     
     num = column.count(key)
     total = len(column)
+    ratio = 0
     
-    ratio = round(num / total, 2)
+    if total == 0:
+        print("Please enter a valid country name. Hint: if the country name is multiple words, enclose the name in quotes.")
+        exit()
+    else:
+        ratio = round((num / total) * 100, 2)
     
     return ratio
 
@@ -130,8 +139,22 @@ def education_level_by_gender(country, data):
     ratios = [female_ratios, male_ratios]
     
     return ratios 
+
+def print_education_results(ratios, country):
+    female_primary = ratios[0][0][1]
+    female_secondary = ratios[0][1][1]
+    female_tertiary = ratios[0][2][1]
+    male_primary = ratios[1][0][1]
+    male_secondary = ratios[1][1][1]
+    male_tertiary = ratios[1][2][1]
+    print("Education levels in " + country + ":" + "\nFor females:" + "\nPrimary school or less: " + str(female_primary) + " percent"
+              + "\nSecondary school: " + str(female_secondary) + " percent" + "\nTertiary education or more: " + str(female_tertiary)
+              + " percent" + "\nFor males:" + "\nPrimary school or less: " + str(male_primary) + " percent"
+              + "\nSecondary school: " + str(male_secondary) + " percent" + "\nTertiary education or more: " + str(male_tertiary)
+              + " percent")
     
 def parse_arguments():
+    """Stores the command line arguments in appropriate variables and returns them"""
     function_tag = sys.argv[1]
     country_name = sys.argv[2]
 
@@ -147,16 +170,9 @@ def main():
         percentage_internet_access_by_country = percentage_with_internet_access(country, data)
         print(str(percentage_internet_access_by_country) + " percent of " + country + " has internet access.")
 
-    elif tag == "--education_levels_by_country": # change gender function names
-        education_levels_by_country = education_level_by_gender(country, data)
-        primary = education_levels_by_country[0][1]
-        secondary = education_levels_by_country[1][1]
-        tertiary = education_levels_by_country[2][1]
-        #do_not_know = education_levels_by_country[3][1]
-        #refuse_to_answer = education_levels_by_country[4][1]
-        print("Education levels in " + country + ":" + "\nPrimary school or less: " + str(primary) + " percent"
-              + "\nSecondary school: " + str(secondary) + " percent" + "\nTertiary education or more: " + str(tertiary)
-              + " percent")
+    elif tag == "--education_levels_by_country_and_gender": 
+        education_levels_by_country_and_gender = education_level_by_gender(country, data)
+        print_education_results(education_levels_by_country_and_gender, country)
     
 if __name__ == "__main__":
     main()
