@@ -64,7 +64,27 @@ class test_dataset(unittest.TestCase):
         new_data = filter(key, col_name, self.data)
 
         self.assertEqual(new_data[2][0], "Georgia")
-       
+        
+    def test_get_ratio(self):
+        """Given a key and column, get_ratio returns how often the key appears
+        in the column as a ratio"""
+        
+        column = ["a", "a", "b", "b"]
+        key = "a"
+        
+        rate = get_ratio(key, column)
+        
+        self.assertEqual(rate, 50)
+        
+    def test_filter_edge(self):
+        """Given a column name that does not exist, filter returns an error"""
+        
+        col_name = "Group E"
+        key = "Albert"
+        
+        self.assertEqual
+        self.assertRaises(ValueError, filter, key, col_name, self.data) # make it print out a correction statement instead of throwing an error
+    
     def test_get_column_index(self):
         """Given a column name and a dataset, returns the column's index"""
         
@@ -81,8 +101,7 @@ class test_dataset(unittest.TestCase):
         educ_levels = education_level_by_gender(country, self.data)
         
         self.assertEqual(educ_levels[0][0][1], 29.11)
-        
-        
+               
     def test_main(self):
         """Given a command-line argument, correctly parses it and returns the function's value"""
         
