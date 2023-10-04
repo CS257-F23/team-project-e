@@ -39,6 +39,7 @@ class test_dataset(unittest.TestCase):
         country = "US"
 
         self.assertEqual(percentage_with_internet_access(country, self.data), "Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes.")
+    
     def test_education_level_stats_by_gender(self):
         """Given a country, returns the level of education specifically for
         females in Botswana recieving a level 1 education"""
@@ -131,6 +132,14 @@ class test_dataset(unittest.TestCase):
         output, err = code.communicate()
         self.assertEqual(output.strip(), "Education levels in Peru:\nFor females:\nPrimary school or less: 16.9 percent\nSecondary school: 74.1 percent\nTertiary education or more: 8.5 percent\nFor males:\nPrimary school or less: 13.6 percent\nSecondary school: 74.6 percent\nTertiary education or more: 11.6 percent")
         code.terminate()
+
+    # have to change main to give this error message before this will work
+    """def test_main_edge_case(self):
+        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--internet_access_by_country", "Franze"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = 'utf8')
+        output, err = code.communicate()
+        self.assertEqual(output.strip(), "Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes.")
+        code.terminate()
+    """
     
         
 
