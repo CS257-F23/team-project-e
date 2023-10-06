@@ -116,44 +116,22 @@ def get_ratios(column):
         
     return ratios
 
-
-
-def education_level_by_gender(country, data):
-    """Given a country and data, returns the education levels 
-    """
+def get_average_of_column(country, column, data):
     country_validty = check_country_validity(country, data)
 
     if country_validty == False:
         return "Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes."
-    
-    country_data = filter(country, "economy", data)
-    
-    female_data = filter("1", "female", country_data)
-    female_educ = get_column("educ", female_data)
-    
-    male_data = filter("2", "female", country_data)
-    male_educ = get_column("educ", male_data)
-    
-    female_ratios = get_ratios(female_educ)
-    male_ratios = get_ratios(male_educ)
-    
-    ratios = [female_ratios, male_ratios]
-    
-    return ratios 
+    filtered_data = filter(country, column, data)
+    the_averages = calculate_averages(filtered_data)
+    return the_averages
 
-def print_education_results(ratios, country):
-    """Formats and prints the results of the education_level_by_gender function"""
-    female_primary = ratios[0][0][1]
-    female_secondary = ratios[0][1][1]
-    female_tertiary = ratios[0][2][1]
-    male_primary = ratios[1][0][1]
-    male_secondary = ratios[1][1][1]
-    male_tertiary = ratios[1][2][1]
-    print("Education levels in " + country + ":" + "\nFor females:" + "\nPrimary school or less: " + str(female_primary) + " percent"
-              + "\nSecondary school: " + str(female_secondary) + " percent" + "\nTertiary education or more: " + str(female_tertiary)
-              + " percent" + "\nFor males:" + "\nPrimary school or less: " + str(male_primary) + " percent"
-              + "\nSecondary school: " + str(male_secondary) + " percent" + "\nTertiary education or more: " + str(male_tertiary)
-              + " percent")
+def calculate_averages(filtered_data):
+    total = sum(filtered_data)
+    length = len(filtered_data)
+
+    avg = total / length
+
+    return avg
     
 def parse_arguments(data):
     """Stores the command line arguments in appropriate variables and returns them"""
@@ -173,7 +151,7 @@ def main():
         percentage_internet_access_by_country = percentage_with_internet_access(country, data)
         print(str(percentage_internet_access_by_country) + " percent of " + country + " has internet access.")
 
-    elif tag == "--education_levels_by_country_and_gender": 
+    elif tag == "-- average_age_of_country": 
         education_levels_by_country_and_gender = education_level_by_gender(country, data)
         print_education_results(education_levels_by_country_and_gender, country)
     
