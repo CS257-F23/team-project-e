@@ -116,31 +116,6 @@ def get_ratios(column):
         
     return ratios
 
-
-
-def education_level_by_gender(country, data):
-    """Given a country and data, returns the education levels 
-    """
-    country_validty = check_country_validity(country, data)
-
-    if country_validty == False:
-        return "Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes."
-    
-    country_data = filter(country, "economy", data)
-    
-    female_data = filter("1", "female", country_data)
-    female_educ = get_column("educ", female_data)
-    
-    male_data = filter("2", "female", country_data)
-    male_educ = get_column("educ", male_data)
-    
-    female_ratios = get_ratios(female_educ)
-    male_ratios = get_ratios(male_educ)
-    
-    ratios = [female_ratios, male_ratios]
-    
-    return ratios 
-
 def print_education_results(ratios, country):
     """Formats and prints the results of the education_level_by_gender function"""
     female_primary = ratios[0][0][1]

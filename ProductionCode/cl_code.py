@@ -12,6 +12,7 @@ def load_data():
     
     with open('Data/world_bank.csv', "r") as file:
         reader = csv.reader(file)
+        
         next(reader)
         for row in reader:
             rows.append(row)
@@ -35,7 +36,6 @@ def get_column_index(column_name):
     
     return idx
     
-
 def filter(by, col, data):
     """Takes a keyword, a column name, and a dataset, and
     returns the portion of the dataset that matches the keyword 
