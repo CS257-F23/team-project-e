@@ -5,6 +5,7 @@ import csv
 python3 ProductionCode/cl_code.py --internet_access_by_country country_name
 python3 ProductionCode/cl_code.py --education_levels_by_country_and_gender country_name"""
 
+
 def load_data():
     """Loads the data and returns it as a list"""
     
@@ -62,7 +63,8 @@ def check_country_validity(country, data):
             is_country_in_data = True
 
     if is_country_in_data == False:
-        sys.exit("Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes.")
+        print("Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes.")
+        sys.exit()
     
 
 def get_column(column_name, data):
