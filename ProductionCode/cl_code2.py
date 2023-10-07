@@ -1,5 +1,6 @@
 import sys
 import csv
+import argparse
 
 """USAGE STATEMENTS:
 python3 ProductionCode/cl_code.py --internet_access_by_country country_name
@@ -9,8 +10,8 @@ python3 ProductionCode/cl_code.py --education_levels_by_country_and_gender count
 def load_data():
     """Loads the data and returns it as a list"""
     
-    global data
-    global header
+    #global data
+    #global header
     
     data = []
     header = {}
@@ -25,7 +26,7 @@ def load_data():
         for row in reader:
             data.append(row)
             
-    #return data  
+    return data
 
 def load_header():
     """Loads the column names and returns them as a list"""
@@ -129,9 +130,10 @@ def get_average_of_column(country, column, data):
     """Takes a country name, a column name, and the dataset, and returns
     the average of the values in the column"""
 
-    check_country_validity(country, data)
+    check_country_validity(country, data) # fix to be an if statement
 
     country_data = filter(country, column, data)
+    print(country_data)
     avg = calculate_average(country_data)
     
     return avg
@@ -153,18 +155,23 @@ def parse_arguments():
     return function_tag, country_name
 
 def main():
+    data = load_data()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--function", type = str, required = True)
+    parser.add_argument("--country", type = str, required = True)
+    arguments = parser.parse_args()
+
+    if arguments.function == "internet_access_by_country":
+        percentage_internet_access_by_country = percentage_with_internet_access(arguments.country, data)
+        print(str(percentage_internet_access_by_country) + " percent of " + arguments.country + " has internet access.")
+    
+    elif arguments.function == "average_age_of_country":
+        average_age_of_country = get_average_of_column(arguments.country, "age", data)
+        print(str(average_age_of_country) + " is the average age of people in " + arguments.country + ".")
+
+
+
     """Loads the data, parses the command line, and prints the results of the specified command line function"""
-    load_data()
-    arguments = parse_arguments()
-    tag = arguments[0]
-    country = arguments[1]
-
-    if tag == "--internet_access_by_country":
-        percentage_internet_access_by_country = percentage_with_internet_access(country, data)
-        print(str(percentage_internet_access_by_country) + " percent of " + country + " has internet access.")
-
-    elif tag == "-- average_age_of_country": 
-        average_age = get_average_of_column(country, "age", data) 
     
 if __name__ == "__main__":
     main()
