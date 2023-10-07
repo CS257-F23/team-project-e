@@ -61,7 +61,9 @@ def check_country_validity(country, data):
         if row[idx] == country:
             is_country_in_data = True
 
-    return is_country_in_data
+    if is_country_in_data == False:
+        sys.exit("Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes.")
+    
 
 def get_column(column_name, data):
     """Takes a dataset and a column name, and returns the column as a list""" 
@@ -77,10 +79,7 @@ def percentage_with_internet_access(country, data):
     """Takes a country name and a dataset, and returns the
     percentage of people that have access to the internet"""
     
-    country_validty = check_country_validity(country, data)
-
-    if country_validty == False:
-        return "Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes."
+    check_country_validity(country, data)
     
     has_internet_access = "1"
     
@@ -117,10 +116,9 @@ def get_ratios(column):
     return ratios
 
 def get_average_of_column(country, column, data):
-    country_validty = check_country_validity(country, data)
 
-    if country_validty == False:
-        return "Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes."
+    check_country_validity(country, data)
+
     filtered_data = filter(country, column, data)
     the_averages = calculate_averages(filtered_data)
     return the_averages
