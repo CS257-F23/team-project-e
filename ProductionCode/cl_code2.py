@@ -160,12 +160,30 @@ def parse_arguments():
 
     return function_tag, country_name
 
+def list_of_countries(data): #test for list of countries
+    """Returns a list of all countries
+    Input: null
+    Output: [countries]"""
+
+    string_of_countries = ""
+
+    country_list = get_column("economy", data)
+    set_country_list = set(country_list)
+    for country in set_country_list:
+        string_of_countries += country +'\n'
+    
+    return string_of_countries
+    
+
 def main():
     data = load_data()
     parser = argparse.ArgumentParser()
-    parser.add_argument("--function", type = str, required = True)
-    parser.add_argument("--country", type = str, required = True)
+    parser.add_argument("--function", type = str, required = True, help="Please type either internet_access_by_country or average_age_of_country." )
+    parser.add_argument("--country", type = str, required = True, help="Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes. Here are you options: " + list_of_countries(data))
     arguments = parser.parse_args()
+
+    if arguments.country not in list_of_countries(data):
+        parser.print_help()
 
     if arguments.function == "internet_access_by_country":
         percentage_internet_access_by_country = percentage_with_internet_access(arguments.country, data)
