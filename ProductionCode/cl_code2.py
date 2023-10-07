@@ -5,6 +5,8 @@ import csv
 python3 ProductionCode/cl_code.py --internet_access_by_country country_name
 python3 ProductionCode/cl_code.py --education_levels_by_country_and_gender country_name"""
 
+
+
 def load_data():
     """Loads the data and returns it as a list"""
     
@@ -62,8 +64,9 @@ def check_country_validity(country, data):
             is_country_in_data = True
 
     if is_country_in_data == False:
-        sys.exit("Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes.")
-    
+
+        #sys.exit("Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes.")
+        sys.exit(0)
 
 def get_column(column_name, data):
     """Takes a dataset and a column name, and returns the column as a list""" 
@@ -116,20 +119,33 @@ def get_ratios(column):
     return ratios
 
 def get_average_of_column(country, column, data):
+    """Returns an average for the given column and country.
+    Works for any data is a column in the csv file.
+    Inputs: str(country), str(column), data
+    Outputs: int(average)"""
 
     check_country_validity(country, data)
 
-    filtered_data = filter(country, column, data)
-    the_averages = calculate_averages(filtered_data)
+    filtered_data = filter(country, "economy", data)
+    #print("filter data:", filtered_data)
+    filtered_column_data = get_column(column, filtered_data)
+    #print("filtered colummn data:", filtered_column_data)
+    the_averages = calculate_averages(filtered_column_data)
+    print(the_averages)
+
     return the_averages
 
-def calculate_averages(filtered_data):
-    total = sum(filtered_data)
-    length = len(filtered_data)
+def calculate_averages(data):
+
+    total = 0
+    for i in data:
+        if i != '':
+            total += int(i)
+    length = len(data)
 
     avg = total / length
 
-    return avg
+    return round(avg, 1)
     
 def parse_arguments(data):
     """Stores the command line arguments in appropriate variables and returns them"""
@@ -141,17 +157,7 @@ def parse_arguments(data):
 def main():
     """Loads the data, parses the command line, and prints the results of the specified command line function"""
     data = load_data()
-    arguments = parse_arguments(data)
-    tag = arguments[0]
-    country = arguments[1]
-
-    if tag == "--internet_access_by_country":
-        percentage_internet_access_by_country = percentage_with_internet_access(country, data)
-        print(str(percentage_internet_access_by_country) + " percent of " + country + " has internet access.")
-
-    elif tag == "-- average_age_of_country": 
-        education_levels_by_country_and_gender = education_level_by_gender(country, data)
-        print_education_results(education_levels_by_country_and_gender, country)
+    get_average_of_column("Argentina", "age", data)
     
 if __name__ == "__main__":
     main()
