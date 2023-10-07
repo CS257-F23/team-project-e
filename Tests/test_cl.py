@@ -141,10 +141,36 @@ class test_dataset(unittest.TestCase):
         code.terminate()
     """
     
+    def test_get_average_of_column(self):
+        """Given a column of integers, returns the mean"""
         
+        column = "age"
+        
+        average_age = get_average_of_column(column)
+        
+        self.assertEqual(average_age, 45)  
 
 if __name__ == '__main__':
     unittest.main()
+
+    
+    
+    
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+    
+    
+    
 
     
     
