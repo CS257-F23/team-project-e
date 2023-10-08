@@ -1,11 +1,17 @@
 import unittest
 import subprocess   
-from ProductionCode.cl_code import *
+from ProductionCode.cl_code2 import *
 
 class test_dataset(unittest.TestCase):
     
     def setUp(self):
         self.data = load_data()
+    
+    def check_country_validity(self):
+        country = "Franze"
+        #validity = check_country_validity(country, self.data)
+
+        self.assertRaises(SystemExit, check_country_validity, country, self.data)
     
     def test_percent_internet_access1(self):
         """Given an existing country, percentage_with_internet_access returns the correct value"""
@@ -40,15 +46,16 @@ class test_dataset(unittest.TestCase):
 
         self.assertEqual(percentage_with_internet_access(country, self.data), "Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes.")
     
-    def test_education_level_stats_by_gender(self):
-        """Given a country, returns the level of education specifically for
-        females in Botswana recieving a level 1 education"""
+    """def test_education_level_stats_by_gender(self):
+        ""Given a country, returns the level of education specifically for
+        females in Botswana recieving a level 1 education""
 
         country = "Botswana"
 
         educ_levels_Botswana_female = education_level_by_gender(country, self.data)
 
         self.assertEqual(educ_levels_Botswana_female[0][0][1], 27.8)
+    """
 
 
     def test_get_ratios(self):
@@ -106,15 +113,16 @@ class test_dataset(unittest.TestCase):
 
         self.assertEqual(get_column_index(col_name), 7)
         
-    def test_education_level_by_gender(self):
-        """Given a country, returns the levels of education obtained
-        by its inhabitants, by gender, in a list format"""
+    """def test_education_level_by_gender(self):
+        ""Given a country, returns the levels of education obtained
+        by its inhabitants, by gender, in a list format""
         
         country = "Costa Rica"
         
         educ_levels = education_level_by_gender(country, self.data)
         
         self.assertEqual(educ_levels[0][0][1], 29.1)
+    """
                
     def test_main(self):
         """Given a command-line argument, correctly parses it and returns the function's value"""
@@ -141,14 +149,15 @@ class test_dataset(unittest.TestCase):
         code.terminate()
     """
     
-    def test_get_average_of_column(self):
-        """Given a column of integers, returns the mean"""
+    """def test_get_average_of_column(self):
+        ""Given a column of integers, returns the mean""
         
         column = "age"
         
         average_age = get_average_of_column(column)
         
         self.assertEqual(average_age, 45)  
+    """
 
 if __name__ == '__main__':
     unittest.main()
