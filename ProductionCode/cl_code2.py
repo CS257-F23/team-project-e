@@ -160,12 +160,39 @@ def parse_arguments():
 
     return function_tag, country_name
 
+def list_of_countries(data): #test for list of countries
+    """Returns a list of all countries
+    Input: null
+    Output: [countries]"""
+
+    string_of_countries = ""
+
+    country_list = get_column("economy", data)
+    set_country_list = set(country_list)
+    country_set_to_list = list(set_country_list)
+    country_set_to_list.sort()
+    for country in country_set_to_list:
+        string_of_countries += country +'\n'
+    
+    return string_of_countries
+
+def usage_statement_for_parser(data):
+    message = "python3 ProductionCode/cl_code.py --function <function name> --country <country_name>\nFunction options:\ninternet_access_by_country\naverage_age_of_country\n Country options:\nHint: If the country is multiple words long, enclose the name in quotes.\n" + list_of_countries(data)  # change to cl_code.py later
+    
+    return message
+
 def main():
     data = load_data()
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--function", type = str, required = True, help = "no")
-    parser.add_argument("--country", type = str, required = True)
+    parser = argparse.ArgumentParser(usage =usage_statement_for_parser(data))
+    parser.add_argument("--function", type = str) #required = False, help = "Please type either internet_access_by_country or average_age_of_country." )
+    parser.add_argument("--country", type = str) #required = False, help = "Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes. Here are you options: " + list_of_countries(data))
     arguments = parser.parse_args()
+
+    #if arguments.country is None:
+       # print("you didn't enter a country name")
+
+    #if arguments.country not in list_of_countries(data):
+        #parser.print_help()
 
     if arguments.function == "internet_access_by_country":
         percentage_internet_access_by_country = percentage_with_internet_access(arguments.country, data)

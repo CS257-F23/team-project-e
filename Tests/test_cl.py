@@ -1,6 +1,6 @@
 import unittest
 import subprocess   
-from ProductionCode.cl_code2 import *
+from ProductionCode.cl_code22 import *
 
 class test_dataset(unittest.TestCase):
     
@@ -44,18 +44,7 @@ class test_dataset(unittest.TestCase):
 
         country = "US"
 
-        self.assertEqual(percentage_with_internet_access(country, self.data), "Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes.")
-    
-    """def test_education_level_stats_by_gender(self):
-        ""Given a country, returns the level of education specifically for
-        females in Botswana recieving a level 1 education""
-
-        country = "Botswana"
-
-        educ_levels_Botswana_female = education_level_by_gender(country, self.data)
-
-        self.assertEqual(educ_levels_Botswana_female[0][0][1], 27.8)
-    """
+        self.assertEqual(percentage_with_internet_access(country, self.data), "SystemExit: 0")
 
 
     def test_get_ratios(self):
@@ -112,17 +101,14 @@ class test_dataset(unittest.TestCase):
         col_name = "age"
 
         self.assertEqual(get_column_index(col_name), 7)
-        
-    """def test_education_level_by_gender(self):
-        ""Given a country, returns the levels of education obtained
-        by its inhabitants, by gender, in a list format""
-        
-        country = "Costa Rica"
-        
-        educ_levels = education_level_by_gender(country, self.data)
-        
-        self.assertEqual(educ_levels[0][0][1], 29.1)
-    """
+
+    def test_list_of_countries(self):
+        """Testing if the function correctly returns the list of countries"""
+
+        final_list = list_of_countries(self.data)
+
+        self.assertEqual(final_list[0], "Afghanistan")
+
                
     def test_main(self):
         """Given a command-line argument, correctly parses it and returns the function's value"""
@@ -142,22 +128,22 @@ class test_dataset(unittest.TestCase):
         code.terminate()
 
     # have to change main to give this error message before this will work
-    """def test_main_edge_case(self):
-        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--internet_access_by_country", "Franze"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = 'utf8')
-        output, err = code.communicate()
-        self.assertEqual(output.strip(), "Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes.")
-        code.terminate()
-    """
+    # def test_main_edge_case(self):
+    #     code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--internet_access_by_country", "Franze"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = 'utf8')
+    #     output, err = code.communicate()
+    #     self.assertEqual(output.strip(), "Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes.")
+    #     code.terminate()
+   
     
     """def test_get_average_of_column(self):
         ""Given a column of integers, returns the mean""
         
         column = "age"
+        country = "Argentina"
         
-        average_age = get_average_of_column(column)
+        average_age = get_average_of_column(country, column, self.data)
         
-        self.assertEqual(average_age, 45)  
-    """
+        self.assertEqual(average_age, 45.7)  
 
 if __name__ == '__main__':
     unittest.main()
