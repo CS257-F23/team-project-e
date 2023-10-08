@@ -160,24 +160,28 @@ def parse_arguments():
 
     return function_tag, country_name
 
-def list_of_countries(data): #test for list of countries
-    """Returns a list of all countries
-    Input: null
-    Output: [countries]"""
+def formatted_country_list(data): #test for list of countries
+    """Takes in the dataset, and returns a formatted string containing
+    the countries in the dataset"""
 
     string_of_countries = ""
 
     country_list = get_column("economy", data)
-    set_country_list = set(country_list)
-    country_set_to_list = list(set_country_list)
-    country_set_to_list.sort()
-    for country in country_set_to_list:
+    country_set_unique = unique(country_list)
+    country_list_unique = list(country_set_unique)
+    country_list_unique.sort()
+    
+    for country in country_list_unique:       
         string_of_countries += country +'\n'
     
     return string_of_countries
 
+def unique(array):
+    """Takes a list and returns all the unique elements in the list"""
+    return set(array)
+
 def usage_statement_for_parser(data):
-    message = "python3 ProductionCode/cl_code.py --function <function name> --country <country_name>\nFunction options:\ninternet_access_by_country\naverage_age_of_country\n Country options:\nHint: If the country is multiple words long, enclose the name in quotes.\n" + list_of_countries(data)  # change to cl_code.py later
+    message = "python3 ProductionCode/cl_code.py --function <function name> --country <country_name>\nFunction options:\ninternet_access_by_country\naverage_age_of_country\n Country options:\nHint: If the country is multiple words long, enclose the name in quotes.\n" + formatted_country_list(data)  # change to cl_code.py later
     
     return message
 
@@ -201,8 +205,6 @@ def main():
     elif arguments.function == "average_age_of_country":
         average_age_of_country = get_average_of_column(arguments.country, "age", data)
         print(str(average_age_of_country) + " is the average age of people in " + arguments.country + ".")
-
-
 
     """Loads the data, parses the command line, and prints the results of the specified command line function"""
     
