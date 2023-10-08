@@ -163,7 +163,7 @@ def parse_arguments():
 def main():
     data = load_data()
     parser = argparse.ArgumentParser()
-    parser.add_argument("--function", type = str, required = True)
+    parser.add_argument("--function", type = str, required = True, help = "no")
     parser.add_argument("--country", type = str, required = True)
     arguments = parser.parse_args()
 
