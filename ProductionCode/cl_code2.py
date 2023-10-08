@@ -139,11 +139,11 @@ def get_ratio_of_key_in_column(key, column): #Should we do an edge case for this
     ratio = round((num / total) * 100, 1)
     
     return ratio
-    #else:
+    #else:Morr
         #message = "Invalid keyword."
         #return message
     
-def get_ratios_of_column(column, data): #Do we ever use this function?
+def get_ratios_of_column(column, data): 
     """Given a column, returns a list of counts of items in column
     as a ratio"""
 
@@ -238,11 +238,13 @@ def main():
 
     if arguments.function == "internet_access_by_country":
         percentage_internet_access_by_country = percentage_with_internet_access(arguments.country, data)
-        print(str(percentage_internet_access_by_country) + " percent of " + arguments.country + " has internet access.")
+        internet_result = str(percentage_internet_access_by_country) + " percent of " + arguments.country + " has internet access."
+        print(internet_result)
     
     elif arguments.function == "average_age_of_country":
         average_age_of_country = get_average_of_column(arguments.country, "age", data)
-        print(str(average_age_of_country) + " is the average age of people in " + arguments.country + ".")
+        age_result = str(average_age_of_country) + " is the average age of people in " + arguments.country + "."
+        print(age_result)
 
     
 if __name__ == "__main__":

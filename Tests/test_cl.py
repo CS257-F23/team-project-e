@@ -242,7 +242,7 @@ class test_dataset(unittest.TestCase):
 
         self.assertEqual(average, result)
 
-    def test_usage_statement_edge_case(self):
+    def test_usage_statement(self):
         data = []
         result = usage_statement(data)
         message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
@@ -251,32 +251,18 @@ class test_dataset(unittest.TestCase):
    
         self.assertEqual(result, message)
     
-    """def test_usage_statement(self): DOES IT MAKE SENSE TO HAVE THIS??
-        result = usage_statement(data)
-        message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
-        \nFunction options:\ninternet_access_by_country\naverage_age_of_country\nCountry options: \
-        \nHint: If the country is multiple words long, enclose the name in quotes.\nArgentina\nUkraine\nTo view this information at any time, type '-h' in the command line."
-
-        self.assertEqual(result, message)  
-    """
-
-    """def test_main(self):
-        ""Given a command-line argument, correctly parses it and returns the function's value""
-        
-        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--internet_access_by_country", "Algeria"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
+    def test_main1(self):
+        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code2.py", "--function", "internet_access_by_country", "--country", "Morocco"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = "utf8")
         output, err = code.communicate()
-        self.assertEqual(output.strip(), "88.9 percent of Algeria has internet access.")
+        self.assertEqual(output.strip(), "83.0 percent of Morocco has internet access.")
         code.terminate()
-        
     
-    def test_main_2(self):
-        ""Given a command-line argument, correctly parses it and returns the function's value""
-        
-        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--education_levels_by_country_and_gender", "Peru"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = 'utf8')
+    def test_main2(self):
+        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code2.py", "--function", "average_age_of_country", "--country", "Kenya"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = "utf8")
         output, err = code.communicate()
-        self.assertEqual(output.strip(), "Education levels in Peru:\nFor females:\nPrimary school or less: 16.9 percent\nSecondary school: 74.1 percent\nTertiary education or more: 8.5 percent\nFor males:\nPrimary school or less: 13.6 percent\nSecondary school: 74.6 percent\nTertiary education or more: 11.6 percent")
+        self.assertEqual(output.strip(), "31.2 is the average age of people in Kenya.")
         code.terminate()
-    """
+    
 
    
 if __name__ == '__main__':
