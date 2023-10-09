@@ -6,6 +6,7 @@ python3 ProductionCode/cl_code.py --function <function_name> --country <country_
 """
 
 #What is the "point" of this app? Explain
+# MAKE SURE cl)code2.py is TAGGED AS CL BEFORE FLASK COMPONENT IS TURNED IN
 
 def load_data():
     """Loads the data and returns it as a list"""
