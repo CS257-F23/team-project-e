@@ -1,23 +1,30 @@
-import sys
 import csv
+import argparse
 
-"""USAGE STATEMENTS:
-python3 ProductionCode/cl_code.py --internet_access_by_country country_name
-python3 ProductionCode/cl_code.py --education_levels_by_country_and_gender country_name"""
+"""Usage statement:
+python3 ProductionCode/cl_code.py --function <function_name> --country <country_name>
+"""
+
+#What is the "point" of this app? Explain
+# MAKE SURE cl)code2.py is TAGGED AS CL BEFORE FLASK COMPONENT IS TURNED IN
 
 def load_data():
     """Loads the data and returns it as a list"""
     
-    rows = []
+    data = []
+    header = {}
     
     with open('Data/world_bank.csv', "r") as file:
         reader = csv.reader(file)
+        column_names = next(reader)
         
-        next(reader)
-        for row in reader:
-            rows.append(row)
+        for i, name in enumerate(column_names):
+            header[name] = i
             
-    return rows    
+        for row in reader:
+            data.append(row)
+            
+    return data
 
 def load_header():
     """Loads the column names and returns them as a list"""
@@ -28,74 +35,104 @@ def load_header():
 
     return column_names
 
+def list_of_countries(data):
+    """Returns a list of all countries
+    Input: null
+    Output: [countries]"""
+
+    country_list = get_column("economy", data)
+    set_country_list = set(country_list)
+    country_set_to_list = list(set_country_list)
+    country_set_to_list.sort()
+    
+    return country_set_to_list
+
+def string_of_countries(list_of_countries):
+    string_of_countries = ""
+    for country in list_of_countries:
+        string_of_countries += country +'\n'
+
+    return string_of_countries
+
+def check_keyword_validity(keyword, keyword_column_title, data):
+    is_keyword_in_data = False
+    idx = get_column_index(keyword_column_title)
+
+    for row in data:
+        if row[idx] == keyword:
+            is_keyword_in_data = True
+
+    return is_keyword_in_data
+
+def check_column_validity(column_title):
+    is_column_in_data = False
+    header = load_header()
+
+    for column in header:
+        if column == column_title:
+            is_column_in_data = True
+    
+    return is_column_in_data
+
 def get_column_index(column_name):
     """Given a column name, returns the index of the column"""
     
-    column_names = load_header()
-    idx = column_names.index(column_name)
+    column_validity = check_column_validity(column_name)
+
+    if column_validity == True:
+        column_names = load_header()
+        idx = column_names.index(column_name)
     
-    return idx
+        return idx
+    else:
+        message = "Invalid column name."
+        return message
+
+
+def get_column(column_name, data):
+    """Takes a dataset and a column name, and returns the column as a list""" 
     
+    column_validity = check_column_validity(column_name)
+    if column_validity == True:
+        column = []
+        idx = get_column_index(column_name)
+    
+        for row in data:
+            column.append(row[idx])
+        return column 
+    else:
+        message = "Invalid column name."
+        return message
+
 def filter(by, col, data):
     """Takes a keyword, a column name, and a dataset, and
     returns the portion of the dataset that matches the keyword 
     in the given column as a list"""
     
-    new_data = []
-    idx = get_column_index(col)
+    keyword_validity = check_keyword_validity(by, col, data)
+    column_validity = check_column_validity(col)
+
+    if keyword_validity == True and column_validity == True:
+        new_data = []
+        idx = get_column_index(col)
     
-    for row in data:
+        for row in data:
         
-        if row[idx] == by:
-            new_data.append(row)
+            if row[idx] == by:
+                new_data.append(row)
 
-    return new_data
+        return new_data
+    else:
+        message = "Invalid keyword or column name."
+        return message
 
-def check_country_validity(country, data):
-    """Checks if the country that the user entered is in the dataset or if it is an invalid country"""
-    is_country_in_data = False
-    idx = get_column_index("economy")
-    
-    for row in data:
-        
-        if row[idx] == country:
-            is_country_in_data = True
-
-    return is_country_in_data
-
-def get_column(column_name, data):
-    """Takes a dataset and a column name, and returns the column as a list""" 
-    
-    column = []
-    idx = get_column_index(column_name)
-    
-    for row in data:
-        column.append(row[idx])
-    return column 
-
-def percentage_with_internet_access(country, data):
-    """Takes a country name and a dataset, and returns the
-    percentage of people that have access to the internet"""
-    
-    country_validty = check_country_validity(country, data)
-
-    if country_validty == False:
-        return "Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes."
-    
-    has_internet_access = "1"
-    
-    country_data = filter(country, "economy", data) 
-    
-    internet_column = get_column("internetaccess", country_data)
-    
-    percentage = get_ratio(has_internet_access, internet_column)
-    
-    return percentage
-
-def get_ratio(key, column):
+def get_ratio_of_key_in_column(key, column): #Should we do an edge case for this?
     """Given a key and a column, returns how often key appeared 
     in the column as a ratio of the length of the column"""
     
+    #key_validity = check_keyword_validity(key, column, data)
+
+    #if key_validity == True:
     num = column.count(key)
     total = len(column)
     ratio = 0
@@ -103,83 +140,116 @@ def get_ratio(key, column):
     ratio = round((num / total) * 100, 1)
     
     return ratio
-
-def get_ratios(column):
+    #else:Morr
+        #message = "Invalid keyword."
+        #return message
+    
+def get_ratios_of_column(column, data): 
     """Given a column, returns a list of counts of items in column
     as a ratio"""
-    ratios = []
+
+    column_validity = check_column_validity(column)
+    if column_validity == True:
+
+        ratios = []
     
-    for item in set(column):
-        ratio = get_ratio(item, column)
-        ratios.append((int(item), ratio))
-        ratios.sort()
+        for item in set(column):
+            ratio = get_ratio_of_key_in_column(item, column)
+            ratios.append((int(item), ratio))
+            ratios.sort()
         
-    return ratios
+        return ratios
+    else:
+        message = usage_statement(data)
+        return message
 
 
+def get_average_of_column(country, column, data):
+    """Returns an average for the given column and country.
+    Works for any data is a column in the csv file.
+    Inputs: str(country), str(column), data
+    Outputs: int(average)"""
 
-def education_level_by_gender(country, data):
-    """Given a country and data, returns the education levels 
-    """
-    country_validty = check_country_validity(country, data)
+    country_validity = check_keyword_validity(country, "economy", data)
 
-    if country_validty == False:
-        return "Please enter a valid country. Hint: if the country is multiple words, enclose it in quotes."
-    
-    country_data = filter(country, "economy", data)
-    
-    female_data = filter("1", "female", country_data)
-    female_educ = get_column("educ", female_data)
-    
-    male_data = filter("2", "female", country_data)
-    male_educ = get_column("educ", male_data)
-    
-    female_ratios = get_ratios(female_educ)
-    male_ratios = get_ratios(male_educ)
-    
-    ratios = [female_ratios, male_ratios]
-    
-    return ratios 
+    if country_validity == True:
 
-def print_education_results(ratios, country):
-    """Formats and prints the results of the education_level_by_gender function"""
-    female_primary = ratios[0][0][1]
-    female_secondary = ratios[0][1][1]
-    female_tertiary = ratios[0][2][1]
-    male_primary = ratios[1][0][1]
-    male_secondary = ratios[1][1][1]
-    male_tertiary = ratios[1][2][1]
-    print("Education levels in " + country + ":" + "\nFor females:" + "\nPrimary school or less: " + str(female_primary) + " percent"
-              + "\nSecondary school: " + str(female_secondary) + " percent" + "\nTertiary education or more: " + str(female_tertiary)
-              + " percent" + "\nFor males:" + "\nPrimary school or less: " + str(male_primary) + " percent"
-              + "\nSecondary school: " + str(male_secondary) + " percent" + "\nTertiary education or more: " + str(male_tertiary)
-              + " percent")
-    
-def parse_arguments(data):
-    """Stores the command line arguments in appropriate variables and returns them"""
-    function_tag = sys.argv[1]
-    country_name = sys.argv[2]
+        filtered_data = filter(country, "economy", data)
+        filtered_column_data = get_column(column, filtered_data)
+        the_averages = calculate_averages(filtered_column_data)
 
-    return function_tag, country_name
+        return the_averages
+
+    else:
+        message = usage_statement(data)
+        return message
+
+def calculate_averages(data):
+    total = 0
+    for i in data:
+        if i != '':
+            total += int(i)
+    length = len(data)
+    if length != 0:
+        avg = total / length
+        return round(avg, 1)
+    else:
+        return "Cannot calculate the average of no data."
+
+def percentage_with_internet_access(country, data):
+    """Takes a country name and a dataset, and returns the
+    percentage of people that have access to the internet"""
+    
+    country_validity = check_keyword_validity(country, "economy", data)
+
+    if country_validity == True:
+    
+        has_internet_access = "1"
+    
+        country_data = filter(country, "economy", data) 
+    
+        internet_column = get_column("internetaccess", country_data)
+    
+        percentage = get_ratio_of_key_in_column(has_internet_access, internet_column)
+    
+        return percentage
+    else:
+        message = usage_statement(data)
+        return message
+
+
+def usage_statement(data):
+    country_list = list_of_countries(data)
+    message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+        \nFunction options:\ninternet_access_by_country\naverage_age_of_country\nCountry options: \
+        \nHint: If the country is multiple words long, enclose the name in quotes.\n" + string_of_countries(country_list) + "To view this information at any time, type '-h' in the command line."
+    
+    return message
 
 def main():
-    """Loads the data, parses the command line, and prints the results of the specified command line function"""
+    """Loads the data, parses the command line, and prints the results of the specificed command line function."""
     data = load_data()
-    arguments = parse_arguments(data)
-    tag = arguments[0]
-    country = arguments[1]
+    country_list = list_of_countries(data)
+    parser = argparse.ArgumentParser(usage = usage_statement(data))
+    parser.add_argument("--function", type = str, help = "Usage: python3 ProductionCode/cl_code.py --function <function_name> \
+                        --country <country_name>\nFunction options:\ninternet_access_by_country, average_age_of_country") 
+    parser.add_argument("--country", type = str, help = "Country options:\nHint: If the country is multiple words long, \
+                        enclose the name in quotes.\n" + string_of_countries(country_list))
+    arguments = parser.parse_args()
 
-    if tag == "--internet_access_by_country":
-        percentage_internet_access_by_country = percentage_with_internet_access(country, data)
-        print(str(percentage_internet_access_by_country) + " percent of " + country + " has internet access.")
+    if arguments.function == "internet_access_by_country":
+        percentage_internet_access_by_country = percentage_with_internet_access(arguments.country, data)
+        internet_result = str(percentage_internet_access_by_country) + " percent of " + arguments.country + " has internet access."
+        print(internet_result)
+    
+    elif arguments.function == "average_age_of_country":
+        average_age_of_country = get_average_of_column(arguments.country, "age", data)
+        age_result = str(average_age_of_country) + " is the average age of people in " + arguments.country + "."
+        print(age_result)
 
-    elif tag == "--education_levels_by_country_and_gender": 
-        education_levels_by_country_and_gender = education_level_by_gender(country, data)
-        print_education_results(education_levels_by_country_and_gender, country)
     
 if __name__ == "__main__":
     main()
-
 
 
 
