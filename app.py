@@ -15,12 +15,12 @@ def homepage():
 
     home_page_message = "There are 2 functionalities for this app. You can either find the percentage \
         of people in a certain country that have internet access, or you can find the average age of \
-            people in a given country. The list of countries that you can choose from is: " + countries_string
+        people in a given country. <br> The list of countries that you can choose from is: <br> " + countries_string + " <br> To run \
+        the internet access function, type /internet_access/[country_name] after the URL. To run the age function, type \
+        /average_age/[country_name] after the URL. "
     
-    return '''There are 2 functions for this app.
+    return home_page_message
 
-1. You can type in internet_access/[insert country here], and get
-the p'''
 
 @app.route("/internet_access/<country>")
 def internet_access_of_country(country):
@@ -41,4 +41,7 @@ def age_of_country(country):
 def page_not_found(e):
     
     return "Wrong page"
+
+if __name__ == "__main__":
+    app.run()
 
