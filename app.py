@@ -22,7 +22,7 @@ def homepage():
 1. You can type in internet_access/[insert country here], and get
 the p'''
 
-@app.route("internet_access/<country>")
+@app.route("/internet_access/<country>")
 def internet_access_of_country(country):
     """Returns the percentage of people with access to the internet
     from the given country"""
@@ -31,7 +31,7 @@ def internet_access_of_country(country):
     
     return str(percentage) + " percent of people have access to the internet from " + country
 
-@app.route("average_age/<country>")
+@app.route("/average_age/<country>")
 def age_of_country(country):
     """Returns the average age of people from the given country"""
     
