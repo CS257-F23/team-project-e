@@ -1,5 +1,5 @@
 from flask import Flask
-from ProductionCode.cl_code2 import *
+from ProductionCode.cl_code2 import * #CHANGE TO cl_code BEFORE TURNING IN
 
 app = Flask(__name__)
 
@@ -12,6 +12,10 @@ def homepage():
     country_list = list_of_countries(data)
     
     countries_string = string_of_countries(country_list)
+
+    home_page_message = "There are 2 functionalities for this app. You can either find the percentage \
+        of people in a certain country that have internet access, or you can find the average age of \
+            people in a given country. The list of countries that you can choose from is: " + countries_string
     
     return '''There are 2 functions for this app.
 
