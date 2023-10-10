@@ -86,18 +86,25 @@ class test_dataset(unittest.TestCase):
 
         self.assertEqual(percentage_with_internet_access(country, self.data), usage_message)
 
-    """def test_get_ratios_of_column(self): 
-        ""Test for all ratios of education compared with gender
-        when given a country""
 
-        column = "economycode"
+    
+    def test_get_ratios_of_column(self): # we might not need this test if we don't even use the function
+        """Test for all ratios of education compared with gender
+        when given a country"""
+
+        column = 1
+        
 
         ratios = get_ratios_of_column(column, self.data)
 
+        self.assertEqual(ratios, 75.0) #not sure what to put in. Age of all people in all countries? Don't use
 
-        #self.assertEqual([(1, 75), (2, 25)], ratios)
-        """
+    def test_edge_case_get_ratios_of_column(self): #Done-nts(colin)
 
+        column = "Educate"
+
+        self.assertEqual(get_ratios_of_column(column, self.data), usage_statement(self.data))
+    
     
     def test_load_header(self):
         """Given the dataset, load_header loads the header"""
