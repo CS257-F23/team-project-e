@@ -41,7 +41,9 @@ def age_of_country(country):
 @app.errorhandler(404)
 def page_not_found(e):
     
-    return "Wrong page"
+    return """You must have typed in the wrong route. Remember, to use this website, either: <br>
+    1. Type in /average_age/[country name], e.g: /average_age/Nigeria <br>
+    2. Type in /internet_access/[country name], e.g: /internet_access/Mexico"""
 
 if __name__ == "__main__":
     app.run()
