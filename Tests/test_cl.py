@@ -258,13 +258,13 @@ class test_dataset(unittest.TestCase):
         self.assertEqual(result, message)
     
     def test_main1(self):
-        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code2.py", "--function", "internet_access_by_country", "--country", "Morocco"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = "utf8")
+        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--function", "internet_access_by_country", "--country", "Morocco"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = "utf8")
         output, err = code.communicate()
         self.assertEqual(output.strip(), "83.0 percent of Morocco has internet access.")
         code.terminate()
     
     def test_main2(self):
-        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code2.py", "--function", "average_age_of_country", "--country", "Kenya"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = "utf8")
+        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--function", "average_age_of_country", "--country", "Kenya"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = "utf8")
         output, err = code.communicate()
         self.assertEqual(output.strip(), "31.2 is the average age of people in Kenya.")
         code.terminate()
