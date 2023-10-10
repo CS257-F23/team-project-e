@@ -34,6 +34,36 @@ multiple countries globally, we provide invaluable data for researchers, profess
         response = self.app.get('404', follow_redirects = True)
         self.assertEqual(b'Wrong page', response.data)
 
+    def test_incorrect_country_name(self):
+        """Test function for when there is an incorect country name input"""
+        self.app = app.test_client()
+        response = self.app.get('/internet_access/Argentina/Costa Ric', follow_redirects = True)
+        self.assertEqual(b'python3 ProductionCode/cl_code.py --function --country Function options: \
+        internet_access_by_country average_age_of_country', response.data)
+
+
+    def test_not_enough_argvs(self):
+        """Test function for when there are not enough argumnets in the input"""
+        self.app = app.test_client()
+        response = self.app.get('/internet_access/Argentina', follow_redirects = True)
+        self.assertEqual(b'Wrong page', response.data)
+
+
+    def test_incorrect_function_name(self):
+        """Test function for when there is an incorrect function name inputed"""
+        self.app = app.test_client()
+        response = self.app.get('/internet_acces/Argentina', follow_redirects = True)
+        self.assertEqual(b'Wrong page', response.data)
+
+    def test_too_many_inputs(self):
+        """Test function for when there are too many inputs"""
+        self.app = app.test_client()
+        response = self.app.get('/internet_access/Argentina/Costa Rica', follow_redirects = True)
+        self.assertEqual(b'Wrong page', response.data)
+
+
+    def test_
+
 # add tests for edge cases and error function
 if __name__ == '__main__':
     unittest.main()
