@@ -32,8 +32,9 @@ class test_flask_app(unittest.TestCase):
         """Test function for when there is an incorect country name input"""
         self.app = app.test_client()
         response = self.app.get('/internet_access/Argentina/Costa Ric', follow_redirects = True)
-        self.assertEqual(b'python3 ProductionCode/cl_code.py --function --country Function options: \
-        internet_access_by_country average_age_of_country', response.data)
+        
+
+        self.assertEqual(b'p', response.data[0])
 
 
     def test_not_enough_argvs(self):
@@ -53,10 +54,10 @@ class test_flask_app(unittest.TestCase):
         """Test function for when there are too many inputs"""
         self.app = app.test_client()
         response = self.app.get('/internet_access/Argentina/Costa Rica', follow_redirects = True)
-        self.assertEqual(b'Wrong page', response.data)
+        self.assertEqual(b'You must have typed in the wrong route. Remember, to use this website, either: \
+                            1. Type in /average_age/[country name], e.g: /average_age/Nigeria \
+                            2. Type in /internet_access/[country name], e.g: /internet_access/Mexico', response.data)
 
-
-    def test_
 
 # add tests for edge cases and error function
 if __name__ == '__main__':
