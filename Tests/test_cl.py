@@ -1,6 +1,6 @@
 import unittest
 import subprocess   
-from ProductionCode.cl_code2 import *
+from ProductionCode.cl_code import *
 
 class test_dataset(unittest.TestCase):
     
@@ -92,12 +92,12 @@ class test_dataset(unittest.TestCase):
         """Test for all ratios of education compared with gender
         when given a country"""
 
-        column = 1
+        column = "age"
         
 
         ratios = get_ratios_of_column(column, self.data)
 
-        self.assertEqual(ratios, 75.0) #not sure what to put in. Age of all people in all countries? Don't use
+        self.assertEqual(ratios, ) #not sure what to put in. Age of all people in all countries? Don't use
 
     def test_edge_case_get_ratios_of_column(self): #Done-nts(colin)
 
