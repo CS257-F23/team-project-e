@@ -18,7 +18,9 @@ def homepage():
         of people in a certain country that have internet access, or you can find the average age of \
         people in a given country. <br><br> The list of countries that you can choose from is: <br><br> " + countries_string + " <br><br> To run \
         the internet access function, type /internet_access/[country_name] after the URL. <br> To run the age function, type \
-        /average_age/[country_name] after the URL. "
+        /average_age/[country_name] after the URL. <br><br> You can use these statistics about various countries to \
+        learn about the financial and demographic status of a given country. By allowing the use to compare these statistics across \
+        multiple countries globally, we provide invaluable data for researchers, professors, and students alike."
     
     return home_page_message
 
