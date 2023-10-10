@@ -13,10 +13,11 @@ def homepage():
     
     countries_string = string_of_countries(country_list)
 
-    home_page_message = "There are 2 functionalities for this app. You can either find the percentage \
+    home_page_message = "Welcome to our World Bank Financial Data Website! <br><br> \
+        There are 2 functionalities for this app. You can either find the percentage \
         of people in a certain country that have internet access, or you can find the average age of \
-        people in a given country. <br> The list of countries that you can choose from is: <br> " + countries_string + " <br> To run \
-        the internet access function, type /internet_access/[country_name] after the URL. To run the age function, type \
+        people in a given country. <br><br> The list of countries that you can choose from is: <br><br> " + countries_string + " <br><br> To run \
+        the internet access function, type /internet_access/[country_name] after the URL. <br> To run the age function, type \
         /average_age/[country_name] after the URL. "
     
     return home_page_message
