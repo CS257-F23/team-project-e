@@ -7,7 +7,8 @@ data = load_data()
 
 @app.route("/")
 def homepage():
-    """The homepage of our app"""
+    """This is the homepage of our app. This route takes in no parameters and
+    returns the message that is printed to the home page."""
     
     country_list = list_of_countries(data)
     
@@ -27,8 +28,9 @@ def homepage():
 
 @app.route("/internet_access/<country>")
 def internet_access_of_country(country):
-    """Returns the percentage of people with access to the internet
-    from the given country"""
+    """This route returns the percentage of people with access to the internet
+    from the given country. It takes a country as a route parameter and 
+    returns a message containing the statistic."""
     
     percentage = percentage_with_internet_access(country, data)
     
@@ -36,7 +38,8 @@ def internet_access_of_country(country):
 
 @app.route("/average_age/<country>")
 def age_of_country(country):
-    """Returns the average age of people from the given country"""
+    """This route returns the average age of people from the given country. It takes a country
+    as a route parameter and returns a message containing the statistic."""
     
     age = get_average_of_column(country, "age", data)
     
@@ -44,6 +47,8 @@ def age_of_country(country):
 
 @app.errorhandler(404)
 def page_not_found(e):
+    """This route returns the usage statement for both functions if the page cannot be found. It 
+    doesn't take any parameters and returns a help statement for the user."""
     
     return """You must have typed in the wrong route. Remember, to use this website, either: <br>
     1. Type in /average_age/[country name], e.g: /average_age/Nigeria <br>
