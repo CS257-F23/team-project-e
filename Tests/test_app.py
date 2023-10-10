@@ -28,6 +28,10 @@ class test_flask_app(unittest.TestCase):
         response = self.app.get('404', follow_redirects = True)
         self.assertEqual(b'Wrong page', response.data)
 
+    def test_incorrect_input(self):
+
+    def test_
+
 # add tests for edge cases and error function
 if __name__ == '__main__':
     unittest.main()
