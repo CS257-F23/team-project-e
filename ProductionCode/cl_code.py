@@ -13,14 +13,9 @@ def load_data():
     Output: list [data]"""
     
     data = []
-    header = {}
     
     with open('Data/world_bank.csv', "r") as file:
         reader = csv.reader(file)
-        column_names = next(reader)
-        
-        for i, name in enumerate(column_names):
-            header[name] = i
             
         for row in reader:
             data.append(row)
@@ -146,15 +141,12 @@ def filter(by, col, data):
         message = "Invalid keyword or column name."
         return message
 
-def get_ratio_of_key_in_column(key, column): #Should we do an edge case for this?
+def get_ratio_of_key_in_column(key, column): 
     """Given a key and a column, returns how often key appeared 
     in the column as a ratio of the length of the column
     Inputs: int(key), str(column)
     Output: int(ratio)"""
     
-    #key_validity = check_keyword_validity(key, column, data)
-
-    #if key_validity == True:
     num = column.count(key)
     total = len(column)
     ratio = 0
@@ -165,28 +157,6 @@ def get_ratio_of_key_in_column(key, column): #Should we do an edge case for this
     #else:Morr
         #message = "Invalid keyword."
         #return message
-    
-def get_ratios_of_column(column, data): 
-    """Given a column, returns a list of counts of items in column
-    as a ratio
-    Inputs: str(column), list [data]
-    Output: list of int(ratios)"""
-
-    column_validity = check_column_validity(column)
-    if column_validity == True:
-
-        ratios = []
-    
-        for item in set(column):
-            ratio = get_ratio_of_key_in_column(item, column)
-            ratios.append((int(item), ratio))
-            ratios.sort()
-        
-        return ratios
-    else:
-        message = usage_statement(data)
-        return message
-
 
 def get_average_of_column(country, column, data):
     """Returns an average for the given column and country.
@@ -261,6 +231,8 @@ def main():
     """Loads the data, parses the command line, and prints the results of the specificed command line function.
     Output: str(internet_result) or str(age_result)"""
     data = load_data()
+    ratios = get_ratios_of_column("age", data)
+    print(ratios[2])
     country_list = list_of_countries(data)
     parser = argparse.ArgumentParser(usage = usage_statement(data))
     parser.add_argument("--function", type = str, help = "Usage: python3 ProductionCode/cl_code.py --function <function_name> \
