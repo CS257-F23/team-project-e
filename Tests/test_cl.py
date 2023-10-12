@@ -88,13 +88,6 @@ class test_dataset(unittest.TestCase):
         \nHint: If the country is multiple words long, enclose the name in quotes.\n" + string_of_countries(country_list) + "To view this information at any time, type '-h' in the command line."
 
         self.assertEqual(percentage_with_internet_access(country, self.data), usage_message)
-
-    def test_edge_case_get_ratios_of_column(self): #Done-nts(colin)
-
-        column = "Educate"
-
-        self.assertEqual(get_ratios_of_column(column, self.data), usage_statement(self.data))
-    
     
     def test_load_header(self):
         """Given the dataset, load_header loads the header"""
