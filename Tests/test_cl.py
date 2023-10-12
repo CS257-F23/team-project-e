@@ -18,7 +18,7 @@ class test_dataset(unittest.TestCase):
         self.assertEqual(keyword_validity, True)
     
     def test_check_keyword_validity_edge_case(self):
-        """Test checking that check_keyboard_validity returns false for an invalid input"""
+        """Test checking that check_keyboard_validity returns False for an invalid input"""
         keyword = "Earth"
         column = "regionwb"
 
@@ -63,7 +63,7 @@ class test_dataset(unittest.TestCase):
     
     def test_percent_internet_access_edge_case1(self): 
         """Edge case. Tests that percent_internet_access raises a ValueError if the user searches for a country that
-        does not exist in the dataset"""
+        does not exist in the dataset and returns the usage error"""
 
         country = "New York"
 
@@ -90,14 +90,14 @@ class test_dataset(unittest.TestCase):
         self.assertEqual(percentage_with_internet_access(country, self.data), usage_message)
     
     def test_load_header(self):
-        """Given the dataset, load_header loads the header"""
+        """Given the dataset, load_header loads the header string"""
         header = load_header()
         
         self.assertEqual(header[-1], "year")
     
     def test_get_column(self):
         """Given a column name and a dataset, get_column returns thee
-        column"""
+        column as a string"""
         column_name = "regionwb"
         column = get_column(column_name, self.data)
 
@@ -114,7 +114,7 @@ class test_dataset(unittest.TestCase):
     
     def test_filter(self):
         """Given a keyword, column, and dataset, filter returns
-        the portion of the dataset where the column value matches the keyword"""
+        the portion of the dataset where the column value matches the keyword string"""
         
         key = "GEO"
         col_name = "economycode"
@@ -136,7 +136,7 @@ class test_dataset(unittest.TestCase):
         
     def test_get_ratio_of_key_in_column(self):
         """Given a key and column, get_ratio returns how often the key appears
-        in the column as a ratio"""
+        in the column as a integer ratio"""
         
         column = [1, 1, 2, 2]
         key = 1
@@ -157,7 +157,7 @@ class test_dataset(unittest.TestCase):
         
     
     def test_get_column_index(self):
-        """Given a column name string and a dataset, returns the column's index"""
+        """Given a column name string and a dataset, returns the column's index as an integer"""
         
         col_name = "age"
 
