@@ -121,13 +121,10 @@ def filter(by, col, data):
         message = "Invalid keyword or column name."
         return message
 
-def get_ratio_of_key_in_column(key, column): #Should we do an edge case for this?
+def get_ratio_of_key_in_column(key, column): 
     """Given a key and a column, returns how often key appeared 
     in the column as a ratio of the length of the column"""
     
-    #key_validity = check_keyword_validity(key, column, data)
-
-    #if key_validity == True:
     num = column.count(key)
     total = len(column)
     ratio = 0
@@ -204,6 +201,8 @@ def usage_statement(data):
 def main():
     """Loads the data, parses the command line, and prints the results of the specificed command line function."""
     data = load_data()
+    ratios = get_ratios_of_column("age", data)
+    print(ratios[2])
     country_list = list_of_countries(data)
     parser = argparse.ArgumentParser(usage = usage_statement(data))
     parser.add_argument("--function", type = str, help = "Usage: python3 ProductionCode/cl_code.py --function <function_name> \
