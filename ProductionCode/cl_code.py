@@ -152,9 +152,7 @@ def get_ratio_of_key_in_column(key, column):
     ratio = round((num / total) * 100, 1)
     
     return ratio
-    #else:Morr
-        #message = "Invalid keyword."
-        #return message
+
 
 def get_average_of_column(country, column, data):
     """Returns an average for the given column and country.
