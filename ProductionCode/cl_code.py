@@ -9,7 +9,8 @@ python3 ProductionCode/cl_code.py --function <function_name> --country <country_
 # MAKE SURE cl)code2.py is TAGGED AS CL BEFORE FLASK COMPONENT IS TURNED IN
 
 def load_data():
-    """Loads the data and returns it as a list"""
+    """Loads the data and returns it as a list
+    Output: list [data]"""
     
     data = []
     header = {}
@@ -27,7 +28,8 @@ def load_data():
     return data
 
 def load_header():
-    """Loads the column names and returns them as a list"""
+    """Loads the column names and returns them as a list
+    Output: list[column_names]"""
 
     with open('Data/world_bank.csv', "r") as file:
         reader = csv.reader(file)
@@ -48,6 +50,10 @@ def list_of_countries(data):
     return country_set_to_list
 
 def string_of_countries(list_of_countries):
+    """Given a list of countries from the data, returns countries as a string
+    Input: list [list_of_countries]
+    Output: str(string_of_countries)"""
+
     string_of_countries = ""
     for country in list_of_countries:
         string_of_countries += country +'\n'
@@ -55,6 +61,10 @@ def string_of_countries(list_of_countries):
     return string_of_countries
 
 def check_keyword_validity(keyword, keyword_column_title, data):
+    """ Given a keyword, the column name and data, returns true if the keyword is in the data
+    Input: str(keyword), str(keyword_column_title), list[data]
+    Output: boolean(is_keyword_in_data)"""
+
     is_keyword_in_data = False
     idx = get_column_index(keyword_column_title)
 
@@ -65,6 +75,10 @@ def check_keyword_validity(keyword, keyword_column_title, data):
     return is_keyword_in_data
 
 def check_column_validity(column_title):
+    """ Given a column name, returns true if the column is an actual column in the dataset
+    Input: str(column_title)
+    Output: boolean(is_column_in_data) """
+
     is_column_in_data = False
     header = load_header()
 
@@ -75,8 +89,10 @@ def check_column_validity(column_title):
     return is_column_in_data
 
 def get_column_index(column_name):
-    """Given a column name, returns the index of the column"""
-    
+    """Given a column name, returns the index of the column
+    Input: str(column_name)
+    Output: int(idx)"""
+ 
     column_validity = check_column_validity(column_name)
 
     if column_validity == True:
@@ -90,7 +106,9 @@ def get_column_index(column_name):
 
 
 def get_column(column_name, data):
-    """Takes a dataset and a column name, and returns the column as a list""" 
+    """Takes a dataset and a column name, and returns the column as a list
+    Input: str(column_name), list [data]
+    Output: list [column]""" 
     
     column_validity = check_column_validity(column_name)
     if column_validity == True:
@@ -107,7 +125,9 @@ def get_column(column_name, data):
 def filter(by, col, data):
     """Takes a keyword, a column name, and a dataset, and
     returns the portion of the dataset that matches the keyword 
-    in the given column as a list"""
+    in the given column as a list
+    Input: str(by), str(col), list [data]
+    Output: list [newData]"""
     
     keyword_validity = check_keyword_validity(by, col, data)
     column_validity = check_column_validity(col)
@@ -128,7 +148,9 @@ def filter(by, col, data):
 
 def get_ratio_of_key_in_column(key, column): #Should we do an edge case for this?
     """Given a key and a column, returns how often key appeared 
-    in the column as a ratio of the length of the column"""
+    in the column as a ratio of the length of the column
+    Inputs: int(key), str(column)
+    Output: int(ratio)"""
     
     #key_validity = check_keyword_validity(key, column, data)
 
@@ -146,7 +168,9 @@ def get_ratio_of_key_in_column(key, column): #Should we do an edge case for this
     
 def get_ratios_of_column(column, data): 
     """Given a column, returns a list of counts of items in column
-    as a ratio"""
+    as a ratio
+    Inputs: str(column), list [data]
+    Output: list of int(ratios)"""
 
     column_validity = check_column_validity(column)
     if column_validity == True:
@@ -167,8 +191,8 @@ def get_ratios_of_column(column, data):
 def get_average_of_column(country, column, data):
     """Returns an average for the given column and country.
     Works for any data is a column in the csv file.
-    Inputs: str(country), str(column), data
-    Outputs: int(average)"""
+    Inputs: str(country), str(column), list [data]
+    Outputs: int(the_averages)"""
 
     country_validity = check_keyword_validity(country, "economy", data)
 
@@ -185,6 +209,9 @@ def get_average_of_column(country, column, data):
         return message
 
 def calculate_averages(data):
+    """ Returns the calculated average for the given filtered data.
+    Input: list [data]
+    Output: int(avg)"""
     total = 0
     for i in data:
         if i != '':
@@ -198,7 +225,9 @@ def calculate_averages(data):
 
 def percentage_with_internet_access(country, data):
     """Takes a country name and a dataset, and returns the
-    percentage of people that have access to the internet"""
+    percentage of people that have access to the internet
+    Input: str(country), list [data]
+    Output: int(percentage)"""
     
     country_validity = check_keyword_validity(country, "economy", data)
 
@@ -219,6 +248,8 @@ def percentage_with_internet_access(country, data):
 
 
 def usage_statement(data):
+    """ Returns the usage statement
+        Output: str(message) """
     country_list = list_of_countries(data)
     message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
         \nFunction options:\ninternet_access_by_country\naverage_age_of_country\nCountry options: \
@@ -227,7 +258,8 @@ def usage_statement(data):
     return message
 
 def main():
-    """Loads the data, parses the command line, and prints the results of the specificed command line function."""
+    """Loads the data, parses the command line, and prints the results of the specificed command line function.
+    Output: str(internet_result) or str(age_result)"""
     data = load_data()
     country_list = list_of_countries(data)
     parser = argparse.ArgumentParser(usage = usage_statement(data))
