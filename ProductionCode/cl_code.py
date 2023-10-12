@@ -198,8 +198,7 @@ def usage_statement(data):
 def main():
     """Loads the data, parses the command line, and prints the results of the specificed command line function."""
     data = load_data()
-    ratios = get_ratios_of_column("age", data)
-    print(ratios[2])
+    #print(get_average_of_column("Kenya", "age", data))
     country_list = list_of_countries(data)
     parser = argparse.ArgumentParser(usage = usage_statement(data))
     parser.add_argument("--function", type = str, help = "Usage: python3 ProductionCode/cl_code.py --function <function_name> \
