@@ -9,14 +9,9 @@ def load_data():
     """Loads the data and returns it as a list"""
     
     data = []
-    header = {}
     
     with open('Data/world_bank.csv', "r") as file:
         reader = csv.reader(file)
-        column_names = next(reader)
-        
-        for i, name in enumerate(column_names):
-            header[name] = i
             
         for row in reader:
             data.append(row)
@@ -134,26 +129,9 @@ def get_ratio_of_key_in_column(key, column):
     ratio = round((num / total) * 100, 1)
     
     return ratio
-    
-def get_ratios_of_column(column, data): 
-    """Given a column, returns a list of counts of items in column
-    as a ratio"""
-
-    column_validity = check_column_validity(column)
-    if column_validity == True:
-
-        ratios = []
-        column_data = get_column(column, data)
-        for item in set(column_data):
-            ratio = get_ratio_of_key_in_column(item, column_data)
-            ratios.append((item, ratio))
-            ratios.sort()
-        
-        return ratios
-    else:
-        message = usage_statement(data)
-        return message
-
+    #else:Morr
+        #message = "Invalid keyword."
+        #return message
 
 def get_average_of_column(country, column, data):
     """Returns an average for the given column and country.

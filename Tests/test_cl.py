@@ -89,18 +89,6 @@ class test_dataset(unittest.TestCase):
 
         self.assertEqual(percentage_with_internet_access(country, self.data), usage_message)
 
-
-    
-    def test_get_ratios_of_column(self): 
-        """Test for all ratios of education compared with gender
-        when given a country"""
-
-        column = "age"
-        
-        ratios = get_ratios_of_column(column, self.data)
-
-        self.assertEqual(ratios, ) 
-
     def test_edge_case_get_ratios_of_column(self): #Done-nts(colin)
 
         column = "Educate"
