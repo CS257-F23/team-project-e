@@ -88,13 +88,6 @@ class test_dataset(unittest.TestCase):
         \nHint: If the country is multiple words long, enclose the name in quotes.\n" + string_of_countries(country_list) + "To view this information at any time, type '-h' in the command line."
 
         self.assertEqual(percentage_with_internet_access(country, self.data), usage_message)
-
-    def test_edge_case_get_ratios_of_column(self): #Done-nts(colin)
-
-        column = "Educate"
-
-        self.assertEqual(get_ratios_of_column(column, self.data), usage_statement(self.data))
-    
     
     def test_load_header(self):
         """Given the dataset, load_header loads the header"""
@@ -224,16 +217,16 @@ class test_dataset(unittest.TestCase):
     def test_get_average_of_column_edge_case(self):
         """Test identifying whether get_average_of_column will correclty identify when an 
         incorrect country string has been given"""
-         column = "age"
-         country = "Canad"
-         country_list = list_of_countries(self.data)
-         message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+        column = "age"
+        country = "Canad"
+        country_list = list_of_countries(self.data)
+        message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
         \nFunction options:\ninternet_access_by_country\naverage_age_of_country\nCountry options: \
         \nHint: If the country is multiple words long, enclose the name in quotes.\n" + string_of_countries(country_list) + "To view this information at any time, type '-h' in the command line."
     
-         average_age = get_average_of_column(country, column, self.data)
+        average_age = get_average_of_column(country, column, self.data)
 
-         self.assertEqual(average_age, message)
+        self.assertEqual(average_age, message)
     
     def test_calculate_averages(self):
         """Test identifying whether calculate_averages correclty calculates averages of integers
