@@ -174,6 +174,7 @@ def calculate_averages(data):
     """ Returns the calculated average for the given filtered data.
     Input: list [data]
     Output: int(avg)"""
+
     total = 0
     for i in data:
         if i != '':
@@ -186,109 +187,189 @@ def calculate_averages(data):
         return "Cannot calculate the average of no data."
 
 def has_financial_account_single_country(country, data):
+    """Returns the percentage of a country that has a financial account. 
+    Input: country (string), data (list)
+    Output: percentage of the given country that has a financial account (integer)"""
+
     country_validity = check_keyword_validity(country, "economy", data)
+
     if country_validity == True:
         has_account = "1"
         country_data = filter(country, "economy", data)
         account_column = get_column("account_fin", country_data)
         percentage = get_ratio_of_key_in_column(has_account, account_column)
+
         return percentage
+    
     else:
         message = usage_statement(data)
+
         return message
 
 def has_financial_account_global(data):
+    """Returns the percentage of countries worldwide that has a financial account. 
+    Input: data (list)
+    Output: percentage of people worldwide that have a financial account (integer)"""
+
     has_account = "1"
     account_column = get_column("account_fin", data)
     percentage = get_ratio_of_key_in_column(has_account, account_column)
+
     return percentage
 
 def format_financial_comparison(country, country_result, global_result):
+    """Returns the formatted string of the results from the financial account functions. 
+    Input: country (string), percentage of people in a given country who have a financial account (integer), 
+    percentage of people in countries worldwide who have a financial account (integer)
+    Output: formatted results (string)"""
+
     result = "Percentage of people in " + country + " who have a financial account: " + str(country_result) + "\nPercentage of people worldwide who have a financial account: " + str(global_result)
+    
     return result 
 
 def internet_access_by_country(country, data):
+    """Returns the percentage of a country that has internet access. 
+    Input: country (string), data (list)
+    Output: percentage of the given country that has internet access (integer)"""
+
     country_validity = check_keyword_validity(country, "economy", data)
+
     if country_validity == True:
         has_internet_access = "1"
         country_data = filter(country, "economy", data) 
         internet_column = get_column("internetaccess", country_data)
         percentage = get_ratio_of_key_in_column(has_internet_access, internet_column)
+
         return percentage
+    
     else:
         message = usage_statement(data)
+
         return message
     
 def tertiary_education_by_country(country, data):
+    """Returns the percentage of a country that has attained tertiary (college) education. 
+    Input: country (string), data (list)
+    Output: percentage of the given country that has attainted tertiary education (integer)"""
+
     country_validity = check_keyword_validity(country, "economy", data)
+
     if country_validity == True:
         tertiary_or_higher = "3"
         country_data = filter(country, "economy", data)
         urbanicity_column = get_column("educ", country_data)
         percentage = get_ratio_of_key_in_column(tertiary_or_higher, urbanicity_column)
+
         return percentage
+    
     else:
         message = usage_statement(data)
+
         return message
 
 def population_by_country(country, data):
+    """Returns the population of a country. 
+    Input: country (string)
+    Output: population of the given country (integer)"""
+
     country_validity = check_keyword_validity(country, "economy", data)
+
     if country_validity == True:
         population_column_index = get_column_index("pop_adult")
         country_data = filter(country, "economy", data)
         population = country_data[0][population_column_index]
+
         return population
+    
     else:
         message = usage_statement(data)
+
         return message
 
 def employment_by_country(country, data):
+    """Returns the percentage of a country that is employed. 
+    Input: country (string), data (list)
+    Output: percentage of the given country that is employed (integer)"""
+
     country_validity = check_keyword_validity(country, "economy", data)
+
     if country_validity == True:
         employed = "1"
         country_data = filter(country, "economy", data)
         employment_column = get_column("emp_in", country_data)
         percentage = get_ratio_of_key_in_column(employed, employment_column)
+
         return percentage
+    
     else:
         message = usage_statement(data)
+
         return message
 
 def four_stat_summary_by_country(country, data):
+    """Returns a summary of four interesting statistics for a country: percentage with internet access,
+    percentage that has attained tertiary education, population, and percentage that is employed. 
+    Input: country (string), data (list)
+    Output: Formatted results (string)"""
+
     internet_access_stat = internet_access_by_country(country, data)
     education_stat = tertiary_education_by_country(country, data)
     population_stat = population_by_country(country, data)
     employment_stat = employment_by_country(country, data)
+
     results_message = "Percentage of " + country + " with internet access: " + str(internet_access_stat) + "\nPercentage of " + country + " that has attained tertiary education or higher: " + str(education_stat) + "\nPopulation of " + country + ": " + str(population_stat) + "\nPercentage of " + country + " that is employed: " + str(employment_stat)
+    
     return results_message
 
 def average_age_by_country(country, data):
+    """Returns the average age of a country. 
+    Input: country (string), data (list)
+    Output: average age of the given country (integer)"""
+
     country_validity = check_keyword_validity(country, "economy", data)
+
     if country_validity == True:
         average_age_of_country = get_average_of_column(country, "age", data)
+
         return average_age_of_country
+    
     else:
         message = usage_statement(data)
+
         return message
 
 def financial_worry_education_by_country(country, data):
+    """Returns the percentage of a country that is worried about financing their education.
+    Input: country (string), data (list)
+    Output: percentage of the given country that is worried about financing their education. """
+
     country_validity = check_keyword_validity(country, "economy", data)
+
     if country_validity == True:
         very_worried_about_finances_of_education = "1"
         somewhat_worried_about_finances_of_education = "2"
+
         country_data = filter(country, "economy", data)
         education_finances_column = get_column("fin44d", country_data)
         very_worried_percentage = get_ratio_of_key_in_column(very_worried_about_finances_of_education, education_finances_column)
         somewhat_worried_percentage = get_ratio_of_key_in_column(somewhat_worried_about_finances_of_education, education_finances_column)
+
         return very_worried_percentage + somewhat_worried_percentage
+    
     else:
         message = usage_statement(data)
         return message
 
 def format_age_financial_worry_by_education_summary(country, data):
+    """Returns the formatted results of the average age of a country and the percentage of that country 
+    that is worried about financing their education.
+    Input: country (string), data (list)
+    Output: formatted results for the age and financial worry stats for the given country (string)"""
+
     average_age = average_age_by_country(country, data)
     financial_worry = financial_worry_education_by_country(country, data)
     results = "Average age of " + country + ": " + str(average_age) + "\nPercentage of people in " + country + " who are worried about financing their education: " + str(financial_worry)
+    
     return results
 
 def usage_statement(data):
@@ -303,9 +384,12 @@ def usage_statement(data):
 
 def main():
     """Loads the data, parses the command line, and prints the results of the specificed command line function.
-    Output: str(internet_result) or str(age_result)"""
+    Output: four_stat_summary result (string), financial_account_comparison result (string), or
+    age_education_worry_comparison result (string)"""
+
     data = load_data()
     country_list = list_of_countries(data)
+
     parser = argparse.ArgumentParser(usage = usage_statement(data))
     parser.add_argument("--function", type = str, help = "Usage: python3 ProductionCode/cl_code.py --function <function_name> \
                         --country <country_name>\nFunction options:\nfour_stat_summary, financial_account_comparison, age_education_worry_comparison") 
@@ -313,19 +397,27 @@ def main():
                         enclose the name in quotes.\n" + string_of_countries(country_list))
     arguments = parser.parse_args()
 
-    if arguments.function == "four_stat_summary":
-        four_main_stats_of_interest = four_stat_summary_by_country(arguments.country, data)
-        print(four_main_stats_of_interest)
+    country_validity = check_keyword_validity(arguments.country, "economy", data)
+
+    if country_validity == True:
+
+        if arguments.function == "four_stat_summary":
+            four_main_stats_of_interest = four_stat_summary_by_country(arguments.country, data)
+            print(four_main_stats_of_interest)
     
-    elif arguments.function == "financial_account_comparison":
-        financial_account_by_country = has_financial_account_single_country(arguments.country, data)
-        financial_account_global = has_financial_account_global(data)
-        results = format_financial_comparison(arguments.country, financial_account_by_country, financial_account_global)
-        print(results)
+        elif arguments.function == "financial_account_comparison":
+            financial_account_by_country = has_financial_account_single_country(arguments.country, data)
+            financial_account_global = has_financial_account_global(data)
+            results = format_financial_comparison(arguments.country, financial_account_by_country, financial_account_global)
+            print(results)
     
-    elif arguments.function == "age_education_worry_comparison":
-        results = format_age_financial_worry_by_education_summary(arguments.country, data)
-        print(results)
+        elif arguments.function == "age_education_worry_comparison":
+            results = format_age_financial_worry_by_education_summary(arguments.country, data)
+            print(results)
+
+        else:
+            usage_statement_message = usage_statement(data)
+            print(usage_statement_message)
     
     else:
         usage_statement_message = usage_statement(data)
