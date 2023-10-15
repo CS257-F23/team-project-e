@@ -1,10 +1,6 @@
 import csv
 import argparse
 
-"""Usage statement:
-python3 ProductionCode/cl_code.py --function <function_name> --country <country_name>
-"""
-
 def load_data():
     """Loads the data and returns it as a list
     Output: list [data]"""
@@ -189,31 +185,6 @@ def calculate_averages(data):
     else:
         return "Cannot calculate the average of no data."
 
-"""
-def percentage_with_internet_access(country, data): # WE CAN DELETE THIS
-    ""Takes a country name and a dataset, and returns the
-    percentage of people that have access to the internet
-    Input: str(country), list [data]
-    Output: int(percentage)""
-    
-    country_validity = check_keyword_validity(country, "economy", data)
-
-    if country_validity == True:
-    
-        has_internet_access = "1"
-    
-        country_data = filter(country, "economy", data) 
-    
-        internet_column = get_column("internetaccess", country_data)
-    
-        percentage = get_ratio_of_key_in_column(has_internet_access, internet_column)
-    
-        return percentage
-    else:
-        message = usage_statement(data)
-        return message
-"""
-
 def has_financial_account_single_country(country, data):
     country_validity = check_keyword_validity(country, "economy", data)
     if country_validity == True:
@@ -233,7 +204,7 @@ def has_financial_account_global(data):
     return percentage
 
 def format_financial_comparison(country, country_result, global_result):
-    result = "Percentage of people in " + country + " who have a financial acccount: " + str(country_result) + "\nPercentage of people worldwide who have a financial account: " + str(global_result)
+    result = "Percentage of people in " + country + " who have a financial account: " + str(country_result) + "\nPercentage of people worldwide who have a financial account: " + str(global_result)
     return result 
 
 def internet_access_by_country(country, data):
@@ -325,8 +296,8 @@ def usage_statement(data):
         Output: str(message) """
     country_list = list_of_countries(data)
     message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
-        \nFunction options:\ninternet_access_by_country\naverage_age_of_country\nCountry options: \
-        \nHint: If the country is multiple words long, enclose the name in quotes.\n" + string_of_countries(country_list) + "To view this information at any time, type '-h' in the command line."
+        \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
+        \nHint: If the country is multiple words long, enclose the name in quotes.\n" + string_of_countries(country_list) + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
     
     return message
 
@@ -337,12 +308,12 @@ def main():
     country_list = list_of_countries(data)
     parser = argparse.ArgumentParser(usage = usage_statement(data))
     parser.add_argument("--function", type = str, help = "Usage: python3 ProductionCode/cl_code.py --function <function_name> \
-                        --country <country_name>\nFunction options:\ninternet_access_by_country, average_age_of_country") 
+                        --country <country_name>\nFunction options:\nfour_stat_summary, financial_account_comparison, age_education_worry_comparison") 
     parser.add_argument("--country", type = str, help = "Country options:\nHint: If the country is multiple words long, \
                         enclose the name in quotes.\n" + string_of_countries(country_list))
     arguments = parser.parse_args()
 
-    if arguments.function == "four-stat-summary":
+    if arguments.function == "four_stat_summary":
         four_main_stats_of_interest = four_stat_summary_by_country(arguments.country, data)
         print(four_main_stats_of_interest)
     
@@ -355,15 +326,10 @@ def main():
     elif arguments.function == "age_education_worry_comparison":
         results = format_age_financial_worry_by_education_summary(arguments.country, data)
         print(results)
-    #if arguments.function == "internet_access_by_country":
-        #percentage_internet_access_by_country = percentage_with_internet_access(arguments.country, data)
-        #internet_result = str(percentage_internet_access_by_country) + " percent of " + arguments.country + " has internet access."
-        
     
-   #elif arguments.function == "average_age_of_country": # WE CAN DELETE THIS!!
-        #average_age_of_country = get_average_of_column(arguments.country, "age", data)
-        #age_result = str(average_age_of_country) + " is the average age of people in " + arguments.country + "."
-        #print(age_result)
+    else:
+        usage_statement_message = usage_statement(data)
+        print(usage_statement_message)
 
     
 if __name__ == "__main__":

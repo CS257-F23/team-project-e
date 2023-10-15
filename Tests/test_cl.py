@@ -2,7 +2,7 @@ import unittest
 import subprocess   
 from ProductionCode.cl_code import *
 
-class test_dataset(unittest.TestCase):
+class test_dataset(unittest.TestCase): 
     
     def setUp(self):
         self.data = load_data()
@@ -41,53 +41,6 @@ class test_dataset(unittest.TestCase):
         column_validity = check_column_validity(column)
 
         self.assertEqual(column_validity, False)
-    
-    def test_percent_internet_access1(self):
-        """Given an existing country as a string, percentage_with_internet_access returns the correct value as an
-        integer"""
-        
-        country = "Afghanistan"
-        ratio = percentage_with_internet_access(country, self.data)
-        
-        self.assertAlmostEqual(ratio, 19.8)
-
-        
-    def test_percent_internet_access2(self):
-        """Given an existing country as a string, percentage_with_internet_access returns the correct value as
-        an integer"""
-        
-        country = "Nigeria"
-        ratio = percentage_with_internet_access(country, self.data)
-        
-        self.assertAlmostEqual(ratio, 41.6)
-    
-    def test_percent_internet_access_edge_case1(self): 
-        """Edge case. Tests that percent_internet_access raises a ValueError if the user searches for a country that
-        does not exist in the dataset and returns the usage error"""
-
-        country = "New York"
-
-        country_list = list_of_countries(self.data)
-
-        usage_message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
-        \nFunction options:\ninternet_access_by_country\naverage_age_of_country\nCountry options: \
-        \nHint: If the country is multiple words long, enclose the name in quotes.\n" + string_of_countries(country_list) + "To view this information at any time, type '-h' in the command line."
-
-        self.assertEqual(percentage_with_internet_access(country, self.data), usage_message)
-
-    def test_percent_internet_access_edge_case2(self): 
-        """Edge case. Tests that percent_internet_access raises a ValueError if the user searches for a country string that
-        does not exist in the dataset. Specifically, shows that country name abbreviations are not permitted"""
-
-        country = "US"
-
-        country_list = list_of_countries(self.data)
-
-        usage_message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
-        \nFunction options:\ninternet_access_by_country\naverage_age_of_country\nCountry options: \
-        \nHint: If the country is multiple words long, enclose the name in quotes.\n" + string_of_countries(country_list) + "To view this information at any time, type '-h' in the command line."
-
-        self.assertEqual(percentage_with_internet_access(country, self.data), usage_message)
     
     def test_load_header(self):
         """Given the dataset, load_header loads the header string"""
@@ -221,9 +174,8 @@ class test_dataset(unittest.TestCase):
         country = "Canad"
         country_list = list_of_countries(self.data)
         message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
-        \nFunction options:\ninternet_access_by_country\naverage_age_of_country\nCountry options: \
-        \nHint: If the country is multiple words long, enclose the name in quotes.\n" + string_of_countries(country_list) + "To view this information at any time, type '-h' in the command line."
-    
+        \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
+        \nHint: If the country is multiple words long, enclose the name in quotes.\n" + string_of_countries(country_list) + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
         average_age = get_average_of_column(country, column, self.data)
 
         self.assertEqual(average_age, message)
@@ -244,31 +196,176 @@ class test_dataset(unittest.TestCase):
         result = "Cannot calculate the average of no data."
 
         self.assertEqual(average, result)
+    
+    def test_has_financial_account_single_country(self):
+        country = "Greece"
+        financial_account_single_country = has_financial_account_single_country(country, self.data)
+        result = 97.6
+        self.assertEqual(financial_account_single_country, result)
+    
+    def test_has_financial_account_single_country_edge_case(self):
+        country = "Narnia"
+        financial_account_single_country = has_financial_account_single_country(country, self.data)
+        country_list = list_of_countries(self.data)
+        result = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+        \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
+        \nHint: If the country is multiple words long, enclose the name in quotes.\n" + string_of_countries(country_list) + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+        self.assertEqual(financial_account_single_country, result)
+    
+    def test_has_financial_account_global(self):
+        financial_account_global = has_financial_account_global(self.data)
+        result = 65.8
+        self.assertEqual(financial_account_global, result)
+    
+    def test_format_financial_comparison(self):
+        country = "Greece"
+        country_result = has_financial_account_single_country(country, self.data)
+        global_result = has_financial_account_global(self.data)
+        format_comparison = format_financial_comparison(country, country_result, global_result)
+        result = "Percentage of people in Greece who have a financial account: 97.6\nPercentage of people worldwide who have a financial account: 65.8"
+        self.assertEqual(format_comparison, result)
+    
+    def test_internet_access_by_country(self):
+        country = "Zambia"
+        internet_access = internet_access_by_country(country, self.data)
+        result = 26.5
+        self.assertEqual(internet_access, result)
+    
+    def test_internet_access_by_country_edge_case(self):
+        country = "Maine"
+        internet_access = internet_access_by_country(country, self.data)
+        country_list = list_of_countries(self.data)
+        result = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+        \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
+        \nHint: If the country is multiple words long, enclose the name in quotes.\n" + string_of_countries(country_list) + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+        self.assertEqual(internet_access, result)
+    
+    def test_tertiary_education_by_country(self):
+        country = "Ireland"
+        tertiary_education = tertiary_education_by_country(country, self.data)
+        result = 45.6
+        self.assertEqual(tertiary_education, result)
+    
+    def test_tertiary_education_by_country_edge_case(self):
+        country = ""
+        tertiary_education = tertiary_education_by_country(country, self.data)
+        country_list = list_of_countries(self.data)
+        result = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+        \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
+        \nHint: If the country is multiple words long, enclose the name in quotes.\n" + string_of_countries(country_list) + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+        self.assertEqual(tertiary_education, result)
+    
+    def test_population_by_country(self):
+        country = "China"
+        population = population_by_country(country, self.data)
+        result = "1153772544"
+        self.assertEqual(population, result) 
+    
+    def test_population_by_country_edge_case(self):
+        country = "London"
+        population = population_by_country(country, self.data)
+        country_list = list_of_countries(self.data)
+        result = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+        \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
+        \nHint: If the country is multiple words long, enclose the name in quotes.\n" + string_of_countries(country_list) + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+        self.assertEqual(population, result)
+    
+    def test_employment_by_country(self):
+        country = "Iceland"
+        employment = employment_by_country(country, self.data)
+        result = 73.3
+        self.assertEqual(employment, result)
+    
+    def test_employment_by_country_edge_case(self):
+        country = "iceland"
+        employment = employment_by_country(country, self.data)
+        country_list = list_of_countries(self.data)
+        result = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+        \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
+        \nHint: If the country is multiple words long, enclose the name in quotes.\n" + string_of_countries(country_list) + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+        self.assertEqual(employment, result)
+    
+    def test_four_stat_summary_by_country(self):
+        country = "United States"
+        summary = four_stat_summary_by_country(country, self.data)
+        result = "Percentage of United States with internet access: 94.3\nPercentage of United States that has attained tertiary education or higher: 43.9\nPopulation of United States: 268952128\nPercentage of United States that is employed: 63.1"
+        self.assertEqual(summary, result)
 
+    def test_average_age_by_country(self):
+        country = "Brazil"
+        average_age = average_age_by_country(country, self.data)
+        result = 41.2
+        self.assertEqual(average_age, result)
+    
+    def test_average_age_by_country_edge_case(self):
+        country = "North America"
+        average_age = average_age_by_country(country, self.data)
+        country_list = list_of_countries(self.data)
+        result = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+        \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
+        \nHint: If the country is multiple words long, enclose the name in quotes.\n" + string_of_countries(country_list) + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+        self.assertEqual(average_age, result)
+    
+    def test_financial_worry_education_by_country(self):
+        country = "Australia"
+        comparison = financial_worry_education_by_country(country, self.data)
+        result = 8.8
+        self.assertEqual(comparison, result)
+    
+    def test_financial_worry_education_by_country_edge_case(self):
+        country = "Perth"
+        comparison = financial_worry_education_by_country(country, self.data)
+        country_list = list_of_countries(self.data)
+        result = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+        \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
+        \nHint: If the country is multiple words long, enclose the name in quotes.\n" + string_of_countries(country_list) + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+        self.assertEqual(comparison, result)
+    
+    def test_format_age_financial_worry_by_education_summary(self):
+        country = "Uzbekistan"
+        formatted_comparison = format_age_financial_worry_by_education_summary(country, self.data)
+        result = "Average age of Uzbekistan: 42.4\nPercentage of people in Uzbekistan who are worried about financing their education: 34.3"
+        self.assertEqual(formatted_comparison, result)
+   
     def test_usage_statement(self):
         """Test identifying whether usage_statement will return correct message when no data is given"""
         data = []
         result = usage_statement(data)
         message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
-        \nFunction options:\ninternet_access_by_country\naverage_age_of_country\nCountry options: \
-        \nHint: If the country is multiple words long, enclose the name in quotes.\nTo view this information at any time, type '-h' in the command line."
-   
+        \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
+        \nHint: If the country is multiple words long, enclose the name in quotes.\n" + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
         self.assertEqual(result, message)
-    
-    def test_main1(self):
-        """Test identifying whether main() will return correct output as a string with correct data for internet access"""
-        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--function", "internet_access_by_country", "--country", "Morocco"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = "utf8")
+     
+    def test_main_four_stat_summary(self):
+        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--function", "four_stat_summary", "--country", "Canada"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = "utf8")
         output, err = code.communicate()
-        self.assertEqual(output.strip(), "83.0 percent of Morocco has internet access.")
+        result = "Percentage of Canada with internet access: 95.2\nPercentage of Canada that has attained tertiary education or higher: 41.5\nPopulation of Canada: 32009816\nPercentage of Canada that is employed: 62.3"
+        self.assertEqual(output.strip(), result)
         code.terminate()
     
-    def test_main2(self):
-        """Test identifying whether main will return correct output as a string with correct data for age"""
-        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--function", "average_age_of_country", "--country", "Kenya"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = "utf8")
+    def test_main_financial_account(self):
+        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--function", "financial_account_comparison", "--country", "Senegal"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = "utf8")
         output, err = code.communicate()
-        self.assertEqual(output.strip(), "31.2 is the average age of people in Kenya.")
+        result = "Percentage of people in Senegal who have a financial account: 33.9\nPercentage of people worldwide who have a financial account: 65.8"
+        self.assertEqual(output.strip(), result)
         code.terminate()
     
+    def test_main_age_education(self):
+        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--function", "age_education_worry_comparison", "--country", "Vietnam"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = "utf8")
+        output, err = code.communicate()
+        result = "Average age of Vietnam: 38.0\nPercentage of people in Vietnam who are worried about financing their education: 40.3"
+        self.assertEqual(output.strip(), result)
+        code.terminate()
+    
+    def test_main_edge_case(self):
+        code = subprocess.Popen(["python3", "-u", "ProductionCode/cl_code.py", "--function", "", "--country", "Peru"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = "utf8")
+        output, err = code.communicate()
+        country_list = list_of_countries(self.data)
+        result = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+        \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
+        \nHint: If the country is multiple words long, enclose the name in quotes.\n" + string_of_countries(country_list) + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+        self.assertEqual(output.strip(), result)
+        code.terminate()
 
    
 if __name__ == '__main__':
