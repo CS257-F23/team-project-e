@@ -383,6 +383,9 @@ def usage_statement(data):
     return message
 
 def argument_parser(data):
+    """ Returns the argument that is inputed into the terminal by the user
+        input: list [data] 
+        output: string (arguments)"""
     country_list = list_of_countries(data)
     parser = argparse.ArgumentParser(usage = usage_statement(data))
     parser.add_argument("--function", type = str, help = "Usage: python3 ProductionCode/cl_code.py --function <function_name> \
@@ -394,6 +397,10 @@ def argument_parser(data):
     return arguments
 
 def function_argument_choice(arguments, data):
+    """ Returns the data result associated with the specifc argument the user types into the terminal.
+    input: arguments(string), list[data]
+    output: four_main_stats_of_interest(string) , or financial_comparison_results (string), or age_education_results (string), or usage statement(string)
+    """
     if arguments.function == "four_stat_summary":
         four_main_stats_of_interest = four_stat_summary_by_country(arguments.country, data)
         return four_main_stats_of_interest
@@ -415,8 +422,7 @@ def function_argument_choice(arguments, data):
 
 def main():
     """Loads the data, parses the command line, and prints the results of the specificed command line function.
-    Output: four_stat_summary result (string), financial_account_comparison result (string), or
-    age_education_worry_comparison result (string)"""
+    Output: the data associated with the argument associated with the command line"""
 
     data = load_data()
     
