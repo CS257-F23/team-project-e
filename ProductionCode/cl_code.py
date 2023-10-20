@@ -5,7 +5,6 @@ class Dataset:
     def __init__(self):
         self.data = []
         self.header = {}
-        self.data_subset = []
         
     def load_data(self):
         """Loads the data and returns it as a list
