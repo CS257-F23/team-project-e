@@ -5,6 +5,7 @@ class Dataset:
     def __init__(self):
         self.data = []
         self.header = {}
+        self.data_subset = []
         
     def load_data(self):
         """Loads the data and returns it as a list
@@ -25,7 +26,7 @@ class Dataset:
         Input: null
         Output: [countries]"""
 
-        country_list = self.get_column("economy")
+        country_list = self.get_column("economy", self.data)
         set_country_list = set(country_list)
         country_set_to_list = list(set_country_list)
         country_set_to_list.sort()
@@ -68,7 +69,7 @@ class Dataset:
         is_keyword_in_data = False
         idx = self.header[keyword_column_title]
 
-        for row in data:
+        for row in self.data:
             if row[idx] == keyword:
                 is_keyword_in_data = True
 
@@ -83,8 +84,8 @@ class Dataset:
             return True
         return False
 
-    def get_column(self, column_name, data = None):
-        """Takes a dataset and a column name, and returns the column as a list
+    def get_column(self, column_name, subset):
+        """Takes a data subset and a column name, and returns the column as a list
         Input: str(column_name), list [data]
         Output: list [column]""" 
         if not data:
@@ -95,23 +96,21 @@ class Dataset:
             column = []
             idx = self.header[column_name]
         
-            for row in self.data:
+            for row in subset:
                 column.append(row[idx])
             return column 
         else:
             message = "Invalid column name."
             return message
 
-    def filter(self, by, col, data = None): # remember this s
+    def filter(self, by, col): # remember this s
         """Takes a keyword, a column name, and a dataset, and
         returns the portion of the dataset that matches the keyword 
         in the given column as a list
         Input: str(by), str(col), list [data]
         Output: list [newData]"""
-        if not data:
-            data = self.data
-            
-        keyword_validity = self.check_keyword_validity(by, col, data)
+        
+        keyword_validity = self.check_keyword_validity(by, col, self.data)
         column_validity = self.check_column_validity(col)
         isValid = (keyword_validity and column_validity)
 
@@ -119,7 +118,7 @@ class Dataset:
             new_data = []
             idx = self.header[col]
         
-            for row in data:
+            for row in self.data:
             
                 if row[idx] == by:
                     new_data.append(row)
@@ -154,7 +153,7 @@ class Dataset:
 
         if country_validity == True:
 
-            filtered_data = filter(country, "economy", self.data)
+            filtered_data = self.filter(country, "economy")
             filtered_column_data = self.get_column(column, filtered_data)
             the_averages = self.calculate_averages(filtered_column_data)
 
@@ -162,56 +161,57 @@ class Dataset:
 
         else:
             message = self.usage_statement(self.data)
+            message = self.usage_statement(self.data)
             return message
 
-    def calculate_averages(data):
+    def calculate_averages(self, subset):
         """ Returns the calculated average for the given filtered data.
         Input: list [data]
         Output: int(avg)"""
 
         total = 0
-        for i in data:
+        for i in subset:
             if i != '':
                 total += int(i)
-        length = len(data)
+        length = len(subset)
         if length != 0:
             avg = total / length
             return round(avg, 1)
         else:
             return "Cannot calculate the average of no data."
 
-    def has_financial_account_single_country(self, country, data):
+    def has_financial_account_single_country(self, country):
         """Returns the percentage of a country that has a financial account. 
         Input: country (string), data (list)
         Output: percentage of the given country that has a financial account (integer)"""
 
-        country_validity = self.check_keyword_validity(country, "economy", data)
+        country_validity = self.check_keyword_validity(country, "economy")
 
         if country_validity == True:
             has_account = "1"
-            country_data = filter(country, "economy", data)
+            country_data = self.filter(country, "economy")
             account_column = self.get_column("account_fin", country_data)
             percentage = self.get_ratio_of_key_in_column(has_account, account_column)
 
             return percentage
         
         else:
-            message = self.usage_statement(data)
+            message = self.usage_statement()
 
             return message
 
-    def has_financial_account_global(self, data):
+    def has_financial_account_global(self):
         """Returns the percentage of countries worldwide that has a financial account. 
         Input: data (list)
         Output: percentage of people worldwide that have a financial account (integer)"""
 
         has_account = "1"
-        account_column = self.get_column("account_fin", data)
+        account_column = self.get_column("account_fin", self.data)
         percentage = self.get_ratio_of_key_in_column(has_account, account_column)
 
         return percentage
 
-    def format_financial_comparison(country, country_result, global_result):
+    def format_financial_comparison(self, country, country_result, global_result):
         """Returns the formatted string of the results from the financial account functions. 
         Input: country (string), percentage of people in a given country who have a financial account (integer), 
         percentage of people in countries worldwide who have a financial account (integer)
@@ -226,7 +226,7 @@ class Dataset:
         Input: country (string), data (list)
         Output: percentage of the given country that has internet access (integer)"""
 
-        country_validity = self.check_keyword_validity(country, "economy")
+        country_validity = self.check_keyword_validity(country, "economy", self.data)
 
         if country_validity == True:
             has_internet_access = "1"
@@ -245,10 +245,8 @@ class Dataset:
         """Returns the percentage of a country that has attained tertiary (college) education. 
         Input: country (string), data (list)
         Output: percentage of the given country that has attainted tertiary education (integer)"""
-        
-        data = self.data
 
-        country_validity = self.check_keyword_validity(country, "economy", data)
+        country_validity = self.check_keyword_validity(country, "economy", self.data)
 
         if country_validity == True:
             tertiary_or_higher = "3"
@@ -259,7 +257,7 @@ class Dataset:
             return percentage
         
         else:
-            message = self.usage_statement(data)
+            message = self.usage_statement()
 
             return message
 
@@ -267,10 +265,8 @@ class Dataset:
         """Returns the population of a country. 
         Input: country (string)
         Output: population of the given country (integer)"""
-        
-        data = self.data
 
-        country_validity = self.check_keyword_validity(country, "economy", data)
+        country_validity = self.check_keyword_validity(country, "economy", self.data)
 
         if country_validity == True:
             population_column_index = self.header["pop_adult"]
@@ -280,7 +276,7 @@ class Dataset:
             return population
         
         else:
-            message = self.usage_statement(data)
+            message = self.usage_statement()
 
             return message
 
@@ -288,10 +284,9 @@ class Dataset:
         """Returns the percentage of a country that is employed. 
         Input: country (string), data (list)
         Output: percentage of the given country that is employed (integer)"""
-        
-        data = self.data
+    
 
-        country_validity = self.check_keyword_validity(country, "economy", data)
+        country_validity = self.check_keyword_validity(country, "economy", self.data)
 
         if country_validity == True:
             employed = "1"
@@ -302,7 +297,7 @@ class Dataset:
             return percentage
         
         else:
-            message = self.usage_statement(data)
+            message = self.usage_statement()
 
             return message
 
@@ -321,24 +316,24 @@ class Dataset:
         
         return results_message
 
-    def average_age_by_country(self, country, data):
+    def average_age_by_country(self, country):
         """Returns the average age of a country. 
         Input: country (string), data (list)
         Output: average age of the given country (integer)"""
 
-        country_validity = self.check_keyword_validity(country, "economy", data)
+        country_validity = self.check_keyword_validity(country, "economy")
 
         if country_validity == True:
-            average_age_of_country = self.get_average_of_column(country, "age", data)
+            average_age_of_country = self.get_average_of_column(country, "age")
 
             return average_age_of_country
         
         else:
-            message = self.usage_statement(data)
+            message = self.usage_statement()
 
             return message
 
-    def financial_worry_education_by_country(self, country, data):
+    def financial_worry_education_by_country(self, country):
         """Returns the percentage of a country that is worried about financing their education.
         Input: country (string), data (list)
         Output: percentage of the given country that is worried about financing their education. """
@@ -349,7 +344,7 @@ class Dataset:
             very_worried_about_finances_of_education = "1"
             somewhat_worried_about_finances_of_education = "2"
 
-            country_data = filter(country, "economy", data)
+            country_data = self.filter(country, "economy")
             education_finances_column = self.get_column("fin44d", country_data)
             very_worried_percentage = self.get_ratio_of_key_in_column(very_worried_about_finances_of_education, education_finances_column)
             somewhat_worried_percentage = self.get_ratio_of_key_in_column(somewhat_worried_about_finances_of_education, education_finances_column)
@@ -357,29 +352,28 @@ class Dataset:
             return very_worried_percentage + somewhat_worried_percentage
         
         else:
-            message = self.usage_statement(data)
+            message = self.usage_statement()
             return message
 
-    def format_age_financial_worry_by_education_summary(self, country, data):
+    def format_age_financial_worry_by_education_summary(self, country):
         """Returns the formatted results of the average age of a country and the percentage of that country 
         that is worried about financing their education.
         Input: country (string), data (list)
         Output: formatted results for the age and financial worry stats for the given country (string)"""
 
-        average_age = self.average_age_by_country(country, data)
-        financial_worry = self.financial_worry_education_by_country(country, data)
+        average_age = self.average_age_by_country(country)
+        financial_worry = self.financial_worry_education_by_country(country)
         results = "Average age of " + country + ": " + str(average_age) + "\nPercentage of people in " + country + " who are worried about financing their education: " + str(financial_worry)
         
         return results
 
     def usage_statement(self):
         """ Returns the usage statement
-            Output: str(message) """
-        country_list = self.list_of_countries()
+        Output: str(message) """
         message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
             \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
-        
+    
         return message
 
 def main():
@@ -389,8 +383,8 @@ def main():
 
     data = Dataset()
     data.load_data()
-    #country_list = data.list_of_countries()
 
+    parser = argparse.ArgumentParser(usage = data.usage_statement())
     parser = argparse.ArgumentParser(usage = data.usage_statement())
     parser.add_argument("--function", type = str, help = "Usage: python3 ProductionCode/cl_code.py --function <function_name> \
                         --country <country_name>\nFunction options:\nfour_stat_summary, financial_account_comparison, age_education_worry_comparison") 
