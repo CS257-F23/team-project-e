@@ -87,6 +87,8 @@ class Dataset:
         """Takes a data subset and a column name, and returns the column as a list
         Input: str(column_name), list [data]
         Output: list [column]""" 
+        if not data:
+            data = self.data
         
         column_validity = self.check_column_validity(column_name)
         if column_validity == True:
@@ -266,8 +268,8 @@ class Dataset:
         country_validity = self.check_keyword_validity(country, "economy", self.data)
 
         if country_validity == True:
-            population_column_index = self.get_column_index("pop_adult")
-            country_data = filter(country, "economy")
+            population_column_index = self.header["pop_adult"]
+            country_data = self.filter(country, "economy")
             population = country_data[0][population_column_index]
 
             return population
@@ -281,6 +283,7 @@ class Dataset:
         """Returns the percentage of a country that is employed. 
         Input: country (string), data (list)
         Output: percentage of the given country that is employed (integer)"""
+    
 
         country_validity = self.check_keyword_validity(country, "economy", self.data)
 
@@ -390,7 +393,7 @@ def main():
 
     country_validity = data.check_keyword_validity(arguments.country, "economy")
 
-    if country_validity == True:
+    if country_validity:
 
         if arguments.function == "four_stat_summary":
             four_main_stats_of_interest = data.four_stat_summary_by_country(arguments.country)
