@@ -25,7 +25,7 @@ class Dataset:
         Input: null
         Output: [countries]"""
 
-        country_list = self.get_column("economy", self.data)
+        country_list = self.get_column("economy")
         set_country_list = set(country_list)
         country_set_to_list = list(set_country_list)
         country_set_to_list.sort()
@@ -45,22 +45,25 @@ class Dataset:
 
         return string_of_countries
 
-    def string_of_countries(list_of_countries):
+    def string_of_countries(self):
         """Given a list of countries from the data, returns countries as a string
         Input: list [list_of_countries]
         Output: str(string_of_countries)"""
 
+        list_of_countries = self.list_of_countries()
+        
         string_of_countries = ""
         for country in list_of_countries:
             string_of_countries += country +'\n'
 
         return string_of_countries
 
-    def check_keyword_validity(self, keyword, keyword_column_title, data): # Going to be issues
+    def check_keyword_validity(self, keyword, keyword_column_title, data = None): # Going to be issues
         """ Given a keyword, the column name and data, returns true if the keyword is in the data
         Input: str(keyword), str(keyword_column_title), list[data]
         Output: boolean(is_keyword_in_data)"""
-        
+        if not data:
+            data = self.data
 
         is_keyword_in_data = False
         idx = self.header[keyword_column_title]
@@ -154,7 +157,7 @@ class Dataset:
             return the_averages
 
         else:
-            message = usage_statement(self.data)
+            message = self.usage_statement(self.data)
             return message
 
     def calculate_averages(data):
@@ -189,7 +192,7 @@ class Dataset:
             return percentage
         
         else:
-            message = usage_statement(data)
+            message = self.usage_statement(data)
 
             return message
 
@@ -230,7 +233,7 @@ class Dataset:
             return percentage
         
         else:
-            message = usage_statement(data)
+            message = self.usage_statement(data)
 
             return message
         
@@ -250,7 +253,7 @@ class Dataset:
             return percentage
         
         else:
-            message = usage_statement(data)
+            message = self.usage_statement(data)
 
             return message
 
@@ -269,7 +272,7 @@ class Dataset:
             return population
         
         else:
-            message = usage_statement(data)
+            message = self.usage_statement(data)
 
             return message
 
@@ -289,7 +292,7 @@ class Dataset:
             return percentage
         
         else:
-            message = usage_statement(data)
+            message = self.usage_statement(data)
 
             return message
 
@@ -321,7 +324,7 @@ class Dataset:
             return average_age_of_country
         
         else:
-            message = usage_statement(data)
+            message = self.usage_statement(data)
 
             return message
 
@@ -344,7 +347,7 @@ class Dataset:
             return very_worried_percentage + somewhat_worried_percentage
         
         else:
-            message = usage_statement(data)
+            message = self.usage_statement(data)
             return message
 
     def format_age_financial_worry_by_education_summary(self, country, data):
@@ -359,15 +362,15 @@ class Dataset:
         
         return results
 
-def usage_statement(self, data):
-    """ Returns the usage statement
-        Output: str(message) """
-    country_list = self.list_of_countries(data)
-    message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
-        \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-        \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.string_of_countries(country_list) + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
-    
-    return message
+    def usage_statement(self):
+        """ Returns the usage statement
+            Output: str(message) """
+        country_list = self.list_of_countries()
+        message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+            \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+        
+        return message
 
 def main():
     """Loads the data, parses the command line, and prints the results of the specificed command line function.
@@ -378,37 +381,37 @@ def main():
     data.load_data()
     country_list = data.list_of_countries()
 
-    parser = argparse.ArgumentParser(usage = usage_statement(data))
+    parser = argparse.ArgumentParser(usage = data.usage_statement())
     parser.add_argument("--function", type = str, help = "Usage: python3 ProductionCode/cl_code.py --function <function_name> \
                         --country <country_name>\nFunction options:\nfour_stat_summary, financial_account_comparison, age_education_worry_comparison") 
     parser.add_argument("--country", type = str, help = "Country options:\nHint: If the country is multiple words long, \
-                        enclose the name in quotes.\n" + data.string_of_countries(country_list))
+                        enclose the name in quotes.\n" + data.string_of_countries())
     arguments = parser.parse_args()
 
-    country_validity = data.check_keyword_validity(arguments.country, "economy", data)
+    country_validity = data.check_keyword_validity(arguments.country, "economy")
 
     if country_validity == True:
 
         if arguments.function == "four_stat_summary":
-            four_main_stats_of_interest = data.four_stat_summary_by_country(arguments.country, data)
+            four_main_stats_of_interest = data.four_stat_summary_by_country(arguments.country)
             print(four_main_stats_of_interest)
     
         elif arguments.function == "financial_account_comparison":
-            financial_account_by_country = data.has_financial_account_single_country(arguments.country, data)
-            financial_account_global = data.has_financial_account_global(data)
+            financial_account_by_country = data.has_financial_account_single_country(arguments.country)
+            financial_account_global = data.has_financial_account_global()
             results = data.format_financial_comparison(arguments.country, financial_account_by_country, financial_account_global)
             print(results)
     
         elif arguments.function == "age_education_worry_comparison":
-            results = data.format_age_financial_worry_by_education_summary(arguments.country, data)
+            results = data.format_age_financial_worry_by_education_summary(arguments.country)
             print(results)
 
         else:
-            usage_statement_message = usage_statement(data)
+            usage_statement_message = data.usage_statement()
             print(usage_statement_message)
     
     else:
-        usage_statement_message = usage_statement(data)
+        usage_statement_message = data.usage_statement()
         print(usage_statement_message)
 
     
