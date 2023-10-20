@@ -83,7 +83,7 @@ class Dataset:
             return True
         return False
 
-    def get_column(self, column_name, subset):
+    def get_column(self, column_name, subset, data = None):
         """Takes a data subset and a column name, and returns the column as a list
         Input: str(column_name), list [data]
         Output: list [column]""" 
@@ -229,7 +229,7 @@ class Dataset:
 
         if country_validity == True:
             has_internet_access = "1"
-            country_data = filter(country, "economy") 
+            country_data = self.filter(country, "economy") 
             internet_column = self.get_column("internetaccess", country_data)
             percentage = self.get_ratio_of_key_in_column(has_internet_access, internet_column)
 
@@ -249,7 +249,7 @@ class Dataset:
 
         if country_validity == True:
             tertiary_or_higher = "3"
-            country_data = filter(country, "economy")
+            country_data = self.filter(country, "economy")
             urbanicity_column = self.get_column("educ", country_data)
             percentage = self.get_ratio_of_key_in_column(tertiary_or_higher, urbanicity_column)
 
@@ -289,7 +289,7 @@ class Dataset:
 
         if country_validity == True:
             employed = "1"
-            country_data = filter(country, "economy")
+            country_data = self.filter(country, "economy")
             employment_column = self.get_column("emp_in", country_data)
             percentage = self.get_ratio_of_key_in_column(employed, employment_column)
 
@@ -374,52 +374,68 @@ class Dataset:
             \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
     
         return message
+    
+    def argument_parser(self):
+        """ Returns the argument that is inputed into the terminal by the user
+            input: list [data] 
+            output: string (arguments)"""
+        parser = argparse.ArgumentParser(usage = self.usage_statement())
+        parser.add_argument("--function", type = str, help = "Usage: python3 ProductionCode/cl_code.py --function <function_name> \
+                            --country <country_name>\nFunction options:\nfour_stat_summary, financial_account_comparison, age_education_worry_comparison") 
+        parser.add_argument("--country", type = str, help = "Country options:\nHint: If the country is multiple words long, \
+                            enclose the name in quotes.\n" + self.string_of_countries())
+        arguments = parser.parse_args()
+
+        return arguments
+    
+    def function_argument_choice(self, arguments):
+        """ Returns the data result associated with the specifc argument the user types into the terminal.
+        input: arguments(string), list[data]
+        output: four_main_stats_of_interest(string) , or financial_comparison_results (string), or age_education_results (string), or usage statement(string)
+        """
+        if arguments.function == "four_stat_summary":
+            four_main_stats_of_interest = self.four_stat_summary_by_country(arguments.country)
+            return four_main_stats_of_interest
+        
+        elif arguments.function == "financial_account_comparison":
+            financial_account_by_country = self.has_financial_account_single_country(arguments.country)
+            financial_account_global = self.has_financial_account_global()
+            financial_comparison_results = self.format_financial_comparison(arguments.country, financial_account_by_country, financial_account_global)
+            return financial_comparison_results
+            
+        elif arguments.function == "age_education_worry_comparison":
+            age_education_results = self.format_age_financial_worry_by_education_summary(arguments.country)
+            return age_education_results
+
+        else:
+            usage_statement_message = self.usage_statement()
+            return usage_statement_message
+
+
 
 def main():
     """Loads the data, parses the command line, and prints the results of the specificed command line function.
-    Output: four_stat_summary result (string), financial_account_comparison result (string), or
-    age_education_worry_comparison result (string)"""
+    Output: the data associated with the argument associated with the command line"""
 
     data = Dataset()
     data.load_data()
-
-    parser = argparse.ArgumentParser(usage = data.usage_statement())
-    parser = argparse.ArgumentParser(usage = data.usage_statement())
-    parser.add_argument("--function", type = str, help = "Usage: python3 ProductionCode/cl_code.py --function <function_name> \
-                        --country <country_name>\nFunction options:\nfour_stat_summary, financial_account_comparison, age_education_worry_comparison") 
-    parser.add_argument("--country", type = str, help = "Country options:\nHint: If the country is multiple words long, \
-                        enclose the name in quotes.\n" + data.string_of_countries())
-    arguments = parser.parse_args()
+        
+    arguments = data.argument_parser()
 
     country_validity = data.check_keyword_validity(arguments.country, "economy")
 
-    if country_validity:
+    if country_validity == True:
 
-        if arguments.function == "four_stat_summary":
-            four_main_stats_of_interest = data.four_stat_summary_by_country(arguments.country)
-            print(four_main_stats_of_interest)
-    
-        elif arguments.function == "financial_account_comparison":
-            financial_account_by_country = data.has_financial_account_single_country(arguments.country)
-            financial_account_global = data.has_financial_account_global()
-            results = data.format_financial_comparison(arguments.country, financial_account_by_country, financial_account_global)
-            print(results)
-    
-        elif arguments.function == "age_education_worry_comparison":
-            results = data.format_age_financial_worry_by_education_summary(arguments.country)
-            print(results)
-
-        else:
-            usage_statement_message = data.usage_statement()
-            print(usage_statement_message)
-    
+        print(data.function_argument_choice(arguments))
+        
     else:
         usage_statement_message = data.usage_statement()
         print(usage_statement_message)
 
-    
+        
 if __name__ == "__main__":
     main()
+
 
 
 
