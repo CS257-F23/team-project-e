@@ -46,22 +46,25 @@ class Dataset:
 
         return string_of_countries
 
-    def string_of_countries(list_of_countries):
+    def string_of_countries(self):
         """Given a list of countries from the data, returns countries as a string
         Input: list [list_of_countries]
         Output: str(string_of_countries)"""
 
+        list_of_countries = self.list_of_countries()
+        
         string_of_countries = ""
         for country in list_of_countries:
             string_of_countries += country +'\n'
 
         return string_of_countries
 
-    def check_keyword_validity(self, keyword, keyword_column_title): # Going to be issues
+    def check_keyword_validity(self, keyword, keyword_column_title, data = None): # Going to be issues
         """ Given a keyword, the column name and data, returns true if the keyword is in the data
         Input: str(keyword), str(keyword_column_title), list[data]
         Output: boolean(is_keyword_in_data)"""
-        
+        if not data:
+            data = self.data
 
         is_keyword_in_data = False
         idx = self.header[keyword_column_title]
@@ -123,7 +126,7 @@ class Dataset:
             message = "Invalid keyword or column name."
             return message
 
-    def get_ratio_of_key_in_column(key, column): 
+    def get_ratio_of_key_in_column(self, key, column): 
         """Given a key and a column, returns how often key appeared 
         in the column as a ratio of the length of the column
         Inputs: int(key), str(column)
@@ -148,7 +151,7 @@ class Dataset:
 
         if country_validity == True:
 
-            filtered_data = filter(country, "economy")
+            filtered_data = self.filter(country, "economy")
             filtered_column_data = self.get_column(column, filtered_data)
             the_averages = self.calculate_averages(filtered_column_data)
 
@@ -156,9 +159,10 @@ class Dataset:
 
         else:
             message = self.usage_statement(self.data)
+            message = self.usage_statement(self.data)
             return message
 
-    def calculate_averages(subset):
+    def calculate_averages(self, subset):
         """ Returns the calculated average for the given filtered data.
         Input: list [data]
         Output: int(avg)"""
@@ -183,7 +187,7 @@ class Dataset:
 
         if country_validity == True:
             has_account = "1"
-            country_data = filter(country, "economy")
+            country_data = self.filter(country, "economy")
             account_column = self.get_column("account_fin", country_data)
             percentage = self.get_ratio_of_key_in_column(has_account, account_column)
 
@@ -205,7 +209,7 @@ class Dataset:
 
         return percentage
 
-    def format_financial_comparison(country, country_result, global_result):
+    def format_financial_comparison(self, country, country_result, global_result):
         """Returns the formatted string of the results from the financial account functions. 
         Input: country (string), percentage of people in a given country who have a financial account (integer), 
         percentage of people in countries worldwide who have a financial account (integer)
@@ -337,7 +341,7 @@ class Dataset:
             very_worried_about_finances_of_education = "1"
             somewhat_worried_about_finances_of_education = "2"
 
-            country_data = filter(country, "economy")
+            country_data = self.filter(country, "economy")
             education_finances_column = self.get_column("fin44d", country_data)
             very_worried_percentage = self.get_ratio_of_key_in_column(very_worried_about_finances_of_education, education_finances_column)
             somewhat_worried_percentage = self.get_ratio_of_key_in_column(somewhat_worried_about_finances_of_education, education_finances_column)
@@ -363,7 +367,6 @@ class Dataset:
     def usage_statement(self):
         """ Returns the usage statement
         Output: str(message) """
-        #country_list = self.list_of_countries()
         message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
             \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
@@ -377,8 +380,8 @@ def main():
 
     data = Dataset()
     data.load_data()
-    country_list = data.list_of_countries()
 
+    parser = argparse.ArgumentParser(usage = data.usage_statement())
     parser = argparse.ArgumentParser(usage = data.usage_statement())
     parser.add_argument("--function", type = str, help = "Usage: python3 ProductionCode/cl_code.py --function <function_name> \
                         --country <country_name>\nFunction options:\nfour_stat_summary, financial_account_comparison, age_education_worry_comparison") 
@@ -391,17 +394,17 @@ def main():
     if country_validity == True:
 
         if arguments.function == "four_stat_summary":
-            four_main_stats_of_interest = data.four_stat_summary_by_country(arguments.country, data)
+            four_main_stats_of_interest = data.four_stat_summary_by_country(arguments.country)
             print(four_main_stats_of_interest)
     
         elif arguments.function == "financial_account_comparison":
-            financial_account_by_country = data.has_financial_account_single_country(arguments.country, data)
-            financial_account_global = data.has_financial_account_global(data)
+            financial_account_by_country = data.has_financial_account_single_country(arguments.country)
+            financial_account_global = data.has_financial_account_global()
             results = data.format_financial_comparison(arguments.country, financial_account_by_country, financial_account_global)
             print(results)
     
         elif arguments.function == "age_education_worry_comparison":
-            results = data.format_age_financial_worry_by_education_summary(arguments.country, data)
+            results = data.format_age_financial_worry_by_education_summary(arguments.country)
             print(results)
 
         else:
