@@ -7,7 +7,7 @@ class test_dataset(unittest.TestCase):
     def setUp(self):
         """Loads the data so that the tests can run. """
 
-        self.data = load_data()
+        self.data = Dataset()
 
     def test_check_keyword_validity(self):
         """Test checking that function check_keyboard_validity returns True for a valid input"""
@@ -15,7 +15,7 @@ class test_dataset(unittest.TestCase):
         keyword = "South Asia"
         column = "regionwb"
 
-        keyword_validity = check_keyword_validity(keyword, column, self.data)
+        keyword_validity = self.data.check_keyword_validity(keyword, column, self.data)
 
         self.assertEqual(keyword_validity, True)
     
@@ -25,7 +25,7 @@ class test_dataset(unittest.TestCase):
         keyword = "Earth"
         column = "regionwb"
 
-        keyword_validity = check_keyword_validity(keyword, column, self.data)
+        keyword_validity = self.data.check_keyword_validity(keyword, column, self.data)
 
         self.assertEqual(keyword_validity, False)
     
@@ -34,7 +34,7 @@ class test_dataset(unittest.TestCase):
 
         column = "educ"
 
-        column_validity = check_column_validity(column)
+        column_validity = self.data.check_column_validity(column)
 
         self.assertEqual(column_validity, True)
 
