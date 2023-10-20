@@ -83,10 +83,12 @@ class Dataset:
             return True
         return False
 
-    def get_column(self, column_name):
+    def get_column(self, column_name, data = None):
         """Takes a dataset and a column name, and returns the column as a list
         Input: str(column_name), list [data]
         Output: list [column]""" 
+        if not data:
+            data = self.data
         
         column_validity = self.check_column_validity(column_name)
         if column_validity == True:
@@ -100,13 +102,15 @@ class Dataset:
             message = "Invalid column name."
             return message
 
-    def filter(self, by, col, data): # remember this s
+    def filter(self, by, col, data = None): # remember this s
         """Takes a keyword, a column name, and a dataset, and
         returns the portion of the dataset that matches the keyword 
         in the given column as a list
         Input: str(by), str(col), list [data]
         Output: list [newData]"""
-        
+        if not data:
+            data = self.data
+            
         keyword_validity = self.check_keyword_validity(by, col, data)
         column_validity = self.check_column_validity(col)
         isValid = (keyword_validity and column_validity)
@@ -125,7 +129,7 @@ class Dataset:
             message = "Invalid keyword or column name."
             return message
 
-    def get_ratio_of_key_in_column(key, column): 
+    def get_ratio_of_key_in_column(self, key, column): 
         """Given a key and a column, returns how often key appeared 
         in the column as a ratio of the length of the column
         Inputs: int(key), str(column)
@@ -217,36 +221,38 @@ class Dataset:
         
         return result 
 
-    def internet_access_by_country(self, country, data):
+    def internet_access_by_country(self, country):
         """Returns the percentage of a country that has internet access. 
         Input: country (string), data (list)
         Output: percentage of the given country that has internet access (integer)"""
 
-        country_validity = self.check_keyword_validity(country, "economy", data)
+        country_validity = self.check_keyword_validity(country, "economy")
 
         if country_validity == True:
             has_internet_access = "1"
-            country_data = filter(country, "economy", data) 
+            country_data = filter(country, "economy") 
             internet_column = self.get_column("internetaccess", country_data)
             percentage = self.get_ratio_of_key_in_column(has_internet_access, internet_column)
 
             return percentage
         
         else:
-            message = self.usage_statement(data)
+            message = self.usage_statement()
 
             return message
         
-    def tertiary_education_by_country(self, country, data):
+    def tertiary_education_by_country(self, country):
         """Returns the percentage of a country that has attained tertiary (college) education. 
         Input: country (string), data (list)
         Output: percentage of the given country that has attainted tertiary education (integer)"""
+        
+        data = self.data
 
         country_validity = self.check_keyword_validity(country, "economy", data)
 
         if country_validity == True:
             tertiary_or_higher = "3"
-            country_data = filter(country, "economy", data)
+            country_data = filter(country, "economy")
             urbanicity_column = self.get_column("educ", country_data)
             percentage = self.get_ratio_of_key_in_column(tertiary_or_higher, urbanicity_column)
 
@@ -257,16 +263,18 @@ class Dataset:
 
             return message
 
-    def population_by_country(self, country, data):
+    def population_by_country(self, country):
         """Returns the population of a country. 
         Input: country (string)
         Output: population of the given country (integer)"""
+        
+        data = self.data
 
         country_validity = self.check_keyword_validity(country, "economy", data)
 
         if country_validity == True:
-            population_column_index = self.get_column_index("pop_adult")
-            country_data = filter(country, "economy", data)
+            population_column_index = self.header["pop_adult"]
+            country_data = self.filter(country, "economy")
             population = country_data[0][population_column_index]
 
             return population
@@ -276,16 +284,18 @@ class Dataset:
 
             return message
 
-    def employment_by_country(self, country, data):
+    def employment_by_country(self, country):
         """Returns the percentage of a country that is employed. 
         Input: country (string), data (list)
         Output: percentage of the given country that is employed (integer)"""
+        
+        data = self.data
 
         country_validity = self.check_keyword_validity(country, "economy", data)
 
         if country_validity == True:
             employed = "1"
-            country_data = filter(country, "economy", data)
+            country_data = filter(country, "economy")
             employment_column = self.get_column("emp_in", country_data)
             percentage = self.get_ratio_of_key_in_column(employed, employment_column)
 
@@ -296,16 +306,16 @@ class Dataset:
 
             return message
 
-    def four_stat_summary_by_country(self, country, data):
+    def four_stat_summary_by_country(self, country):
         """Returns a summary of four interesting statistics for a country: percentage with internet access,
         percentage that has attained tertiary education, population, and percentage that is employed. 
         Input: country (string), data (list)
         Output: Formatted results (string)"""
 
-        internet_access_stat = self.internet_access_by_country(country, data)
-        education_stat = self.tertiary_education_by_country(country, data)
-        population_stat = self.population_by_country(country, data)
-        employment_stat = self.employment_by_country(country, data)
+        internet_access_stat = self.internet_access_by_country(country)
+        education_stat = self.tertiary_education_by_country(country)
+        population_stat = self.population_by_country(country)
+        employment_stat = self.employment_by_country(country)
 
         results_message = "Percentage of " + country + " with internet access: " + str(internet_access_stat) + "\nPercentage of " + country + " that has attained tertiary education or higher: " + str(education_stat) + "\nPopulation of " + country + ": " + str(population_stat) + "\nPercentage of " + country + " that is employed: " + str(employment_stat)
         
@@ -379,7 +389,7 @@ def main():
 
     data = Dataset()
     data.load_data()
-    country_list = data.list_of_countries()
+    #country_list = data.list_of_countries()
 
     parser = argparse.ArgumentParser(usage = data.usage_statement())
     parser.add_argument("--function", type = str, help = "Usage: python3 ProductionCode/cl_code.py --function <function_name> \
@@ -390,7 +400,7 @@ def main():
 
     country_validity = data.check_keyword_validity(arguments.country, "economy")
 
-    if country_validity == True:
+    if country_validity:
 
         if arguments.function == "four_stat_summary":
             four_main_stats_of_interest = data.four_stat_summary_by_country(arguments.country)
