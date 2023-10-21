@@ -1,4 +1,4 @@
-import csv, argparse
+import csv
 
 """This core.py file will have all function except main and argsparse function from cl_code.py"""
 
@@ -103,7 +103,7 @@ class Dataset:
             message = "Invalid column name."
             return message
 
-    def filter(self, by, col): # remember this s
+    def filter(self, by, col): 
         """Takes a keyword, a column name, and a dataset, and
         returns the portion of the dataset that matches the keyword 
         in the given column as a list
@@ -211,11 +211,14 @@ class Dataset:
 
         return percentage
 
-    def format_financial_comparison(self, country, country_result, global_result):
+    def format_financial_comparison(self, country):
         """Returns the formatted string of the results from the financial account functions. 
         Input: country (string), percentage of people in a given country who have a financial account (integer), 
         percentage of people in countries worldwide who have a financial account (integer)
         Output: formatted results (string)"""
+
+        country_result = self.has_financial_account_single_country(country)
+        global_result = self.has_financial_account_global()
 
         result = "Percentage of people in " + country + " who have a financial account: " + str(country_result) + "\nPercentage of people worldwide who have a financial account: " + str(global_result)
         
@@ -305,17 +308,33 @@ class Dataset:
         """Returns a summary of four interesting statistics for a country: percentage with internet access,
         percentage that has attained tertiary education, population, and percentage that is employed. 
         Input: country (string), data (list)
-        Output: Formatted results (string)"""
+        Output: Results (list)"""
 
+        population_stat = self.population_by_country(country)
         internet_access_stat = self.internet_access_by_country(country)
         education_stat = self.tertiary_education_by_country(country)
-        population_stat = self.population_by_country(country)
         employment_stat = self.employment_by_country(country)
 
-        results_message = "Percentage of " + country + " with internet access: " + str(internet_access_stat) + "\nPercentage of " + country + " that has attained tertiary education or higher: " + str(education_stat) + "\nPopulation of " + country + ": " + str(population_stat) + "\nPercentage of " + country + " that is employed: " + str(employment_stat)
+        results = [population_stat, internet_access_stat, education_stat, employment_stat]
         
-        return results_message
+        return results
+    
+    def format_four_stat_summary_by_country(self, country):
+        """Returns the formatted results of the four intersting statistic summary for
+        a given country. 
+        Input: country (string)
+        Output: formatted results (string)"""
+        summary = self.four_stat_summary_by_country(country)
 
+        population = summary[0]
+        internet = summary[1]
+        education = summary[2]
+        employment = summary[3]
+
+        message = "Population of " + country + ": " + str(population) + "\nPercentage of " + country + " that has internet access: " + str(internet) + "\nPercentage of " + country + " that has attained tertiary education or higher: " + str(education) + "\nPercentage of " + country + " that is employed: " + str(employment)
+
+        return message
+    
     def average_age_by_country(self, country):
         """Returns the average age of a country. 
         Input: country (string), data (list)
