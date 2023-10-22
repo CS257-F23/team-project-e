@@ -2,77 +2,60 @@ import unittest
 import subprocess   
 from cl_code import *
 
-# dataset = Dataset()
+class TestDataset(unittest.TestCase): 
 
-class test_dataset(unittest.TestCase): 
+    @classmethod
+    def setUpClass(cls):
+        """Loads the data once for the entire test suite."""
+
+        cls.data = Dataset()
+        cls.data.load_data()
+
+    def test_check_keyword_validity(self):
+        """Test checking that function check_keyboard_validity returns True for a valid input"""
+
+        keyword = "South Asia"
+        column = "regionwb"
+
+        keyword_validity = self.data.check_keyword_validity(keyword, column, self.data)
+
+        self.assertEqual(keyword_validity, True)
     
-    def setUp(self):
-        """Loads the data so that the tests can run. """
-        self.data = []
-        self.dataset = Dataset()
-        self.data = self.dataset.load_data()
+    def test_check_keyword_validity_edge_case(self):
+        """Test checking that check_keyboard_validity returns False for an invalid input"""
 
-    # def test_check_keyword_validity(self):
-    #     """Test checking that function check_keyboard_validity returns True for a valid input"""
-        
-    #     dataset = Dataset()
+        keyword = "Earth"
+        column = "regionwb"
 
-    #     keyword = "South Asia"
-    #     column = "regionwb"
+        keyword_validity = self.data.check_keyword_validity(keyword, column, self.data)
 
-    #     keyword_validity = dataset.check_keyword_validity(keyword, column, self.data)
-
-    #     # dataset = Dataset(keyword, column, self.data)
-    #     # keyword_validity = 
-
-    #     #keyword_validity = dataset.check_keyword_validity(keyword, column, self.data)
-
-    #     self.assertEqual(keyword_validity, True)
+        self.assertEqual(keyword_validity, False)
     
-    # def test_check_keyword_validity_edge_case(self):
-    #     """Test checking that check_keyboard_validity returns False for an invalid input"""
+    def test_check_column_validity(self):
+        """Test checking that check_column_validity returns True for a valid input"""
 
-    #     keyword = "Earth"
-    #     column = "regionwb"
+        column = "educ"
 
-    #     keyword_validity = self.data.check_keyword_validity(keyword, column, self.data)
+        column_validity = self.data.check_column_validity(column)
 
-    #     self.assertEqual(keyword_validity, False)
-    
-    # def test_check_column_validity(self):
-    #     """Test checking that check_column_validity returns True for a valid input"""
-
-    #     column = "educ"
-
-    #     column_validity = self.data.check_column_validity(column)
-
-    #     self.assertEqual(column_validity, True)
+        self.assertEqual(column_validity, True)
 
     def test_check_column_validity_edge_case(self):
         """Test checking that check_column_validity returns False for an invalid input"""
 
-
         column = "hemisphere"
-
-        column_validity = self.dataset.check_column_validity(column)
+        print(type(self.data))
+        column_validity = self.data.check_column_validity(column)
 
         self.assertEqual(column_validity, False)
 
-    #LOOK AT MESSAGE
-    """load_header doesn't exist anymore?"""    
-    # def test_load_header(self): 
-    #     """Given the dataset, load_header loads the header string"""
-
-    #     header = self.dataset.load_header()
-        
-    #     self.assertEqual(header[-1], "year")
-    
     def test_get_column(self):
         """Given a column name and a dataset, get_column returns thee
         column as a string"""
 
         column_name = "regionwb"
-        column = self.dataset.get_column(column_name, self.data)
+        print(type(self.data))
+        column = self.data.get_column(column_name, self.data)
 
         self.assertEqual(column[0], "South Asia")
     
@@ -81,7 +64,7 @@ class test_dataset(unittest.TestCase):
         has been given"""
 
         column_name = "happiness"
-        column = self.dataset.get_column(column_name, self.data)
+        column = self.data.get_column(column_name, self.data)
         message = "Invalid column name."
 
         self.assertEqual(column, message)
@@ -93,7 +76,7 @@ class test_dataset(unittest.TestCase):
         key = "GEO"
         col_name = "economycode"
         
-        new_data = self.dataset.filter(key, col_name)
+        new_data = self.data.filter(key, col_name)
 
         self.assertEqual(new_data[2][0], "Georgia")
     
@@ -105,7 +88,7 @@ class test_dataset(unittest.TestCase):
         col_name = "economycode"
         message = "Invalid keyword or column name."
 
-        new_data = self.dataset.filter(key, col_name)
+        new_data = self.data.filter(key, col_name)
 
         self.assertEqual(new_data, message)
         
@@ -116,7 +99,7 @@ class test_dataset(unittest.TestCase):
         column = [1, 1, 2, 2]
         key = 1
         
-        rate = self.dataset.get_ratio_of_key_in_column(key, column)
+        rate = self.data.get_ratio_of_key_in_column(key, column)
         
         self.assertEqual(rate, 50)
     
@@ -127,36 +110,15 @@ class test_dataset(unittest.TestCase):
         key = "Chicago"
         column = "economy"
 
-        rate = self.dataset.get_ratio_of_key_in_column(key, column)
+        rate = self.data.get_ratio_of_key_in_column(key, column)
 
         self.assertEqual(rate, 0.0)
-        
-    
-    # def test_get_column_index(self):
-    #     """Given a column name string and a dataset, returns the column's index as an integer"""
-        
-    #     col_name = "age"
-
-    #     index = self.dataset.get_column_index(col_name)
-
-    #     self.assertEqual(index, 7)
-    
-    # def test_get_column_index_edge_case(self):
-    #     """Test checking that get_column_index correclty identifies when an
-    #     invalid column name string has been given."""
-
-    #     col_name = "diet"
-
-    #     index = get_column_index(col_name)
-    
-    #     self.assertEqual(index, "Invalid column name.")
-
 
     def test_list_of_countries(self):
         """Testing if the function correctly returns the list of countries
         from the data as a string"""
 
-        final_list = self.dataset.list_of_countries()
+        final_list = self.data.list_of_countries()
 
         self.assertEqual(final_list[0], "Afghanistan")
     
@@ -164,27 +126,12 @@ class test_dataset(unittest.TestCase):
         """Test identifying whether string_of_countries correctly returns
         a string of countries"""
 
-        string = self.dataset.string_of_countries()
+        string = self.data.string_of_countries()
         part_string = string[0:11]
 
         result = "Afghanistan"
 
         self.assertEqual(result, part_string)
-
-
-    #LOOK AT MESSAGE
-    """test_string_of_countries_edge_case not relevant anymore?"""
-    
-    # def test_string_of_countries_edge_case(self):
-    #     """Test identifying whether string_of_countries correctly returns
-    #     an empty string for the edge case of no countries in the string"""
-
-    #     list_of_countries = []
-    #     string = string_of_countries(list_of_countries)
-
-    #     result = ""
-
-    #     self.assertEqual(string, result)
     
 
     def test_get_average_of_column(self):
@@ -193,7 +140,7 @@ class test_dataset(unittest.TestCase):
         country = "Argentina"
         column = "age"
         
-        average_age = self.dataset.get_average_of_column(country, column)
+        average_age = self.data.get_average_of_column(country, column)
         
         self.assertEqual(average_age, 45.6) 
 
@@ -204,11 +151,10 @@ class test_dataset(unittest.TestCase):
 
         column = "age"
         country = "Canad"
-        country_list = self.dataset.list_of_countries()
         message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.dataset.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
-        average_age = self.dataset.get_average_of_column(country, column)
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+        average_age = self.data.get_average_of_column(country, column)
 
         self.assertEqual(average_age, message)
     
@@ -217,7 +163,7 @@ class test_dataset(unittest.TestCase):
         Should output an integer"""
 
         test_data = [1, 2, 3, 4]
-        average = self.dataset.calculate_averages(test_data)
+        average = self.data.calculate_averages(test_data)
         result = 2.5
 
         self.assertEqual(average, result)
@@ -226,7 +172,7 @@ class test_dataset(unittest.TestCase):
         """Test identifying whether calculate_averages will correctly return message if no data is given"""
 
         test_data = []
-        average = self.dataset.calculate_averages(test_data)
+        average = self.data.calculate_averages(test_data)
         result = "Cannot calculate the average of no data."
 
         self.assertEqual(average, result)
@@ -236,7 +182,7 @@ class test_dataset(unittest.TestCase):
         country that has a financial account. """
 
         country = "Greece"
-        financial_account_single_country = self.dataset.has_financial_account_single_country(country)
+        financial_account_single_country = self.data.has_financial_account_single_country(country)
         
         result = 97.6
 
@@ -247,11 +193,11 @@ class test_dataset(unittest.TestCase):
         user enters an invalid country. """
 
         country = "Narnia"
-        financial_account_single_country = self.dataset.has_financial_account_single_country(country)
+        financial_account_single_country = self.data.has_financial_account_single_country(country)
 
         message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.dataset.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
 
         self.assertEqual(financial_account_single_country, message)
     
@@ -259,7 +205,7 @@ class test_dataset(unittest.TestCase):
         """Tests that has_financial_account_global correctly returns the percentage of people in all 
         countries worldwide that have a financial account. """
 
-        financial_account_global = self.dataset.has_financial_account_global()
+        financial_account_global = self.data.has_financial_account_global()
 
         result = 65.8
 
@@ -270,9 +216,7 @@ class test_dataset(unittest.TestCase):
         the results of the financial comparison functions. """
 
         country = "Greece"
-        country_result = self.dataset.has_financial_account_single_country(country)
-        global_result = self.dataset.has_financial_account_global()
-        format_comparison = self.dataset.format_financial_comparison(country)
+        format_comparison = self.data.format_financial_comparison(country)
 
         result = "Percentage of people in Greece who have a financial account: 97.6\nPercentage of people worldwide who have a financial account: 65.8"
         
@@ -283,7 +227,7 @@ class test_dataset(unittest.TestCase):
         that has internet access. """
 
         country = "Zambia"
-        internet_access = self.dataset.internet_access_by_country(country)
+        internet_access = self.data.internet_access_by_country(country)
 
         result = 26.5
 
@@ -294,11 +238,11 @@ class test_dataset(unittest.TestCase):
         the user enter an invalid country. """
 
         country = "Maine"
-        internet_access = self.dataset.internet_access_by_country(country)
+        internet_access = self.data.internet_access_by_country(country)
 
         message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.dataset.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
         
         self.assertEqual(internet_access, message)
     
@@ -307,7 +251,7 @@ class test_dataset(unittest.TestCase):
         that has attained tertiary (college) education. """
 
         country = "Ireland"
-        tertiary_education = self.dataset.tertiary_education_by_country(country)
+        tertiary_education = self.data.tertiary_education_by_country(country)
 
         result = 45.6
 
@@ -318,11 +262,11 @@ class test_dataset(unittest.TestCase):
         if the user enters an invalid country. """
 
         country = ""
-        tertiary_education = self.dataset.tertiary_education_by_country(country)
+        tertiary_education = self.data.tertiary_education_by_country(country)
 
         message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.dataset.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
         
         self.assertEqual(tertiary_education, message)
     
@@ -330,7 +274,7 @@ class test_dataset(unittest.TestCase):
         """Tests that population_by_country correctly returns the population of a country. """
 
         country = "China"
-        population = self.dataset.population_by_country(country)
+        population = self.data.population_by_country(country)
 
         result = "1153772544"
 
@@ -341,11 +285,11 @@ class test_dataset(unittest.TestCase):
         enters an invalid country. """
 
         country = "London"
-        population = self.dataset.population_by_country(country)
+        population = self.data.population_by_country(country)
 
         message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.dataset.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
         
         self.assertEqual(population, message)
     
@@ -353,7 +297,7 @@ class test_dataset(unittest.TestCase):
         """Tests that employment_by_country correctly returns the percentage of a country that is employed. """
 
         country = "Iceland"
-        employment = self.dataset.employment_by_country(country)
+        employment = self.data.employment_by_country(country)
 
         result = 73.3
 
@@ -364,11 +308,11 @@ class test_dataset(unittest.TestCase):
         user enters an invalid country. """
 
         country = "iceland"
-        employment = self.dataset.employment_by_country(country)
+        employment = self.data.employment_by_country(country)
 
         message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.dataset.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
         
         self.assertEqual(employment, message)
     
@@ -377,7 +321,7 @@ class test_dataset(unittest.TestCase):
         results of the four statistics of interest for the given country. """
 
         country = "United States"
-        summary = self.dataset.four_stat_summary_by_country(country)
+        summary = self.data.four_stat_summary_by_country(country)
 
         result = ['268952128', 94.3, 43.9, 63.1]
 
@@ -388,7 +332,7 @@ class test_dataset(unittest.TestCase):
         """Tests that average_age_by_country correctly returns the average age of a country. """
 
         country = "Brazil"
-        average_age = self.dataset.average_age_by_country(country)
+        average_age = self.data.average_age_by_country(country)
 
         result = 41.2
 
@@ -399,11 +343,11 @@ class test_dataset(unittest.TestCase):
         an invalid country. """
 
         country = "North America"
-        average_age = self.dataset.average_age_by_country(country)
+        average_age = self.data.average_age_by_country(country)
 
         message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.dataset.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
         
         
         self.assertEqual(average_age, message)
@@ -413,7 +357,7 @@ class test_dataset(unittest.TestCase):
         a country that is worried about financing their education. """
 
         country = "Australia"
-        comparison = self.dataset.financial_worry_education_by_country(country)
+        comparison = self.data.financial_worry_education_by_country(country)
 
         result = 8.8
 
@@ -424,11 +368,11 @@ class test_dataset(unittest.TestCase):
         if the user enters an invalid country. """
 
         country = "Perth"
-        comparison = self.dataset.financial_worry_education_by_country(country)
+        comparison = self.data.financial_worry_education_by_country(country)
 
         message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.dataset.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
        
         self.assertEqual(comparison, message)
     
@@ -437,25 +381,24 @@ class test_dataset(unittest.TestCase):
         results of the age and financial worry comparison functions. """
 
         country = "Uzbekistan"
-        formatted_comparison = self.dataset.format_age_financial_worry_by_education_summary(country)
+        formatted_comparison = self.data.format_age_financial_worry_by_education_summary(country)
 
         result = "Average age of Uzbekistan: 42.4\nPercentage of people in Uzbekistan who are worried about financing their education: 34.3"
         
         self.assertEqual(formatted_comparison, result)
 
-    #LOOK AT MESSAGE
     """test.dataset.usage_statement() is locked for some reason"""
    
-    # def test_usage_statement(self): #Is locked for some reason??
-    #     """Test identifying whether usage_statement will return correct message when no data is given"""
+    def test_usage_statement(self):
+        """Test identifying whether usage_statement will return correct message when no data is given"""
 
-    #     result = self.dataset.usage_statement()
+        result = self.data.usage_statement()
 
-    #     message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
-    #         \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-    #         \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.dataset.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+        message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+            \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
         
-    #     self.assertEqual(result, message)
+        self.assertEqual(result, message)
      
     def test_main_four_stat_summary(self):
         """Tests the main function when the function tag is associated with four_stat_summary. """
@@ -501,7 +444,7 @@ class test_dataset(unittest.TestCase):
 
         message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.dataset.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
         
         self.assertEqual(output.strip(), message)
 
