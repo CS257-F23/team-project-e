@@ -28,19 +28,22 @@
 <p> What type of data do you want to explore?</p>
 <form action="datastatistics">
     <label for "functions"> Choose a function</label>
-    <select name="specficData">
+    <select name="function_name">
         {% for function in functions: %}
         <option value="{{function}}"> {{function}}</option>
         {% endfor %}
 
     </select>
+    <br />
     <!-- this can also be changed to a form where the user types in the country which is why I listed the countries but that can be deleted <li>-->
     <label for "countriesValue"> Choose a country</label>
-    <select name="specificData">
+    <select name="country_name">
         {% for country in countriesValue: %}
         <option value=" {{country}}"> {{country}} </option>
         {%endfor%}
     </select>
+
+    <br />
     <input type="submit" value=Submit>
 </form>
 
