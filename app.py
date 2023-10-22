@@ -3,8 +3,9 @@ from ProductionCode.core import *
 
 app = Flask(__name__)
 
+data_set = []
 data = Dataset()
-data.load_data()
+data_set = data.load_data()
 
 @app.route("/")
 def homepage():
@@ -32,17 +33,25 @@ def get_four_stat_summary(country):
     """This route returns a summary of four interesting statistics 
     about the given country. It takes a country as a route parameter 
     and returns a message containing the statistics. """
-    
-    summary = data.four_stat_summary_by_country(country)
 
-    population = summary[0]
-    internet = summary[1]
-    education = summary[2]
-    employment = summary[3]
+    if data.check_keyword_validity(country, "economy", data_set) == True:
+        summary = data.four_stat_summary_by_country(country)
 
-    message = "Population of " + country + ": " + str(population) + "<br>Percentage of " + country + " that has internet access: " + str(internet) + "<br>Percentage of " + country + " that has attained tertiary education or higher: " + str(education) + "<br>Percentage of " + country + " that is employed: " + str(employment)
+        population = summary[0]
+        internet = summary[1]
+        education = summary[2]
+        employment = summary[3]
 
-    return message
+        message = "Population of " + country + ": " + str(population) + "<br>Percentage of " + country + " that has internet access: " + str(internet) + "<br>Percentage of " + country + " that has attained tertiary education or higher: " + str(education) + "<br>Percentage of " + country + " that is employed: " + str(employment)
+
+        return message
+    else:
+        error_message = """You must have typed in the wrong route. Remember, to use this website, either: <br>
+        1. Type in /four_stat_summary/[country name], e.g: /four_stat_summary/Nigeria <br>
+        2. Type in /financial_account_comparison/[country name], e.g: /financial_account_comparison/Mexico <br>
+        3. Type in /age_education_comparison/[country_name], e.g: /age_education_comparison/Malawi"""
+
+        return error_message
 
 @app.route("/financial_account_comparison/<country>")
 def get_financial_account_comparison(country): 
@@ -71,6 +80,19 @@ def get_age_education_comparsion(country):
     message = "Average age of " + country + ": " + str(average_age) + "<br>Percentage of people in " + country + " who are worried about financing their education: " + str(financial_worry)
 
     return message
+    
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    """This route returns the usage statement for all function if
+    there is an internal_server_error. It doesn't take any parameters and returns 
+    a help statement for the user."""
+
+    error_message = """Oops! We made a mistake. Please let us know that you got
+    this message and we'll get right to fixing it!"""
+
+    return error_message
+
 
 @app.errorhandler(404)
 def page_not_found(e):
