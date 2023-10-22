@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <!--  uncomment when there is a css link <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
+    <link rel = "stylesheet" href = "{{url_for('static', filename = 'datastyle.css')}}">
 </head>
 
 <body>
@@ -12,6 +12,9 @@
         <li> <a href={{url_for('display_out_data')}}> Options </a>
         <li>
     </ul>
+
+    <p>Results for {{function_name}}</p>
+    <p>{{results}}</p>
 
 
 </body>
