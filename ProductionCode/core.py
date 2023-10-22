@@ -5,6 +5,7 @@ import csv
 class Dataset:
     def __init__(self):
         self.data = []
+        self.subset = []
         self.header = {}
         
     def load_data(self):
@@ -60,7 +61,7 @@ class Dataset:
 
         return string_of_countries
 
-    def check_keyword_validity(self, keyword, keyword_column_title, data = None): # Going to be issues
+    def check_keyword_validity(self, keyword, keyword_column_title, data = None): 
         """ Given a keyword, the column name and data, returns true if the keyword is in the data
         Input: str(keyword), str(keyword_column_title), list[data]
         Output: boolean(is_keyword_in_data)"""
@@ -85,18 +86,17 @@ class Dataset:
             return True
         return False
 
-    def get_column(self, column_name, subset, data = None):
+    def get_column(self, column_name, subset): #data = None
         """Takes a data subset and a column name, and returns the column as a list
         Input: str(column_name), list [data]
         Output: list [column]""" 
-        if not data:
-            data = self.data
+        #if not data:
+            #data = self.data
         
         column_validity = self.check_column_validity(column_name)
         if column_validity == True:
             column = []
             idx = self.header[column_name]
-        
             for row in subset:
                 column.append(row[idx])
             return column 
@@ -154,8 +154,8 @@ class Dataset:
 
         if country_validity == True:
 
-            filtered_data = self.filter(country, "economy")
-            filtered_column_data = self.get_column(column, filtered_data)
+            subset = self.filter(country, "economy")
+            filtered_column_data = self.get_column(column, subset)
             the_averages = self.calculate_averages(filtered_column_data)
 
             return the_averages
@@ -190,8 +190,8 @@ class Dataset:
 
         if country_validity == True:
             has_account = "1"
-            country_data = self.filter(country, "economy")
-            account_column = self.get_column("account_fin", country_data)
+            subset = self.filter(country, "economy")
+            account_column = self.get_column("account_fin", subset)
             percentage = self.get_ratio_of_key_in_column(has_account, account_column)
 
             return percentage
@@ -234,8 +234,8 @@ class Dataset:
 
         if country_validity == True:
             has_internet_access = "1"
-            country_data = self.filter(country, "economy") 
-            internet_column = self.get_column("internetaccess", country_data)
+            subset = self.filter(country, "economy") 
+            internet_column = self.get_column("internetaccess", subset)
             percentage = self.get_ratio_of_key_in_column(has_internet_access, internet_column)
 
             return percentage
@@ -254,8 +254,8 @@ class Dataset:
 
         if country_validity == True:
             tertiary_or_higher = "3"
-            country_data = self.filter(country, "economy")
-            urbanicity_column = self.get_column("educ", country_data)
+            subset = self.filter(country, "economy")
+            urbanicity_column = self.get_column("educ", subset)
             percentage = self.get_ratio_of_key_in_column(tertiary_or_higher, urbanicity_column)
 
             return percentage
@@ -294,8 +294,8 @@ class Dataset:
 
         if country_validity == True:
             employed = "1"
-            country_data = self.filter(country, "economy")
-            employment_column = self.get_column("emp_in", country_data)
+            subset = self.filter(country, "economy")
+            employment_column = self.get_column("emp_in", subset)
             percentage = self.get_ratio_of_key_in_column(employed, employment_column)
 
             return percentage
@@ -365,9 +365,9 @@ class Dataset:
             somewhat_worried_about_finances_of_education = "2"
 
             country_data = self.filter(country, "economy")
-            education_finances_column = self.get_column("fin44d", country_data)
-            very_worried_percentage = self.get_ratio_of_key_in_column(very_worried_about_finances_of_education, education_finances_column)
-            somewhat_worried_percentage = self.get_ratio_of_key_in_column(somewhat_worried_about_finances_of_education, education_finances_column)
+            subset = self.get_column("fin44d", country_data)
+            very_worried_percentage = self.get_ratio_of_key_in_column(very_worried_about_finances_of_education, subset)
+            somewhat_worried_percentage = self.get_ratio_of_key_in_column(somewhat_worried_about_finances_of_education, subset)
 
             return very_worried_percentage + somewhat_worried_percentage
         
