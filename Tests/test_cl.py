@@ -50,12 +50,12 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(column_validity, False)
 
     def test_get_column(self):
-        """Given a column name and a dataset, get_column returns thee
+        """Given a column name and a dataset, get_column returns the
         column as a string"""
 
         column_name = "regionwb"
         print(type(self.data))
-        column = self.data.get_column(column_name, self.data)
+        column = self.data.get_column(column_name, self.data.data)
 
         self.assertEqual(column[0], "South Asia")
     
@@ -64,7 +64,8 @@ class TestDataset(unittest.TestCase):
         has been given"""
 
         column_name = "happiness"
-        column = self.data.get_column(column_name, self.data)
+        print(type(self.data))
+        column = self.data.get_column(column_name, self.data.data)
         message = "Invalid column name."
 
         self.assertEqual(column, message)
