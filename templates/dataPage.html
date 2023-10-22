@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    <title> Information About Our Data</title>
     <!--  uncomment when there is a css link <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
 </head>
 
@@ -9,10 +10,13 @@
     <ul>
         <li> <a href={{url_for('homepage')}}> Home </a></li>
         <li> <a href={{url_for('statement_about_our_data')}}> Data </a></li>
-        <li> <a href={{url_for('display_out_data')}}> Options </a>
-        <li>
+        <li> <a href={{url_for('display_out_data')}}> Options </a> </li>
+        <li> <a href={{url_for('helper_page')}}> Help </a></li>
     </ul>
-    <p> We got our data from {{about}} ....</p>
+    <h1> Information About Our Data </h1>
+    <!-- feel free to change the language text -->
+    <p> The information produced from our functions comes from a specfic data set and is just manipulated to get
+        specific data</p>
 
 </body>
 

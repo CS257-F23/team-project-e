@@ -85,6 +85,10 @@ def get_age_education_comparsion(country):
 
     return message
 
+@app.route("/help")
+def helper_page():
+    return render_template('helpPage.html')
+
 @app.errorhandler(404)
 def page_not_found(e):
     """This route returns the usage statement for all functions if 
