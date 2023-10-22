@@ -28,20 +28,6 @@ def homepage():
     """
     return render_template('homepage.html',countries = countries_string, functions = function_name, countriesValue = data.list_of_countries())
 
-
-#this is to display the data from the form ?? mostly likely wrong code
-"""@app.route('/datastatistics') # I think we need to turn in our flask revisions before we add this stuff into this file
-bc the flask assignment doesn't use html
-def display_out_data():
-    output = str(request.args['specficData'])
-    
-    return render_template('dataStatsPage.html', the_data = output)
-
-@app.route('/dataPage')
-def statement_about_our_data():
-    return render_template('dataPage.html', about = "World Bank Financial Data")
-"""
-
 @app.route("/four_stat_summary/<country>")
 def get_four_stat_summary(country): 
     """This route returns a summary of four interesting statistics 
