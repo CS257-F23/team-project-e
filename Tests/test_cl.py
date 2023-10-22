@@ -151,9 +151,9 @@ class TestDataset(unittest.TestCase):
 
         column = "age"
         country = "Canad"
-        message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+        message = "python3 cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 cl_code.py -h' in the command line."
         average_age = self.data.get_average_of_column(country, column)
 
         self.assertEqual(average_age, message)
@@ -195,9 +195,9 @@ class TestDataset(unittest.TestCase):
         country = "Narnia"
         financial_account_single_country = self.data.has_financial_account_single_country(country)
 
-        message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+        message = "python3 cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 cl_code.py -h' in the command line."
 
         self.assertEqual(financial_account_single_country, message)
     
@@ -240,9 +240,9 @@ class TestDataset(unittest.TestCase):
         country = "Maine"
         internet_access = self.data.internet_access_by_country(country)
 
-        message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+        message = "python3 cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 cl_code.py -h' in the command line."
         
         self.assertEqual(internet_access, message)
     
@@ -264,9 +264,9 @@ class TestDataset(unittest.TestCase):
         country = ""
         tertiary_education = self.data.tertiary_education_by_country(country)
 
-        message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+        message = "python3 cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 cl_code.py -h' in the command line."
         
         self.assertEqual(tertiary_education, message)
     
@@ -287,9 +287,9 @@ class TestDataset(unittest.TestCase):
         country = "London"
         population = self.data.population_by_country(country)
 
-        message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+        message = "python3 cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 cl_code.py -h' in the command line."
         
         self.assertEqual(population, message)
     
@@ -310,9 +310,9 @@ class TestDataset(unittest.TestCase):
         country = "iceland"
         employment = self.data.employment_by_country(country)
 
-        message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+        message = "python3 cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 cl_code.py -h' in the command line."
         
         self.assertEqual(employment, message)
     
@@ -345,9 +345,9 @@ class TestDataset(unittest.TestCase):
         country = "North America"
         average_age = self.data.average_age_by_country(country)
 
-        message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+        message = "python3 cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 cl_code.py -h' in the command line."
         
         
         self.assertEqual(average_age, message)
@@ -370,9 +370,9 @@ class TestDataset(unittest.TestCase):
         country = "Perth"
         comparison = self.data.financial_worry_education_by_country(country)
 
-        message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+        message = "python3 cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 cl_code.py -h' in the command line."
        
         self.assertEqual(comparison, message)
     
@@ -394,9 +394,9 @@ class TestDataset(unittest.TestCase):
 
         result = self.data.usage_statement()
 
-        message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+        message = "python3 cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 cl_code.py -h' in the command line."
         
         self.assertEqual(result, message)
      
@@ -442,9 +442,9 @@ class TestDataset(unittest.TestCase):
         code = subprocess.Popen(["python3", "-u", "cl_code.py", "--function", "", "--country", "Peru"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = "utf8")
         output, err = code.communicate()
 
-        message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+        message = "python3 cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 cl_code.py -h' in the command line."
         
         self.assertEqual(output.strip(), message)
 
