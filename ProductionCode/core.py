@@ -86,12 +86,10 @@ class Dataset:
             return True
         return False
 
-    def get_column(self, column_name, subset): #data = None
+    def get_column(self, column_name, subset):
         """Takes a data subset and a column name, and returns the column as a list
         Input: str(column_name), list [data]
         Output: list [column]""" 
-        #if not data:
-            #data = self.data
         
         column_validity = self.check_column_validity(column_name)
         if column_validity == True:
