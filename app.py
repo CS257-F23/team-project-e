@@ -12,7 +12,7 @@ def homepage():
     returns the message that is printed to the home page."""
     
     countries_string = data.string_of_countries()
-    function_name = ['summary of four interesting statistics', 'financial account summary', 'age and educaiton comparison']
+    function_name = ['summary of four interesting statistics', 'financial account summary', 'age and education comparison']
     """
     home_page_message = "Welcome to our World Bank Financial Data Website! <br><br> \
         There are 3 functionalities for this app. You can either retrieve a summary of four interesting \
@@ -26,7 +26,7 @@ def homepage():
         to learn about the financial and demographic status of a given country. By providing the comparison of these statistics across \
         multiple countries globally, we provide invaluable data for researchers, professors, and students alike."
     """
-    return render_template('homepage.html',countries = countries_string, functions = function_name, countriesValue = data.list_of_countries())
+    return render_template('homepage.html', countries = countries_string, functions = function_name, countriesValue = data.list_of_countries())
 
 
 #this is to display the data from the form ?? mostly likely wrong code
