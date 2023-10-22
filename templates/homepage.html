@@ -10,10 +10,8 @@
         <ul>
             <li> <a href={{url_for('homepage')}}> Home </a></li>
             <li> <a href={{url_for('statement_about_our_data')}}> Data </a></li>
-            <li> <a href={{url_for('display_out_data')}}> Options </a>
-            <li>
-                <!--
-             this may not be needed because this would be the 404 page and it might not need an html -->
+            <li> <a href={{url_for('display_out_data')}}> Options </a> </li>
+            <li> <a href={{url_for('helper_page')}}> Help </a></li>
         </ul>
     </nav>
 </body>
@@ -26,8 +24,13 @@
     to learn about the financial and demographic status of a given country. By providing the comparison of these
     statistics across \
     multiple countries globally, we provide invaluable data for researchers, professors, and students alike.</p>
+
+
+
 <p> Here is a list of countries you can choose from: </p>
 <p> {{countries}}</p>
+
+
 <p> What type of data do you want to explore?</p>
 <form action="datastatistics">
     <label for "functions"> Choose a function</label>
