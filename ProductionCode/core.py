@@ -390,7 +390,7 @@ class Dataset:
     def usage_statement(self):
         """ Returns the usage statement
         Output: str(message) """
-        message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
+        message = "python3 cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
             \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
     
