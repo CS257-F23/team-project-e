@@ -10,8 +10,8 @@ class test_flask_app(unittest.TestCase):
 
         word = "Welcome"
         page = str(response.data)
-        found = page.find(word)
-        self.assertNotEqual(found, -1)
+        
+        self.assertIn(word, page)
 
     def test_route_internet_access(self):
         """ This function tests the route for the page that shows the internet access data and correctly returns the percent of people with interenet access.  """
@@ -20,8 +20,8 @@ class test_flask_app(unittest.TestCase):
         
         item = "58.5"
         page = str(response.data)
-        found = page.find(item)
-        self.assertNotEqual(found, -1)
+
+        self.assertIn(item, page)
 
     def test_route_average_age(self):
         """This function tests the route for the page that shows the route that shows the average age of a country and correctly returns the average age."""
@@ -30,8 +30,8 @@ class test_flask_app(unittest.TestCase):
         
         item = "Norway"
         page = str(response.data)
-        found = page.find(item)
-        self.assertNotEqual(found, -1)
+
+        self.assertIn(item, page)
 
     def test_route_error_handler(self): 
         """" Function tests the route of the error handler and correctly returns the response."""
