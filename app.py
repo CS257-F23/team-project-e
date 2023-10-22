@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask , render_template, request
 from ProductionCode.core import * 
 
 app = Flask(__name__)
@@ -12,7 +12,8 @@ def homepage():
     returns the message that is printed to the home page."""
     
     countries_string = data.string_of_countries()
-
+    function_name = ['summary of four interesting statistics', 'financial account summary', 'age and educaiton comparison']
+    """
     home_page_message = "Welcome to our World Bank Financial Data Website! <br><br> \
         There are 3 functionalities for this app. You can either retrieve a summary of four interesting \
         statistics about a country, compare the percentage of a country that has a financial account to the \
@@ -24,9 +25,20 @@ def homepage():
         type /age_education_comparison/[country_name] after the URL. <br><br>You can use these statistics about various countries \
         to learn about the financial and demographic status of a given country. By providing the comparison of these statistics across \
         multiple countries globally, we provide invaluable data for researchers, professors, and students alike."
-    
-    return home_page_message
+    """
+    return render_template('homepage.html',countries = countries_string, functions = function_name, countriesValue = data.list_of_countries())
 
+
+#this is to display the data from the form ?? mostly likely wrong code
+@app.route('/datastatistics')
+def display_out_data():
+    output = str(request.args['specficData'])
+    
+    return render_template('dataStatsPage.html', the_data = output)
+
+@app.route('/dataPage')
+def statement_about_our_data():
+    return render_template('dataPage.html', about = "World Bank Financial Data")
 
 @app.route("/four_stat_summary/<country>")
 def get_four_stat_summary(country): 
