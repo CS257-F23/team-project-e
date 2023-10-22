@@ -19,7 +19,8 @@ class Dataset:
                 self.header[col] = i
             
             for row in reader:
-                self.data.append(row)    
+                self.data.append(row)  
+        return self.data  
                 
     def list_of_countries(self):
         """Returns a list of all countries
@@ -160,8 +161,8 @@ class Dataset:
             return the_averages
 
         else:
-            message = self.usage_statement(self.data)
-            message = self.usage_statement(self.data)
+            message = self.usage_statement()
+            message = self.usage_statement()
             return message
 
     def calculate_averages(self, subset):
