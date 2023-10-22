@@ -69,6 +69,5 @@ class test_flask_app(unittest.TestCase):
         self.assertEqual(b'You', response.data[0:3])
 
 
-# add tests for edge cases and error function
 if __name__ == '__main__':
     unittest.main()
