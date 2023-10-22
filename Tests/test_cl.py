@@ -44,7 +44,6 @@ class TestDataset(unittest.TestCase):
         """Test checking that check_column_validity returns False for an invalid input"""
 
         column = "hemisphere"
-        print(type(self.data))
         column_validity = self.data.check_column_validity(column)
 
         self.assertEqual(column_validity, False)
@@ -54,7 +53,6 @@ class TestDataset(unittest.TestCase):
         column as a string"""
 
         column_name = "regionwb"
-        print(type(self.data))
         column = self.data.get_column(column_name, self.data.data)
 
         self.assertEqual(column[0], "South Asia")
@@ -64,7 +62,6 @@ class TestDataset(unittest.TestCase):
         has been given"""
 
         column_name = "happiness"
-        print(type(self.data))
         column = self.data.get_column(column_name, self.data.data)
         message = "Invalid column name."
 
