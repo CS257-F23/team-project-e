@@ -4,7 +4,6 @@ h1 {
     background-color: #aec6cf;
     color: black;
     text-align: center;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 nav ul {
@@ -24,13 +23,37 @@ nav li a {
     text-align: center;
     padding: 20px 22px;
     font-size: 16px;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 nav li a:hover {
     color: white;
     background-color: #88807b;
 }
-p {
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+#form_prompt, label {
+    font-weight: bold;
+}
+
+#form_prompt {
+    text-decoration: underline;
+}
+
+input {
+    background-color: #d4ccbe;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 25px;
+    display: inline-block;
+    border: none;
+}
+
+input:hover {
+    background-color: #b8b09b;
+}
+
+body {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+h2, p, form, input {
+    margin-left: 3%;
+    margin-right: 3%; 
 }
