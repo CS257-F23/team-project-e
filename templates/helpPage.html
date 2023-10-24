@@ -1,21 +1,27 @@
 <html>
 
 <head>
-    <link rel = "stylesheet" href = "{{url_for('static', filename = 'datastyle.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename = 'datastyle.css')}}">
     <title> Help Page</title>
 </head>
 
 <body>
+    <nav>
+        <ul>
+            <li> <a href={{url_for('homepage')}}> Home </a></li>
+            <li> <a href={{url_for('statement_about_our_data')}}> Data </a></li>
+            <li> <a href={{url_for('helper_page')}}> Help </a></li>
+        </ul>
+    </nav>
 
-    <ul>
-        <li> <a href={{url_for('homepage')}}> Home </a></li>
-        <li> <a href={{url_for('statement_about_our_data')}}> Data </a></li>
-        <li> <a href={{url_for('display_out_data')}}> Options </a>
-        <li>
-    </ul>
 
-    <h1> Help Page!</h1>
-    <h3> This page is a resource for users to understand our website. </h3>
+    <h1> Help Page </h1>
+    <h2> This page is a resource for users to understand our website. </h2>
+    <p> If you want to learn more about the statistics of a country, click on the "Home" tab in the navigation bar. This
+        will lead you to the homepage where you can find more about the different statistics our website provides. </p>
+    <p> If you want to learn more about the dataset, click on the "Data" tab in the navigation bar. This will lead you
+        to the datapage where you can find out where we got the data from. </p>
+
 
 </body>
 
