@@ -12,28 +12,16 @@ def homepage():
     returns the message that is printed to the home page."""
     
     countries_string = data.string_of_countries()
-    function_name = ['summary of four interesting statistics', 'financial account summary', 'age and education comparison']
-    """
-    home_page_message = "Welcome to our World Bank Financial Data Website! <br><br> \
-        There are 3 functionalities for this app. You can either retrieve a summary of four interesting \
-        statistics about a country, compare the percentage of a country that has a financial account to the \
-        worldwide statistic, or compare the average age of a country to the percentage of the population that is \
-        worried about financing their education. <br><br> The list of countries that you can choose from is: \
-        <br><br> "  + countries_string + " <br><br> To run the four statistics summary, type /four_stat_summary/[country_name] \
-        after the URL. <br> To run the financial account comparison function, type financial_account_comparison/[country_name] \
-        after the URL. <br> To run the age and worry about financing education comparison function, \
-        type /age_education_comparison/[country_name] after the URL. <br><br>You can use these statistics about various countries \
-        to learn about the financial and demographic status of a given country. By providing the comparison of these statistics across \
-        multiple countries globally, we provide invaluable data for researchers, professors, and students alike."
-    """
-    return render_template('homepage.html', countries = countries_string, functions = function_name, countriesValue = data.list_of_countries())
+    function_name = ['Summary of four interesting statistics', 'Financial account summary', 'Age and education comparison']
+
+    return render_template('homepage.html',countries = countries_string, functions = function_name, countriesValue = data.list_of_countries())
 
 
 #this is to display the data from the form ?? mostly likely wrong code
 @app.route('/datastatistics') # I think we need to turn in our flask revisions before we add this stuff into this file
 #bc the flask assignment doesn't use html"""
 def display_out_data():
-    output = str(request.args['specficData'])
+    output = str(request.args['specificData'])
     
     return render_template('dataStatsPage.html', the_data = output)
 
