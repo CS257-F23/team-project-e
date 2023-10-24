@@ -16,6 +16,19 @@ def homepage():
 
     return render_template('homepage.html',countries = countries_string, functions = function_name, countriesValue = data.list_of_countries())
 
+@app.route("/get_function_and_country", methods = ["GET","POST"])
+def present_stats():
+    function_name = request.form['function_name']
+    country = request.form['country_name'][1:]
+    
+    if (function_name == "Summary of four interesting statistics"):
+        page = get_four_stat_summary(country)
+    elif (function_name == "Financial account summary"):
+        page = get_financial_account_comparison(country)
+    elif (function_name == "Age and education comparison"):
+        page = get_age_education_comparison(country)
+        
+    return render_template("dataStatsPage.html", webpage = page)
 
 #this is to display the data from the form ?? mostly likely wrong code
 @app.route('/datastatistics') # I think we need to turn in our flask revisions before we add this stuff into this file
@@ -42,10 +55,13 @@ def get_four_stat_summary(country):
     internet = summary[1]
     education = summary[2]
     employment = summary[3]
+    
+    first_line = "Population of " + country + ": " + str(population)
+    second_line = "Percentage of " + country + " that has internet access: " + str(internet) 
+    third_line = "Percentage of " + country + " that has attained tertiary education or higher: " + str(education) 
+    fourth_line = "Percentage of " + country + " that is employed: " + str(employment)
 
-    message = "Population of " + country + ": " + str(population) + "<br>Percentage of " + country + " that has internet access: " + str(internet) + "<br>Percentage of " + country + " that has attained tertiary education or higher: " + str(education) + "<br>Percentage of " + country + " that is employed: " + str(employment)
-
-    return message
+    return [first_line, second_line, third_line, fourth_line]
 
 @app.route("/financial_account_comparison/<country>")
 def get_financial_account_comparison(country): 
@@ -57,12 +73,13 @@ def get_financial_account_comparison(country):
     country_result = data.has_financial_account_single_country(country)
     global_result = data.has_financial_account_global()
 
-    message = "Percentage of people in " + country + " who have a financial account: " + str(country_result) + "<br>Percentage of people worldwide who have a financial account: " + str(global_result)
+    first = "Percentage of people in " + country + " who have a financial account: " + str(country_result) 
+    second = "Percentage of people worldwide who have a financial account: " + str(global_result)
     
-    return message
+    return [first, second]
 
 @app.route("/age_education_comparison/<country>")
-def get_age_education_comparsion(country):
+def get_age_education_comparison(country):
     """This route returns a comparison of the average age of a country and 
     the percentage of a country that is worried about financing their education. 
     It takes a country as a route parameters and returns a message containing
@@ -71,9 +88,10 @@ def get_age_education_comparsion(country):
     average_age = data.average_age_by_country(country)
     financial_worry = data.financial_worry_education_by_country(country)
 
-    message = "Average age of " + country + ": " + str(average_age) + "<br>Percentage of people in " + country + " who are worried about financing their education: " + str(financial_worry)
-
-    return message
+    first = "Average age of " + country + ": " + str(average_age) 
+    second = "Percentage of people in " + country + " who are worried about financing their education: " + str(financial_worry)
+    
+    return [first, second]
 
 @app.route("/help")
 def helper_page():
@@ -85,9 +103,9 @@ def page_not_found(e):
     the page cannot be found. It doesn't take any parameters and returns 
     a help statement for the user."""
 
-    error_message = """You must have typed in the wrong route. Remember, to use this website, either: <br>
-    1. Type in /four_stat_summary/[country name], e.g: /four_stat_summary/Nigeria <br>
-    2. Type in /financial_account_comparison/[country name], e.g: /financial_account_comparison/Mexico <br>
+    error_message = """You must have typed in the wrong route. Remember, to use this website, either: <br />
+    1. Type in /four_stat_summary/[country name], e.g: /four_stat_summary/Nigeria <br />
+    2. Type in /financial_account_comparison/[country name], e.g: /financial_account_comparison/Mexico <br />
     3. Type in /age_education_comparison/[country_name], e.g: /age_education_comparison/Malawi"""
     
     return error_message

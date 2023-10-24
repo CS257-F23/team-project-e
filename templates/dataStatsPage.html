@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <!--  uncomment when there is a css link <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> 
 </head>
 
 <body>
@@ -13,6 +13,9 @@
         <li>
     </ul>
 
+    {% for line in webpage%} 
+    <p> {{line}} </p> <br>
+    {% endfor %}
 
 </body>
 

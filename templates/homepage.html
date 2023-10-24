@@ -26,27 +26,24 @@
     multiple countries globally, we provide invaluable data for researchers, professors, and students alike.</p>
 
     <p> What type of data do you want to explore?</p>
-    <form action="get_function">
-        <label for "functions"> Choose a function</label>
+    <form action="get_function_and_country" method = "POST">
+        <label for="functions"> Choose a function</label>
         <select name="function_name">
             {% for function in functions: %}
             <option value="{{function}}"> {{function}}</option>
             {% endfor %}
-
         </select>
-    </form>
 
-    <form action="get_country">
         <br />
         <!-- this can also be changed to a form where the user types in the country which is why I listed the countries but that can be deleted <li>-->
-        <label for "countriesValue"> Choose a country</label>
+        <label for="country_names"> Choose a country</label>
         <select name="country_name">
             {% for country in countriesValue: %}
             <option value=" {{country}}"> {{country}} </option>
             {%endfor%}
         </select>
-    </form>
         <br />
         <input type="submit" value=Submit>
+    </form>
 </body>
 </html>
