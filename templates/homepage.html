@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <link rel = "stylesheet" href = "{{url_for('static', filename = 'datastyle.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename = 'datastyle.css')}}">
     <title> World Bank Financial Data Website</title>
 </head>
 
@@ -11,7 +11,6 @@
         <ul>
             <li> <a href={{url_for('homepage')}}> Home </a></li>
             <li> <a href={{url_for('statement_about_our_data')}}> Data </a></li>
-            <li> <a href={{url_for('display_out_data')}}> Options </a> </li>
             <li> <a href={{url_for('helper_page')}}> Help </a></li>
         </ul>
     </nav>
@@ -19,12 +18,11 @@
 <h1> World Bank Financial Inclusion Data</h1>
 <h2> There are 3 functionalities for this app.</h2> <!-- change this heading to a different size ? or to a pargraph-->
 <p> You can either retrieve a summary of four interesting
-    statistics about a country, compare the percentage of a country that has a financial account to the \
-    worldwide statistic, or compare the average age of a country to the percentage of the population that is worried
-    about financing their education.You can use these statistics about various countries \
-    to learn about the financial and demographic status of a given country. By providing the comparison of these
-    statistics across \
-    multiple countries globally, we provide invaluable data for researchers, professors, and students alike.</p>
+    statistics about a country, compare the percentage of a country that has a financial account to the worldwide
+    statistic, or compare the average age of a country to the percentage of the population that is worried about
+    financing their education.You can use these statistics about various countries to learn about the financial and
+    demographic status of a given country. By providing the comparison of these statistics across multiple countries
+    globally, we provide invaluable data for researchers, professors, and students alike.</p>
 
     <p id = form_prompt> What type of data do you want to explore?</p>
     <form id = "function_form" action="get_function">
@@ -35,8 +33,8 @@
             <option value="{{function}}"> {{function}}</option>
             {% endfor %}
 
-        </select>
-    </form>
+    </select>
+</form>
 
     <form id = "country_form" action="get_country">
         <br />
@@ -52,4 +50,5 @@
         <br />
         <input type="submit" value=Submit>
 </body>
+
 </html>
