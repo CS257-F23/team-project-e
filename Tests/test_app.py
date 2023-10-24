@@ -45,9 +45,7 @@ class test_flask_app(unittest.TestCase):
         self.app = app.test_client()
         response = self.app.get('/internet_access/Argentina/Costa Ric', follow_redirects = True)
         
-
         self.assertEqual(b'You', response.data[0:3])
-
 
     def test_not_enough_argvs(self):
         """Test function for when there are not enough argumnets in the input"""
