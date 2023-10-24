@@ -26,9 +26,10 @@
     statistics across \
     multiple countries globally, we provide invaluable data for researchers, professors, and students alike.</p>
 
-    <p> What type of data do you want to explore?</p>
-    <form action="get_function">
+    <p id = form_prompt> What type of data do you want to explore?</p>
+    <form id = "function_form" action="get_function">
         <label for "functions"> Choose a function</label>
+        <br>
         <select name="function_name">
             {% for function in functions: %}
             <option value="{{function}}"> {{function}}</option>
@@ -37,10 +38,11 @@
         </select>
     </form>
 
-    <form action="get_country">
+    <form id = "country_form" action="get_country">
         <br />
         <!-- this can also be changed to a form where the user types in the country which is why I listed the countries but that can be deleted <li>-->
         <label for "countriesValue"> Choose a country</label>
+        <br>
         <select name="country_name">
             {% for country in countriesValue: %}
             <option value=" {{country}}"> {{country}} </option>
