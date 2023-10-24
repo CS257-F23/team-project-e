@@ -1,7 +1,8 @@
+<!DOCTYPE html>
 <html>
 
 <head>
-    <!--  uncomment when there is a css link <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='datastyle.css') }}">
     <title> World Bank Financial Data Website</title>
 </head>
 
@@ -10,44 +11,34 @@
         <ul>
             <li> <a href={{url_for('homepage')}}> Home </a></li>
             <li> <a href={{url_for('statement_about_our_data')}}> Data </a></li>
-            <li> <a href={{url_for('display_out_data')}}> Options </a> </li>
             <li> <a href={{url_for('helper_page')}}> Help </a></li>
         </ul>
     </nav>
+    <h1> Welcome to our World Bank Financial Data Website!</h1>
+    <h2> There are 3 functionalities for this app.</h2> <!-- change this heading to a different size ? or to a pargraph-->
+    <p> You can either retrieve a summary of four interesting statistics about a country, compare the percentage of a country that has a financial account to the worldwide statistic, or compare the average age of a country to the percentage of the population that is worried
+    about financing their education.You can use these statistics about various countries to learn about the financial and demographic status of a given country. By providing the comparison of these
+    statistics across multiple countries globally, we provide invaluable data for researchers, professors, and students alike.</p>
+
+    <p> What type of data do you want to explore?</p>
+    <form action="get_function_and_country" id = "function_form" method = "POST">
+        <label for="functions"> Choose a function</label>
+        <select name="function_name">
+            {% for function in functions: %}
+            <option value="{{function}}"> {{function}}</option>
+            {% endfor %}
+        </select>
+
+        <br />
+        <!-- this can also be changed to a form where the user types in the country which is why I listed the countries but that can be deleted <li>-->
+        <label for="country_names"> Choose a country</label>
+        <select name="country_name">
+            {% for country in countriesValue: %}
+            <option value=" {{country}}"> {{country}} </option>
+            {%endfor%}
+        </select>
+        <br />
+        <input type="submit" value=Submit>
+    </form>
 </body>
-<h1> Welcome to our World Bank Financial Data Website!</h1>
-<h2> There are 3 functionalities for this app.</h2> <!-- change this heading to a different size ? or to a pargraph-->
-<p> You can either retrieve a summary of four interesting
-    statistics about a country, compare the percentage of a country that has a financial account to the \
-    worldwide statistic, or compare the average age of a country to the percentage of the population that is worried
-    about financing their education.You can use these statistics about various countries \
-    to learn about the financial and demographic status of a given country. By providing the comparison of these
-    statistics across \
-    multiple countries globally, we provide invaluable data for researchers, professors, and students alike.</p>
-
-
-
-<p> Here is a list of countries you can choose from: </p>
-<p> {{countries}}</p>
-
-
-<p> What type of data do you want to explore?</p>
-<form action="datastatistics">
-    <label for "functions"> Choose a function</label>
-    <select name="specficData">
-        {% for function in functions: %}
-        <option value="{{function}}"> {{function}}</option>
-        {% endfor %}
-
-    </select>
-    <!-- this can also be changed to a form where the user types in the country which is why I listed the countries but that can be deleted <li>-->
-    <label for "countriesValue"> Choose a country</label>
-    <select name="specificData">
-        {% for country in countriesValue: %}
-        <option value=" {{country}}"> {{country}} </option>
-        {%endfor%}
-    </select>
-    <input type="submit" value=Submit>
-</form>
-
 </html>
