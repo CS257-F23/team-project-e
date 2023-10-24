@@ -5,13 +5,14 @@
 </head>
 
 <body>
+    <nav>
 
     <ul>
         <li> <a href={{url_for('homepage')}}> Home </a></li>
         <li> <a href={{url_for('statement_about_our_data')}}> Data </a></li>
-        <li> <a href={{url_for('display_out_data')}}> Options </a>
-        <li>
     </ul>
+
+    </nav>
 
     {% for line in webpage%} 
     <p> {{line}} </p> <br>
