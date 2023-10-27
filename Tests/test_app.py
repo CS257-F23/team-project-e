@@ -1,5 +1,4 @@
 import unittest
-import subprocess
 from app import *
 
 class test_flask_app(unittest.TestCase):
