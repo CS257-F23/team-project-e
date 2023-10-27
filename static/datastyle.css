@@ -67,7 +67,7 @@ body {
 }
 
 /* Formatting the margins for the whole page */
-h2, p, form, input, a, ul {
+h1, h2, p, form, a, ul {
     margin-left: 3%;
     margin-right: 3%; 
 }
