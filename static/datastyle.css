@@ -1,0 +1,59 @@
+h1 {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    background-color: #aec6cf;
+    color: black;
+    text-align: center;
+}
+
+nav ul {
+    background-color: #3d426b;
+    list-style-type: none;
+    overflow: hidden;
+}
+
+nav li {
+    float: left;
+}
+
+nav li a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    padding: 20px 22px;
+    font-size: 16px;
+}
+
+nav li a:hover {
+    color: white;
+    background-color: #88807b;
+}
+#form_prompt, label {
+    font-weight: bold;
+}
+
+#form_prompt {
+    text-decoration: underline;
+}
+
+input {
+    background-color: #d4ccbe;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 25px;
+    display: inline-block;
+    border: none;
+}
+
+input:hover {
+    background-color: #b8b09b;
+}
+
+body {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+h2, p, form, input, a, ul {
+    margin-left: 3%;
+    margin-right: 3%; 
+}

@@ -1,18 +1,22 @@
 <html>
 
 <head>
-    <!--  uncomment when there is a css link <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
+    <link rel = "stylesheet" href = "{{url_for('static', filename = 'datastyle.css')}}">
 </head>
-
 <body>
+    <nav>
+        <ul>
+            <li> <a href={{url_for('homepage')}}> Home </a></li>
+            <li> <a href={{url_for('statement_about_our_data')}}> Data </a></li>
+            <li> <a href={{url_for('helper_page')}}> Help </a></li>
+        </ul>
+    </nav>
 
-    <ul>
-        <li> <a href={{url_for('homepage')}}> Home </a></li>
-        <li> <a href={{url_for('statement_about_our_data')}}> Data </a></li>
-        <li> <a href={{url_for('display_out_data')}}> Options </a>
-        <li>
-    </ul>
-
+    <h1>Results</h1>
+    
+    {% for line in webpage%} 
+    <p> {{line}} </p> <br>
+    {% endfor %}
 
 </body>
 
