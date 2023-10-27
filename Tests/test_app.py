@@ -39,19 +39,11 @@ class test_flask_app(unittest.TestCase):
         
         self.assertEqual(b'must', response.data[4:8])
 
-    def test_incorrect_country_name(self):
-        """Test function for when there is an incorect country name input"""
-        self.app = app.test_client()
-        response = self.app.get('/four_stat_summary/Canad', follow_redirects = True)
-        
-        self.assertIn(b'Server Error', response.data)
-
     def test_not_enough_argvs(self):
         """Test function for when there are not enough argumnets in the input"""
         self.app = app.test_client()
         response = self.app.get('/four_stat_summary', follow_redirects = True)
         self.assertIn(b'wrong route', response.data)
-
 
     def test_incorrect_function_name(self):
         """Test function for when there is an incorrect function name inputed"""

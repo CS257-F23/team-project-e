@@ -31,9 +31,7 @@ def present_stats():
         
     return render_template("dataStatsPage.html", webpage = page)
 
-#this is to display the data from the form ?? mostly likely wrong code
-@app.route('/datastatistics') # I think we need to turn in our flask revisions before we add this stuff into this file
-#bc the flask assignment doesn't use html"""
+@app.route('/datastatistics') 
 def display_out_data():
     output = str(request.args['specificData'])
     
