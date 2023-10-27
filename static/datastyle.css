@@ -53,7 +53,7 @@ input:hover {
 body {
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
-h2, p, form, input, a, ul {
+h1, h2, p, form, a, ul {
     margin-left: 3%;
     margin-right: 3%; 
 }
