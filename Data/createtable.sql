@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS countries;
 CREATE TABLE countries (
-    id int,
+    id text,
     country text,
     country_abbreviation text,
     country_region text,
@@ -8,12 +8,12 @@ CREATE TABLE countries (
 );
 DROP TABLE IF EXISTS poll_results;
 CREATE TABLE poll_results (
-    id int,
+    id text,
     age text,
     education_level text,
     employment_status text,
     financial_account_status text,
     worry_about_financing_education text,
     internet_acess text,
-    country_id int
+    country_id text
 )
