@@ -14,6 +14,6 @@ CREATE TABLE poll_results (
     employment_status text,
     financial_account_status text,
     worry_about_financing_education text,
-    internet_acess text,
+    internet_access text,
     country_id text
 )
