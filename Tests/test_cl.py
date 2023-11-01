@@ -9,7 +9,7 @@ class TestDataset(unittest.TestCase):
         """Loads the data once for the entire test suite."""
 
         cls.data = Dataset()
-        cls.data.load_data()
+        cls.data.connect()
 
     def test_check_keyword_validity(self):
         """Test checking that function check_keyboard_validity returns True for a valid input"""
@@ -118,7 +118,7 @@ class TestDataset(unittest.TestCase):
 
         final_list = self.data.list_of_countries()
 
-        self.assertEqual(final_list[0], "Afghanistan")
+        self.assertEqual(final_list[0], ("Afghanistan",) )
     
     def test_string_of_countries(self):
         """Test identifying whether string_of_countries correctly returns
@@ -400,7 +400,6 @@ class TestDataset(unittest.TestCase):
      
     def test_main_four_stat_summary(self):
         """Tests the main function when the function tag is associated with four_stat_summary. """
-
         code = subprocess.Popen(["python3", "-u", "cl_code.py", "--function", "four_stat_summary", "--country", "Canada"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = "utf8")
         output, err = code.communicate()
 
@@ -436,13 +435,13 @@ class TestDataset(unittest.TestCase):
     
     def test_main_edge_case(self):
         """Tests that the main function will print out the usage statement if the user does not enter a function argument. """
-
+        self.maxDiff = None;
         code = subprocess.Popen(["python3", "-u", "cl_code.py", "--function", "", "--country", "Peru"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = "utf8")
         output, err = code.communicate()
 
-        message = "python3 cl_code.py --function <function_name> --country <country_name> \
+        message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 cl_code.py -h' in the command line."
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
         
         self.assertEqual(output.strip(), message)
 
