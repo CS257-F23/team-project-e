@@ -168,3 +168,4 @@ cython_debug/
 /Education.py
 /htmlcov
 /app2.py
+/psqlConfig.py
