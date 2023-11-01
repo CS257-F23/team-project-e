@@ -1,4 +1,6 @@
-import csv
+import csv, psycopg2
+import psqlConfig as config #change to import ProductionCode/psqlConfig as config before turning in
+# check that command line portion still works
 
 """This core.py file will have all function except main and argsparse function from cl_code.py"""
 
@@ -7,6 +9,14 @@ class Dataset:
         self.data = []
         self.subset = []
         self.header = {}
+    
+    def connect(self):
+        try:
+            self.connection = psycopg2.connect(database = config.database, user = config.user, password = config.password, host = "localhost")
+        except Exception as e:
+            print("Connection error: ", e)
+            exit()
+        return self.connection
         
     def load_data(self):
         """Loads the data and returns it as a list
@@ -28,35 +38,32 @@ class Dataset:
         Input: null
         Output: [countries]"""
 
-        country_list = self.get_column("economy", self.data)
+        all_countries = "SELECT country FROM countries"
+
+        cursor = self.connection.cursor()
+        cursor.execute(all_countries)
+        list_of_all_countries = cursor.fetchall()
+
+        return list_of_all_countries
+
+        """country_list = self.get_column("economy", self.data)
         set_country_list = set(country_list)
         country_set_to_list = list(set_country_list)
         country_set_to_list.sort()
     
-        return country_set_to_list
+        return country_set_to_list"""
     
-    def string_of_countries(self):
-        """Given a list of countries from the data, returns countries as a string
-        Input: list [list_of_countries]
-        Output: str(string_of_countries)"""
-        
-        list_of_countries = self.list_of_countries()
-
-        string_of_countries = ""
-        for country in list_of_countries:
-            string_of_countries += country +'\n'
-
-        return string_of_countries
 
     def string_of_countries(self):
         """Given a list of countries from the data, returns countries as a string
         Input: list [list_of_countries]
         Output: str(string_of_countries)"""
 
-        list_of_countries = self.list_of_countries()
+        list_of_all_countries = self.list_of_countries()
         
         string_of_countries = ""
-        for country in list_of_countries:
+        for country_tuple in list_of_all_countries:
+            country = country_tuple[0]
             string_of_countries += country +'\n'
 
         return string_of_countries
@@ -142,7 +149,7 @@ class Dataset:
         return ratio
 
 
-    def get_average_of_column(self, country, column):
+    def get_average_of_column(self, country, column): #don't need because we do the query in the main function?
         """Returns an average for the given column and country.
         Works for any data that is a column in the csv file.
         Inputs: str(country), str(column), list [data]
@@ -163,7 +170,7 @@ class Dataset:
             message = self.usage_statement()
             return message
 
-    def calculate_averages(self, subset):
+    def calculate_averages(self, subset): # don't need because we do the query in the main function?
         """ Returns the calculated average for the given filtered data.
         Input: list [data]
         Output: int(avg)"""
@@ -223,32 +230,68 @@ class Dataset:
         
         return result 
 
-    def internet_access_by_country(self, country):
+    def internet_access_by_country(self, country): 
         """Returns the percentage of a country that has internet access. 
         Input: country (string), data (list)
         Output: percentage of the given country that has internet access (integer)"""
 
-        country_validity = self.check_keyword_validity(country, "economy", self.data)
+        #country_validity = self.check_keyword_validity(country, "economy", self.data)
+        #if country_validity == True:
+        total_internet_responses_by_country = "SELECT COUNT(internet_access) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.internet_access <> '';"
+        has_internet_responses_by_country = "SELECT COUNT(internet_access) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.internet_access = '1';"
+     
+        cursor = self.connection.cursor()
 
-        if country_validity == True:
-            has_internet_access = "1"
-            subset = self.filter(country, "economy") 
-            internet_column = self.get_column("internetaccess", subset)
-            percentage = self.get_ratio_of_key_in_column(has_internet_access, internet_column)
+        cursor.execute(total_internet_responses_by_country, (country,))
+        total_internet_responses_by_country_result = cursor.fetchall()
+        print(total_internet_responses_by_country_result)
 
-            return percentage
+        cursor.execute(has_internet_responses_by_country, (country,))
+        has_internet_responses_by_country_result = cursor.fetchall()
+        print(has_internet_responses_by_country_result)
+
+        percentage = (has_internet_responses_by_country_result[0][0] / total_internet_responses_by_country_result[0][0]) * 100
+
+        return round(percentage, 1)
+
+        #if country_validity == True:
+            #has_internet_access = "1"
+            #subset = self.filter(country, "economy") 
+            #internet_column = self.get_column("internetaccess", subset)
+            #percentage = self.get_ratio_of_key_in_column(has_internet_access, internet_column)
+
+            #return percentage
         
-        else:
-            message = self.usage_statement()
+        #else:
+            #message = self.usage_statement()
 
-            return message
+            #return message
         
     def tertiary_education_by_country(self, country):
         """Returns the percentage of a country that has attained tertiary (college) education. 
         Input: country (string), data (list)
         Output: percentage of the given country that has attainted tertiary education (integer)"""
 
-        country_validity = self.check_keyword_validity(country, "economy", self.data)
+        total_education_responses_by_country = "SELECT COUNT(education_level) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.education_level <> '';"
+        attained_tertiary_education_by_country = "SELECT COUNT(education_level) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.education_level = '3';"
+
+        cursor = self.connection.cursor()
+
+        cursor.execute(total_education_responses_by_country, (country,))
+        total_education_responses_by_country_result = cursor.fetchall()
+        print(total_education_responses_by_country_result)
+
+        cursor.execute(attained_tertiary_education_by_country, (country,))
+        attained_tertiary_education_by_country_result = cursor.fetchall()
+        print(attained_tertiary_education_by_country_result)
+
+        percentage = (attained_tertiary_education_by_country_result[0][0] / total_education_responses_by_country_result[0][0]) * 100
+
+        return round(percentage, 1)
+
+
+
+        """country_validity = self.check_keyword_validity(country, "economy", self.data)
 
         if country_validity == True:
             tertiary_or_higher = "3"
@@ -261,14 +304,25 @@ class Dataset:
         else:
             message = self.usage_statement()
 
-            return message
+            return message"""
 
     def population_by_country(self, country):
         """Returns the population of a country. 
         Input: country (string)
         Output: population of the given country (integer)"""
 
-        country_validity = self.check_keyword_validity(country, "economy", self.data)
+        population_by_country = "SELECT adult_population FROM countries WHERE country = %s;"
+
+        cursor = self.connection.cursor()
+
+        cursor.execute(population_by_country, (country,))
+        population_by_country_result = cursor.fetchall()
+
+        return population_by_country_result[0][0]
+
+
+
+        """country_validity = self.check_keyword_validity(country, "economy", self.data)
 
         if country_validity == True:
             population_column_index = self.header["pop_adult"]
@@ -280,7 +334,7 @@ class Dataset:
         else:
             message = self.usage_statement()
 
-            return message
+            return message"""
 
     def employment_by_country(self, country):
         """Returns the percentage of a country that is employed. 
@@ -288,7 +342,22 @@ class Dataset:
         Output: percentage of the given country that is employed (integer)"""
     
 
-        country_validity = self.check_keyword_validity(country, "economy", self.data)
+        total_employment_responses_by_country = "SELECT COUNT(employment_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.employment_status <> '';"
+        employed_persons_by_country = "SELECT COUNT(employment_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.employment_status = '1';"
+
+        cursor = self.connection.cursor()
+
+        cursor.execute(total_employment_responses_by_country, (country,))
+        total_employment_responses_by_country_result = cursor.fetchall()
+
+        cursor.execute(employed_persons_by_country, (country,))
+        employed_persons_by_country_result = cursor.fetchall()
+
+        percentage = (employed_persons_by_country_result[0][0] / total_employment_responses_by_country_result[0][0]) * 100
+
+        return round(percentage, 1)
+
+        """country_validity = self.check_keyword_validity(country, "economy", self.data)
 
         if country_validity == True:
             employed = "1"
@@ -301,14 +370,14 @@ class Dataset:
         else:
             message = self.usage_statement()
 
-            return message
+            return message"""
 
     def four_stat_summary_by_country(self, country):
         """Returns a summary of four interesting statistics for a country: percentage with internet access,
         percentage that has attained tertiary education, population, and percentage that is employed. 
         Input: country (string), data (list)
         Output: Results (list)"""
-
+    
         population_stat = self.population_by_country(country)
         internet_access_stat = self.internet_access_by_country(country)
         education_stat = self.tertiary_education_by_country(country)
@@ -394,4 +463,10 @@ class Dataset:
     
         return message
 
+if __name__ == "__main__":
+    # Afghanistan ID exists in countries but when you run a command with the ID
+    # it does not recognize it and returns 0 rows, only a problem for Afghanistan
+    data = Dataset()
+    data.connect()
+    print(data.format_four_stat_summary_by_country("Canada"))
 
