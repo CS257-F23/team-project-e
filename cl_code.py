@@ -44,11 +44,11 @@ def main():
     Output: the data associated with the argument associated with the command line"""
 
     data = Dataset()
-    data.load_data()
+    data.connect()
         
     arguments = argument_parser()
 
-    country_validity = data.check_keyword_validity(arguments.country, "economy")
+    country_validity = data.check_keyword_validity(arguments.country)
 
     if country_validity == True:
 

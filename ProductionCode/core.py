@@ -41,7 +41,8 @@ class Dataset:
 
         all_countries = "SELECT country FROM countries"
 
-        cursor = self.connection.cursor()
+        connection = self.connect()
+        cursor = connection.cursor()
         cursor.execute(all_countries)
         list_of_all_countries = cursor.fetchall()
 
