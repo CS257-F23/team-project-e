@@ -12,11 +12,13 @@
         </ul>
     </nav>
 
-    <h1>Results</h1>
+    <h1>Results: {{heading}}</h1>
 
     {% for line in webpage%} 
     <p> {{line}} </p> <br>
     {% endfor %}
+    <p>{{function}}</p>
+    <p>{{c}}</p>
 
 </body>
 

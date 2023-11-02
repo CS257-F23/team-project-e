@@ -24,6 +24,7 @@
     </ul>
     <p>You can use these statistics about various countries to learn about the financial and demographic status of a given country. By providing the comparison of these
     statistics across multiple countries globally, we provide invaluable data for researchers, professors, and students alike.</p>
+    <p>Note: These sample statistics are not necessarily representative of the true population statistics for each country.</p>
 
     <p>What type of data do you want to explore?</p>
     <form action="get_function_and_country" id = "function_form" method = "POST">
@@ -36,8 +37,8 @@
         <br>
         <label for = "country_names"> Choose a country</label>
         <select id = "country_names" name = "country_name">
-            {% for country in countriesValue: %}
-            <option value=" {{country}}"> {{country}} </option>
+            {% for country in countries: %}
+            <option value=" {{country[0]}}"> {{country[0]}} </option>
             {%endfor%}
         </select>
         <br>

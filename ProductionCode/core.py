@@ -74,18 +74,18 @@ class Dataset:
         Input: str(keyword), str(keyword_column_title), list[data]
         Output: boolean(is_keyword_in_data)"""
 
-        is_keyword_in_data = False
         get_all_countries = "SELECT country FROM countries"
 
         cursor = self.connection.cursor()
         cursor.execute(get_all_countries)
         all_countries = cursor.fetchall()
-        print(all_countries)
 
-        if keyword[0][0] in all_countries:
-            is_keyword_in_data = True
+        for country_in_data in all_countries:
+            current_country = country_in_data[0]
+            if keyword.strip() == current_country.strip():
+                return True
 
-        return is_keyword_in_data
+        return False
         # if not data:
         #     data = self.data
 
@@ -217,7 +217,6 @@ class Dataset:
         total_financial_account_status_responses_by_country = "SELECT COUNT(financial_account_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.financial_account_status <> '';"
         has_financial_account_by_country = "SELECT COUNT(financial_account_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.financial_account_status = '1';"
 
-        print(country.strip())
         cursor = self.connection.cursor()
 
         cursor.execute(total_financial_account_status_responses_by_country, (country.strip(),))
@@ -456,9 +455,31 @@ class Dataset:
         Input: country (string), data (list)
         Output: average age of the given country (integer)"""
 
-        country_validity = self.check_keyword_validity(country, "economy")
+        number_of_ages_in_country = "SELECT COUNT(age) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.age <> '';"
+        all_ages = "SELECT age FROM poll_results WHERE country = %s;"
 
-        if country_validity == True:
+
+        cursor = self.connection.cursor()
+    
+        cursor.execute(all_ages, (country),)
+        ages = cursor.fetchall()
+
+
+        cursor.execute(number_of_ages_in_country, (country),)
+        number_of_ages = cursor.fetchall()
+
+
+        adding_ages = 0
+        for age in ages:
+            adding_ages += age[0][0]
+        
+        average_age_in_country = (adding_ages / number_of_ages)
+
+
+        return average_age_in_country
+
+
+        """if country_validity == True:
             average_age_of_country = self.get_average_of_column(country, "age")
 
             return average_age_of_country
@@ -466,31 +487,35 @@ class Dataset:
         else:
             message = self.usage_statement()
 
-            return message
+            return message"""
 
     def financial_worry_education_by_country(self, country):
         """Returns the percentage of a country that is worried about financing their education.
         Input: country (string), data (list)
         Output: percentage of the given country that is worried about financing their education. """
 
-        country_validity = self.check_keyword_validity(country)
+        #country_validity = self.check_keyword_validity(country)
 
-        if country_validity == False:
+        #if country_validity == True:
+        
 
-            total_financial_worry_responses_by_country = "SELECT COUNT(worry_about_financing_education) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.worry_about_financing_education <> '';"
-            is_worried_about_financing_education_by_country = "SELECT COUNT(worry_about_financing_education) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.worry_about_financing_education = '1' OR poll.results.worry_about_financing_education = '2';"
+        total_financial_worry_responses_by_country = "SELECT COUNT(worry_about_financing_education) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.worry_about_financing_education <> '';"
+        is_worried_about_financing_education_by_country = "SELECT COUNT(worry_about_financing_education) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND (poll_results.worry_about_financing_education = '1' OR poll_results.worry_about_financing_education = '2');"
 
-            cursor = self.connection.cursor()
+        cursor = self.connection.cursor()
 
-            cursor.execute(total_financial_worry_responses_by_country, (country.strip(),))
-            total_financial_worry_responses_by_country_result = cursor.fetchall()
+        cursor.execute(total_financial_worry_responses_by_country, (country.strip(),))
+        total_financial_worry_responses_by_country_result = cursor.fetchall()
+        print(total_financial_worry_responses_by_country_result)
 
-            cursor.execute(is_worried_about_financing_education_by_country, (country.strip(),))
-            is_worried_about_financing_education_by_country_result = cursor.fetchall()
 
-            percentage = (is_worried_about_financing_education_by_country_result[0][0] / total_financial_worry_responses_by_country_result[0][0]) * 100
+        cursor.execute(is_worried_about_financing_education_by_country, (country.strip(),))
+        is_worried_about_financing_education_by_country_result = cursor.fetchall()
+        print(is_worried_about_financing_education_by_country_result)
 
-            return percentage
+        percentage = (is_worried_about_financing_education_by_country_result[0][0] / total_financial_worry_responses_by_country_result[0][0]) * 100
+
+        return round(percentage, 1)
 
         """if country_validity:
             very_worried_about_finances_of_education = "1"
