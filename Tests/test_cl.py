@@ -17,7 +17,7 @@ class TestDataset(unittest.TestCase):
         keyword = "South Asia"
         column = "regionwb"
 
-        keyword_validity = self.data.check_keyword_validity(keyword, column, self.data)
+        keyword_validity = self.data.check_keyword_validity(keyword)
 
         self.assertEqual(keyword_validity, True)
     
@@ -27,7 +27,7 @@ class TestDataset(unittest.TestCase):
         keyword = "Earth"
         column = "regionwb"
 
-        keyword_validity = self.data.check_keyword_validity(keyword, column, self.data)
+        keyword_validity = self.data.check_keyword_validity(keyword)
 
         self.assertEqual(keyword_validity, False)
 
