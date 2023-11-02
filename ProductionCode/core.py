@@ -73,17 +73,31 @@ class Dataset:
         """ Given a keyword, the column name and data, returns true if the keyword is in the data
         Input: str(keyword), str(keyword_column_title), list[data]
         Output: boolean(is_keyword_in_data)"""
-        if not data:
-            data = self.data
-
+        keyword = "Argentina"
         is_keyword_in_data = False
-        idx = self.header[keyword_column_title]
+        get_all_countries = "SELECT country FROM countries"
 
-        for row in self.data:
-            if row[idx] == keyword:
-                is_keyword_in_data = True
+        cursor = self.connection.cursor
+        cursor.execute(get_all_countries)
+        all_countries = cursor.fetchall()
 
+        if keyword in all_coutries:
+            is_keyword_in_data = True
+        else:
+            is_keyword_in_data = False
+        print(is_keyword_in_data)
         return is_keyword_in_data
+        # if not data:
+        #     data = self.data
+
+        # is_keyword_in_data = False
+        # idx = self.header[keyword_column_title]
+
+        # for row in self.data:
+        #     if row[idx] == keyword:
+        #         is_keyword_in_data = True
+
+        # return is_keyword_in_data
 
     def check_column_validity(self, column_title):
         """ Given a column name, returns true if the column is an actual column in the dataset
@@ -98,42 +112,51 @@ class Dataset:
         """Takes a data subset and a column name, and returns the column as a list
         Input: str(column_name), list [data]
         Output: list [column]""" 
-        
         column_validity = self.check_column_validity(column_name)
         if column_validity == True:
-            column = []
-            idx = self.header[column_name]
-            for row in subset:
-                column.append(row[idx])
-            return column 
+            all_column =  "SELECT" + column_name + "FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.employment_status <> '';"
+            cursor = self.connection.cursor()
+            column_data = cursor.fetchall()
+            return column_data
         else:
             message = "Invalid column name."
             return message
 
-    def filter(self, by, col): 
-        """Takes a keyword, a column name, and a dataset, and
-        returns the portion of the dataset that matches the keyword 
-        in the given column as a list
-        Input: str(by), str(col), list [data]
-        Output: list [newData]"""
-        
-        keyword_validity = self.check_keyword_validity(by, col, self.data)
-        column_validity = self.check_column_validity(col)
-        isValid = (keyword_validity and column_validity)
+        # column_validity = self.check_column_validity(column_name)
+        # if column_validity == True:
+        #     column = []
+        #     idx = self.header[column_name]
+        #     for row in subset:
+        #         column.append(row[idx])
+        #     return column 
+        # else:
+        #     message = "Invalid column name."
+        #     return message
 
-        if isValid:
-            new_data = []
-            idx = self.header[col]
+    # def filter(self, by, col): 
+    #     """Takes a keyword, a column name, and a dataset, and
+    #     returns the portion of the dataset that matches the keyword 
+    #     in the given column as a list
+    #     Input: str(by), str(col), list [data]
+    #     Output: list [newData]"""
         
-            for row in self.data:
+    #     keyword_validity = self.check_keyword_validity(by, col, self.data)
+    #     column_validity = self.check_column_validity(col)
+    #     isValid = (keyword_validity and column_validity)
+
+    #     if isValid:
+    #         new_data = []
+    #         idx = self.header[col]
+        
+    #         for row in self.data:
             
-                if row[idx] == by:
-                    new_data.append(row)
+    #             if row[idx] == by:
+    #                 new_data.append(row)
 
-            return new_data
-        else:
-            message = "Invalid keyword or column name."
-            return message
+    #         return new_data
+    #     else:
+    #         message = "Invalid keyword or column name."
+    #         return message
 
     def get_ratio_of_key_in_column(self, key, column): 
         """Given a key and a column, returns how often key appeared 
@@ -192,31 +215,59 @@ class Dataset:
         Input: country (string), data (list)
         Output: percentage of the given country that has a financial account (integer)"""
 
-        country_validity = self.check_keyword_validity(country, "economy")
+        total_financial_account_status_responses_by_country = "SELECT COUNT(financial_account_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.financial_account_status <> '';"
+        financial_account_status_by_country = "SELECT COUNT(financial_account_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.financial_account_status = '1';"
 
-        if country_validity == True:
-            has_account = "1"
-            subset = self.filter(country, "economy")
-            account_column = self.get_column("account_fin", subset)
-            percentage = self.get_ratio_of_key_in_column(has_account, account_column)
+        cursor = self.connection.cursor()
 
-            return percentage
+        cursor.execute(total_financial_account_status_responses_by_country, (country,))
+        total_financial_account_status_responses_by_country_response = cursor.fetchall()
+
+        cursor.execute(financial_account_status_by_country, (country,))
+        financial_account_status_by_country_result = cursor.fetchall()
+
+        percentage = (total_financial_account_status_responses_by_country_response[0][0] / financial_account_status_by_country_result[0][0]) * 100
+
+        return round(percentage, 1)
+
+
+
+
+
+        # country_validity = self.check_keyword_validity(country, "economy")
+
+        # if country_validity == True:
+        #     has_account = "1"
+        #     subset = self.filter(country, "economy")
+        #     account_column = self.get_column("account_fin", subset)
+        #     percentage = self.get_ratio_of_key_in_column(has_account, account_column)
+
+        #     return percentage
         
-        else:
-            message = self.usage_statement()
+        # else:
+        #     message = self.usage_statement()
 
-            return message
+        #     return message
 
     def has_financial_account_global(self):
         """Returns the percentage of countries worldwide that has a financial account. 
         Input: data (list)
         Output: percentage of people worldwide that have a financial account (integer)"""
 
-        has_account = "1"
-        account_column = self.get_column("account_fin", self.data)
-        percentage = self.get_ratio_of_key_in_column(has_account, account_column)
+        total_financial_account_status_responses_global = "SELECT COUNT(financial_account_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.financial_account_status <> '';"
+        financial_account_status_global = "SELECT COUNT(financial_account_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.financial_account_status = '1';"
 
-        return percentage
+        cursor = self.connection.cursor()
+
+        cursor.execute(total_financial_account_status_responses_global)
+        total_financial_account_status_responses_global_response = cursor.fetchall()
+
+        cursor.execute(financial_account_status_global)
+        financial_account_status_global_result = cursor.fetchall()
+
+        percentage = (total_financial_account_status_responses_global_response[0][0] / financial_account_status_global_result[0][0]) * 100
+
+        return round(percentage, 1)
 
     def format_financial_comparison(self, country):
         """Returns the formatted string of the results from the financial account functions. 
