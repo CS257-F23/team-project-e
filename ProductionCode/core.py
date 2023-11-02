@@ -1,15 +1,16 @@
 import csv, psycopg2
-import psqlConfig as config #change to import ProductionCode/psqlConfig as config before turning in
+import ProductionCode.psqlConfig as config #change to import ProductionCode.psqlConfig as config for app to work
 # check that command line portion still works
 
 """This core.py file will have all function except main and argsparse function from cl_code.py"""
 
 class Dataset:
     def __init__(self):
-        self.data = []
-        self.subset = []
-        self.header = {}
-    
+        #self.data = []
+        #self.subset = []
+        #self.header = {}
+        return
+
     def connect(self):
         try:
             self.connection = psycopg2.connect(database = config.database, user = config.user, password = config.password, host = "localhost")
@@ -18,9 +19,9 @@ class Dataset:
             exit()
         return self.connection
         
-    def load_data(self):
-        """Loads the data and returns it as a list
-        Output: list [data]"""
+    """def load_data(self): WE DON'T NEED THIS FUNCTION ANYMORE
+        ""Loads the data and returns it as a list
+        Output: list [data]""
          
         with open('Data/world_bank.csv', "r") as file:
             reader = csv.reader(file)
@@ -31,7 +32,7 @@ class Dataset:
             
             for row in reader:
                 self.data.append(row)  
-        return self.data  
+        return self.data"""
                 
     def list_of_countries(self):
         """Returns a list of all countries
@@ -242,13 +243,11 @@ class Dataset:
      
         cursor = self.connection.cursor()
 
-        cursor.execute(total_internet_responses_by_country, (country,))
+        cursor.execute(total_internet_responses_by_country, (country.strip(),))
         total_internet_responses_by_country_result = cursor.fetchall()
-        print(total_internet_responses_by_country_result)
 
-        cursor.execute(has_internet_responses_by_country, (country,))
+        cursor.execute(has_internet_responses_by_country, (country.strip(),))
         has_internet_responses_by_country_result = cursor.fetchall()
-        print(has_internet_responses_by_country_result)
 
         percentage = (has_internet_responses_by_country_result[0][0] / total_internet_responses_by_country_result[0][0]) * 100
 
@@ -277,13 +276,11 @@ class Dataset:
 
         cursor = self.connection.cursor()
 
-        cursor.execute(total_education_responses_by_country, (country,))
+        cursor.execute(total_education_responses_by_country, (country.strip(),))
         total_education_responses_by_country_result = cursor.fetchall()
-        print(total_education_responses_by_country_result)
 
-        cursor.execute(attained_tertiary_education_by_country, (country,))
+        cursor.execute(attained_tertiary_education_by_country, (country.strip(),))
         attained_tertiary_education_by_country_result = cursor.fetchall()
-        print(attained_tertiary_education_by_country_result)
 
         percentage = (attained_tertiary_education_by_country_result[0][0] / total_education_responses_by_country_result[0][0]) * 100
 
@@ -315,7 +312,7 @@ class Dataset:
 
         cursor = self.connection.cursor()
 
-        cursor.execute(population_by_country, (country,))
+        cursor.execute(population_by_country, (country.strip(),))
         population_by_country_result = cursor.fetchall()
 
         return population_by_country_result[0][0]
@@ -347,10 +344,10 @@ class Dataset:
 
         cursor = self.connection.cursor()
 
-        cursor.execute(total_employment_responses_by_country, (country,))
+        cursor.execute(total_employment_responses_by_country, (country.strip(),))
         total_employment_responses_by_country_result = cursor.fetchall()
 
-        cursor.execute(employed_persons_by_country, (country,))
+        cursor.execute(employed_persons_by_country, (country.strip(),))
         employed_persons_by_country_result = cursor.fetchall()
 
         percentage = (employed_persons_by_country_result[0][0] / total_employment_responses_by_country_result[0][0]) * 100
@@ -463,10 +460,11 @@ class Dataset:
     
         return message
 
-if __name__ == "__main__":
+"""if __name__ == "__main__":
     # Afghanistan ID exists in countries but when you run a command with the ID
     # it does not recognize it and returns 0 rows, only a problem for Afghanistan
     data = Dataset()
     data.connect()
-    print(data.format_four_stat_summary_by_country("Canada"))
+    print(data.population_by_country("Albania"))
+    print(data.format_four_stat_summary_by_country("Albania"))"""
 
