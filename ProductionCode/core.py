@@ -221,12 +221,12 @@ class Dataset:
         cursor = self.connection.cursor()
 
         cursor.execute(total_financial_account_status_responses_by_country, (country.strip(),))
-        total_financial_account_status_responses_by_country_response = cursor.fetchall()
+        total_financial_account_status_by_country_responses = cursor.fetchall()
 
         cursor.execute(has_financial_account_by_country, (country.strip(),))
         financial_account_status_by_country_result = cursor.fetchall()
 
-        percentage = (total_financial_account_status_responses_by_country_response[0][0] / financial_account_status_by_country_result[0][0]) * 100
+        percentage = (financial_account_status_by_country_result[0][0] / total_financial_account_status_by_country_responses[0][0]) * 100
 
         return round(percentage, 1)
 
@@ -249,23 +249,23 @@ class Dataset:
 
         #     return message
 
-    def has_financial_account_global(self):
+    def has_financial_account_global(self): 
         """Returns the percentage of countries worldwide that has a financial account. 
         Input: data (list)
         Output: percentage of people worldwide that have a financial account (integer)"""
 
-        total_financial_account_status_responses_global = "SELECT COUNT(financial_account_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.financial_account_status <> '';"
-        financial_account_status_global = "SELECT COUNT(financial_account_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.financial_account_status = '1';"
+        total_financial_account_status_responses_global = "SELECT COUNT(financial_account_status) FROM poll_results;"
+        financial_account_status_global = "SELECT COUNT(financial_account_status) FROM poll_results WHERE poll_results.financial_account_status = '1';"
 
         cursor = self.connection.cursor()
 
         cursor.execute(total_financial_account_status_responses_global)
-        total_financial_account_status_responses_global_response = cursor.fetchall()
+        total_financial_account_status_global_response = cursor.fetchall()
 
         cursor.execute(financial_account_status_global)
         financial_account_status_global_result = cursor.fetchall()
 
-        percentage = (total_financial_account_status_responses_global_response[0][0] / financial_account_status_global_result[0][0]) * 100
+        percentage = (financial_account_status_global_result[0][0] / total_financial_account_status_global_response[0][0]) * 100
 
         return round(percentage, 1)
 
