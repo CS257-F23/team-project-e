@@ -69,23 +69,22 @@ class Dataset:
 
         return string_of_countries
 
-    def check_keyword_validity(self, keyword, keyword_column_title, data = None): 
+    def check_keyword_validity(self, keyword): 
         """ Given a keyword, the column name and data, returns true if the keyword is in the data
         Input: str(keyword), str(keyword_column_title), list[data]
         Output: boolean(is_keyword_in_data)"""
-        keyword = "Argentina"
+
         is_keyword_in_data = False
         get_all_countries = "SELECT country FROM countries"
 
-        cursor = self.connection.cursor
+        cursor = self.connection.cursor()
         cursor.execute(get_all_countries)
         all_countries = cursor.fetchall()
+        print(all_countries)
 
-        if keyword in all_coutries:
+        if keyword[0][0] in all_countries:
             is_keyword_in_data = True
-        else:
-            is_keyword_in_data = False
-        print(is_keyword_in_data)
+
         return is_keyword_in_data
         # if not data:
         #     data = self.data
@@ -216,14 +215,15 @@ class Dataset:
         Output: percentage of the given country that has a financial account (integer)"""
 
         total_financial_account_status_responses_by_country = "SELECT COUNT(financial_account_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.financial_account_status <> '';"
-        financial_account_status_by_country = "SELECT COUNT(financial_account_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.financial_account_status = '1';"
+        has_financial_account_by_country = "SELECT COUNT(financial_account_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.financial_account_status = '1';"
 
+        print(country.strip())
         cursor = self.connection.cursor()
 
-        cursor.execute(total_financial_account_status_responses_by_country, (country,))
+        cursor.execute(total_financial_account_status_responses_by_country, (country.strip(),))
         total_financial_account_status_responses_by_country_response = cursor.fetchall()
 
-        cursor.execute(financial_account_status_by_country, (country,))
+        cursor.execute(has_financial_account_by_country, (country.strip(),))
         financial_account_status_by_country_result = cursor.fetchall()
 
         percentage = (total_financial_account_status_responses_by_country_response[0][0] / financial_account_status_by_country_result[0][0]) * 100
@@ -473,9 +473,26 @@ class Dataset:
         Input: country (string), data (list)
         Output: percentage of the given country that is worried about financing their education. """
 
-        country_validity = self.check_keyword_validity(country, "economy")
+        country_validity = self.check_keyword_validity(country)
 
-        if country_validity:
+        if country_validity == False:
+
+            total_financial_worry_responses_by_country = "SELECT COUNT(worry_about_financing_education) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.worry_about_financing_education <> '';"
+            is_worried_about_financing_education_by_country = "SELECT COUNT(worry_about_financing_education) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.worry_about_financing_education = '1' OR poll.results.worry_about_financing_education = '2';"
+
+            cursor = self.connection.cursor()
+
+            cursor.execute(total_financial_worry_responses_by_country, (country.strip(),))
+            total_financial_worry_responses_by_country_result = cursor.fetchall()
+
+            cursor.execute(is_worried_about_financing_education_by_country, (country.strip(),))
+            is_worried_about_financing_education_by_country_result = cursor.fetchall()
+
+            percentage = (is_worried_about_financing_education_by_country_result[0][0] / total_financial_worry_responses_by_country_result[0][0]) * 100
+
+            return percentage
+
+        """if country_validity:
             very_worried_about_finances_of_education = "1"
             somewhat_worried_about_finances_of_education = "2"
 
@@ -488,7 +505,7 @@ class Dataset:
         
         else:
             message = self.usage_statement()
-            return message
+            return message"""
 
     def format_age_financial_worry_by_education_summary(self, country):
         """Returns the formatted results of the average age of a country and the percentage of that country 
@@ -511,11 +528,12 @@ class Dataset:
     
         return message
 
-"""if __name__ == "__main__":
+if __name__ == "__main__":
     # Afghanistan ID exists in countries but when you run a command with the ID
     # it does not recognize it and returns 0 rows, only a problem for Afghanistan
     data = Dataset()
     data.connect()
     print(data.population_by_country("Albania"))
-    print(data.format_four_stat_summary_by_country("Albania"))"""
+    print(data.format_four_stat_summary_by_country("Albania"))
+    print(data.check_keyword_validity("Peru"))
 
