@@ -455,28 +455,56 @@ class Dataset:
         Input: country (string), data (list)
         Output: average age of the given country (integer)"""
 
-        number_of_ages_in_country = "SELECT COUNT(age) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.age <> '';"
-        all_ages = "SELECT age FROM poll_results WHERE country = %s;"
 
+        
+        ages_in_country = "SELECT COUNT(age) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.age <> 'None';"
+        all_ages = "SELECT age FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s;"
+        
 
         cursor = self.connection.cursor()
     
-        cursor.execute(all_ages, (country),)
+        cursor.execute(ages_in_country, (country.strip(),))
         ages = cursor.fetchall()
 
-
-        cursor.execute(number_of_ages_in_country, (country),)
-        number_of_ages = cursor.fetchall()
-
-
-        adding_ages = 0
-        for age in ages:
-            adding_ages += age[0][0]
+        cursor.execute(all_ages, (country.strip(),))
+        actual_ages = cursor.fetchall()
+        print(ages)
+        start = 0
+        for age in actual_ages:
+            start += int(age[0])
+        print(start)
         
-        average_age_in_country = (adding_ages / number_of_ages)
 
 
-        return average_age_in_country
+
+        #cursor.execute(number_of_ages_in_country, (country.strip(),))
+        #number_of_ages = cursor.fetchall()
+
+
+        """adding_ages = 0
+        #print(ages)
+        ages_spliced = ages[:-2]
+        #print(ages_spliced)
+        for age in all_ages:
+            adding_ages +=
+            print(age[0])
+            int_age = int(age[0])
+            if type(age[0]) is not None:
+                print(age[0])
+
+                #print(type(age[0]))
+                
+        
+                
+                #print(type(int_age))
+                adding_ages += int_age
+        #print(type(adding_ages
+        #print(len(number_of_ages))"""
+        
+        #average_age_in_country = (adding_ages / len(number_of_ages))
+
+
+        return ages
 
 
         """if country_validity == True:
@@ -506,12 +534,10 @@ class Dataset:
 
         cursor.execute(total_financial_worry_responses_by_country, (country.strip(),))
         total_financial_worry_responses_by_country_result = cursor.fetchall()
-        print(total_financial_worry_responses_by_country_result)
 
 
         cursor.execute(is_worried_about_financing_education_by_country, (country.strip(),))
         is_worried_about_financing_education_by_country_result = cursor.fetchall()
-        print(is_worried_about_financing_education_by_country_result)
 
         percentage = (is_worried_about_financing_education_by_country_result[0][0] / total_financial_worry_responses_by_country_result[0][0]) * 100
 

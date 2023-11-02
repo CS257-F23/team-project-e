@@ -9,7 +9,7 @@ CREATE TABLE countries (
 DROP TABLE IF EXISTS poll_results;
 CREATE TABLE poll_results (
     id text,
-    age text,
+    age smallint,
     education_level text,
     employment_status text,
     financial_account_status text,
