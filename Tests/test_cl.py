@@ -53,7 +53,7 @@ class TestDataset(unittest.TestCase):
         column as a string"""
 
         column_name = "regionwb"
-        column = self.data.get_column(column_name, self.data.data)
+        column = self.data.get_column(column_name, self.data.connect())
 
         self.assertEqual(column[0], "South Asia")
     
@@ -62,7 +62,7 @@ class TestDataset(unittest.TestCase):
         has been given"""
 
         column_name = "happiness"
-        column = self.data.get_column(column_name, self.data.data)
+        column = self.data.get_column(column_name, self.data.connect())
         message = "Invalid column name."
 
         self.assertEqual(column, message)
