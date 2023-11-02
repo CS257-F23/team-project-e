@@ -5,22 +5,22 @@ app = Flask(__name__)
 
 data_set = []
 data = Dataset()
-data_set = data.load_data()
+data.connect()
 
 @app.route("/")
 def homepage():
     """This is the homepage of our app. This route takes in no parameters and
     returns the message that is printed to the home page."""
 
-    countries_string = data.string_of_countries()
-    function_name = ['Summary of four interesting statistics', 'Financial account summary', 'Age and education comparison']
+    list_of_countries = data.list_of_countries()
+    function_names = ['Summary of four interesting statistics', 'Financial account summary', 'Age and education comparison']
 
-    return render_template('homepage.html',countries = countries_string, functions = function_name, countriesValue = data.list_of_countries())
+    return render_template('homepage.html', countries = list_of_countries, functions = function_names)
 
 @app.route("/get_function_and_country", methods = ["GET","POST"])
 def present_stats():
     function_name = request.form['function_name']
-    country = request.form['country_name'][1:]
+    country = request.form['country_name']
     
     if (function_name == "Summary of four interesting statistics"):
         page = get_four_stat_summary(country)
@@ -29,7 +29,7 @@ def present_stats():
     elif (function_name == "Age and education comparison"):
         page = get_age_education_comparison(country)
         
-    return render_template("dataStatsPage.html", webpage = page)
+    return render_template("dataStatsPage.html", webpage = page, heading = function_name)
 
 @app.route('/datastatistics') 
 def display_out_data():
@@ -48,8 +48,8 @@ def get_four_stat_summary(country):
     about the given country. It takes a country as a route parameter 
     and returns a message containing the statistics. """
 
-    if data.check_keyword_validity(country, "economy", data_set) == True:
-        summary = data.four_stat_summary_by_country(country)
+    #if data.check_keyword_validity(country, "economy", data_set) == True:
+    summary = data.four_stat_summary_by_country(country)
 
     population = summary[0]
     internet = summary[1]
@@ -111,5 +111,5 @@ def page_not_found(e):
     return error_message
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port = 5104)
 
