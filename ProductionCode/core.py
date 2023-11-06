@@ -448,7 +448,6 @@ class Dataset:
         cursor = self.connection.cursor()
         cursor.execute(average_age_by_country, (country.strip(),))
         result = cursor.fetchall()
-        formatted_result = round(result, 1)
 
         return result
 
