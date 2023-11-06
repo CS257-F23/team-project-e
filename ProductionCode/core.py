@@ -9,42 +9,27 @@ class Dataset:
         #self.data = []
         #self.subset = []
         #self.header = {}
-        return
+        self.connection = self.connect()
 
     def connect(self):
         try:
-            self.connection = psycopg2.connect(database = config.database, user = config.user, password = config.password, host = "localhost")
+            connection = psycopg2.connect(database = config.database, user = config.user, password = config.password, host = "localhost")
         except Exception as e:
             print("Connection error: ", e)
             exit()
-        return self.connection
-        
-    """def load_data(self): WE DON'T NEED THIS FUNCTION ANYMORE
-        ""Loads the data and returns it as a list
-        Output: list [data]""
-         
-        with open('Data/world_bank.csv', "r") as file:
-            reader = csv.reader(file)
-            column_names = next(reader)
-            
-            for i, col in enumerate(column_names):
-                self.header[col] = i
-            
-            for row in reader:
-                self.data.append(row)  
-        return self.data"""
-                
+        return connection
+                        
     def list_of_countries(self):
         """Returns a list of all countries
         Input: null
         Output: [countries]"""
 
-        all_countries = "SELECT country FROM countries"
+        #all_countries = "SELECT country FROM countries"
 
-        connection = self.connect()
-        cursor = connection.cursor()
-        cursor.execute(all_countries)
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT country FROM countries")
         list_of_all_countries = cursor.fetchall()
+        #print(list_of_all_countries)
 
         return list_of_all_countries
 
@@ -56,7 +41,7 @@ class Dataset:
         return country_set_to_list"""
     
 
-    def string_of_countries(self):
+    def string_of_countries(self): 
         """Given a list of countries from the data, returns countries as a string
         Input: list [list_of_countries]
         Output: str(string_of_countries)"""
@@ -70,12 +55,12 @@ class Dataset:
 
         return string_of_countries
 
-    def check_keyword_validity(self, keyword): 
+    def check_keyword_validity(self, keyword): # can call list of countries instead of doing the query here again
         """ Given a keyword, the column name and data, returns true if the keyword is in the data
         Input: str(keyword), str(keyword_column_title), list[data]
         Output: boolean(is_keyword_in_data)"""
 
-        get_all_countries = "SELECT country FROM countries"
+        get_all_countries = "SELECT country FROM countries;"
 
         cursor = self.connection.cursor()
         cursor.execute(get_all_countries)
@@ -456,24 +441,24 @@ class Dataset:
         Input: country (string), data (list)
         Output: average age of the given country (integer)"""
 
-
+        average_age_by_country = "SELECT AVG(age) FROM poll_results INNER JOIN countries on poll_results.country_id = countries.id WHERE countries.country = %s;"
+        #ages_in_country = "SELECT COUNT(age) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.age <> 'None';"
+        #all_ages = "SELECT age FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s;"
         
-        ages_in_country = "SELECT COUNT(age) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.age <> 'None';"
-        all_ages = "SELECT age FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s;"
-        
-
         cursor = self.connection.cursor()
-    
-        cursor.execute(ages_in_country, (country.strip(),))
-        ages = cursor.fetchall()
+        cursor.execute(average_age_by_country, (country.strip(),))
+        result = cursor.fetchall()
+        formatted_result = round(result, 1)
 
-        cursor.execute(all_ages, (country.strip(),))
+        return result
+
+        """cursor.execute(all_ages, (country.strip(),))
         actual_ages = cursor.fetchall()
         print(ages)
         start = 0
         for age in actual_ages:
             start += int(age[0])
-        print(start)
+        print(start)"""
         
 
 
@@ -505,7 +490,7 @@ class Dataset:
         #average_age_in_country = (adding_ages / len(number_of_ages))
 
 
-        return ages
+        #return ages
 
 
         """if country_validity == True:
@@ -584,8 +569,9 @@ if __name__ == "__main__":
     # Afghanistan ID exists in countries but when you run a command with the ID
     # it does not recognize it and returns 0 rows, only a problem for Afghanistan
     data = Dataset()
-    data.connect()
-    print(data.population_by_country("Albania"))
+    print(data.list_of_countries())
+    #print(data.has_financial_account_single_country("Albania"))
+    """print(data.population_by_country("Albania"))
     print(data.format_four_stat_summary_by_country("Albania"))
-    print(data.check_keyword_validity("Peru"))
+    print(data.check_keyword_validity("Peru"))"""
 
