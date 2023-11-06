@@ -18,21 +18,7 @@ class Dataset:
             print("Connection error: ", e)
             exit()
         return self.connection
-        
-    """def load_data(self): WE DON'T NEED THIS FUNCTION ANYMORE
-        ""Loads the data and returns it as a list
-        Output: list [data]""
-         
-        with open('Data/world_bank.csv', "r") as file:
-            reader = csv.reader(file)
-            column_names = next(reader)
-            
-            for i, col in enumerate(column_names):
-                self.header[col] = i
-            
-            for row in reader:
-                self.data.append(row)  
-        return self.data"""
+    
                 
     def list_of_countries(self):
         """Returns a list of all countries
@@ -48,13 +34,6 @@ class Dataset:
 
         return list_of_all_countries
 
-        """country_list = self.get_column("economy", self.data)
-        set_country_list = set(country_list)
-        country_set_to_list = list(set_country_list)
-        country_set_to_list.sort()
-    
-        return country_set_to_list"""
-    
 
     def string_of_countries(self):
         """Given a list of countries from the data, returns countries as a string
@@ -89,15 +68,6 @@ class Dataset:
         return False
        
 
-    def check_column_validity(self, column_title):
-        """ Given a column name, returns true if the column is an actual column in the dataset
-        Input: str(column_title)
-        Output: boolean(is_column_in_data) """
-        
-        if column_title in self.header.keys():
-            return True
-        return False
-
     def get_column(self, column_name, subset):
         """Takes a data subset and a column name, and returns the column as a list
         Input: str(column_name), list [data]
@@ -112,58 +82,6 @@ class Dataset:
             message = "Invalid column name."
             return message
 
-
-    def get_ratio_of_key_in_column(self, key, column): 
-        """Given a key and a column, returns how often key appeared 
-        in the column as a ratio of the length of the column
-        Inputs: int(key), str(column)
-        Output: int(ratio)"""
-        
-        num = column.count(key)
-        total = len(column)
-        ratio = 0
-
-        ratio = round((num / total) * 100, 1)
-        
-        return ratio
-
-
-    def get_average_of_column(self, country, column): #don't need because we do the query in the main function?
-        """Returns an average for the given column and country.
-        Works for any data that is a column in the csv file.
-        Inputs: str(country), str(column), list [data]
-        Outputs: int(the_averages)"""
-
-        country_validity = self.check_keyword_validity(country, "economy", self.data)
-
-        if country_validity == True:
-
-            subset = self.filter(country, "economy")
-            filtered_column_data = self.get_column(column, subset)
-            the_averages = self.calculate_averages(filtered_column_data)
-
-            return the_averages
-
-        else:
-            message = self.usage_statement()
-            message = self.usage_statement()
-            return message
-
-    def calculate_averages(self, subset): # don't need because we do the query in the main function?
-        """ Returns the calculated average for the given filtered data.
-        Input: list [data]
-        Output: int(avg)"""
-
-        total = 0
-        for i in subset:
-            if i != '':
-                total += int(i)
-        length = len(subset)
-        if length != 0:
-            avg = total / length
-            return round(avg, 1)
-        else:
-            return "Cannot calculate the average of no data."
 
     def has_financial_account_single_country(self, country):
         """Returns the percentage of a country that has a financial account. 
