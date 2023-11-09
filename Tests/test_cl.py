@@ -66,9 +66,7 @@ class TestDataset(unittest.TestCase):
         country = "Narnia"
         financial_account_single_country = self.data.has_financial_account_single_country(country)
 
-        message = "python3 cl_code.py --function <function_name> --country <country_name> \
-            \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 cl_code.py -h' in the command line."
+        message = "Attempted to run a query on an invalid country. "
 
         self.assertEqual(financial_account_single_country, message)
     
@@ -111,9 +109,7 @@ class TestDataset(unittest.TestCase):
         country = "Maine"
         internet_access = self.data.internet_access_by_country(country)
 
-        message = "python3 cl_code.py --function <function_name> --country <country_name> \
-            \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 cl_code.py -h' in the command line."
+        message = "Attempted to run a query on an invalid country. "
         
         self.assertIn(self.data.string_of_countries(), internet_access)
     
@@ -134,8 +130,9 @@ class TestDataset(unittest.TestCase):
 
         country = ""
         tertiary_education = self.data.tertiary_education_by_country(country)
+        message = "Attempted to run a query on an invalid country. "
         
-        self.assertIn(self.data.string_of_countries(), tertiary_education)
+        self.assertIn(message, tertiary_education)
     
     def test_population_by_country(self):
         """Tests that population_by_country correctly returns the population of a country. """
@@ -154,7 +151,7 @@ class TestDataset(unittest.TestCase):
         country = "London"
         population = self.data.population_by_country(country)
         
-        self.assertEqual("Function options:", population)
+        self.assertEqual("Attempted to run a query on an invalid country. ", population)
     
     def test_employment_by_country(self):
         """Tests that employment_by_country correctly returns the percentage of a country that is employed. """
@@ -173,9 +170,7 @@ class TestDataset(unittest.TestCase):
         country = "iceland"
         employment = self.data.employment_by_country(country)
 
-        message = "python3 cl_code.py --function <function_name> --country <country_name> \
-            \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 cl_code.py -h' in the command line."
+        message = "Attempted to run a query on an invalid country. "
         
         self.assertEqual(employment, message)
     
@@ -197,7 +192,7 @@ class TestDataset(unittest.TestCase):
         country = "Brazil"
         average_age = self.data.average_age_by_country(country)
 
-        result = 41.2
+        result = 41
 
         self.assertEqual(average_age, result)
     
@@ -208,9 +203,7 @@ class TestDataset(unittest.TestCase):
         country = "North America"
         average_age = self.data.average_age_by_country(country)
 
-        message = "python3 cl_code.py --function <function_name> --country <country_name> \
-            \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 cl_code.py -h' in the command line."
+        message = "Attempted to run a query on an invalid country. "
         
         
         self.assertEqual(average_age, message)
@@ -233,9 +226,7 @@ class TestDataset(unittest.TestCase):
         country = "Perth"
         comparison = self.data.financial_worry_education_by_country(country)
 
-        message = "python3 cl_code.py --function <function_name> --country <country_name> \
-            \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 cl_code.py -h' in the command line."
+        message = "Attempted to run a query on an invalid country. "
        
         self.assertEqual(comparison, message)
     
@@ -246,7 +237,7 @@ class TestDataset(unittest.TestCase):
         country = "Uzbekistan"
         formatted_comparison = self.data.format_age_financial_worry_by_education_summary(country)
 
-        result = "Average age of Uzbekistan: 42.4\nPercentage of people in Uzbekistan who are worried about financing their education: 34.3"
+        result = "Average age of Uzbekistan: 42\nPercentage of people in Uzbekistan who are worried about financing their education: 34.3"
         
         self.assertEqual(formatted_comparison, result)
 
@@ -292,7 +283,7 @@ class TestDataset(unittest.TestCase):
         code = subprocess.Popen(["python3", "-u", "cl_code.py", "--function", "age_education_worry_comparison", "--country", "Vietnam"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = "utf8")
         output, err = code.communicate()
         
-        self.assertIn("38.0", output.strip())
+        self.assertIn("Average age of Vietnam: 38\nPercentage of people in Vietnam who are worried about financing their education: 40.3", output.strip())
 
         code.terminate()
     
