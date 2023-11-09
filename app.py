@@ -13,7 +13,7 @@ def homepage():
     """This is the homepage of our app. This route takes in no parameters and
     returns the message that is printed to the home page."""
     
-    list_of_countries = data.list_of_countries()
+    list_of_countries = data.get_list_of_countries()
     function_names = [
         "Summary of four interesting statistics",
         "Financial account summary",
@@ -59,7 +59,7 @@ def get_four_stat_summary(country):
     and returns a message containing the statistics."""
 
     # if data.check_keyword_validity(country, "economy", data_set) == True:
-    summary = data.four_stat_summary_by_country(country)
+    summary = data.get_four_stat_summary_by_country(country)
 
     population = summary[0]
     internet = summary[1]
@@ -88,8 +88,8 @@ def get_financial_account_comparison(country):
     It takes a country as a route parameter and returns a message
     containing the comparison statistics."""
 
-    country_result = data.has_financial_account_single_country(country)
-    global_result = data.has_financial_account_global()
+    country_result = data.get_financial_account_status_single_country(country)
+    global_result = data.get_financial_account_status_global()
 
     first = (
         "Percentage of people in "
@@ -111,8 +111,8 @@ def get_age_education_comparison(country):
     It takes a country as a route parameters and returns a message containing
     the comparison statistics."""
 
-    average_age = data.average_age_by_country(country)
-    financial_worry = data.financial_worry_education_by_country(country)
+    average_age = data.get_average_age_by_country(country)
+    financial_worry = data.get_financial_worry_education_by_country(country)
 
     first = "Average age of " + country + ": " + str(average_age)
     second = (
@@ -140,4 +140,4 @@ def page_not_found(e):
 
 
 if __name__ == "__main__":
-    app.run(port=5104, debug = True)
+    app.run(port=5204, debug = True)
