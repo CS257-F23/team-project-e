@@ -138,6 +138,14 @@ def page_not_found(e):
 
     return render_template("pageNotFound.html")
 
+@app.errorhandler(500)
+def page_not_found(e):
+    """This route returns the usage statement for all functions if
+    the page cannot be found. It doesn't take any parameters and returns
+    a help statement for the user."""
+
+    return render_template("pageNotFound.html")
+
 
 if __name__ == "__main__":
     app.run(port=5104, debug = True)

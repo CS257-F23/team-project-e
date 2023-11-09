@@ -295,7 +295,8 @@ class TestDataset(unittest.TestCase):
 
         message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To  \
+            view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
         
         self.assertIn(self.data.string_of_countries(), output.strip())
 
