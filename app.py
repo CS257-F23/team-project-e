@@ -29,15 +29,20 @@ def homepage():
 def present_stats():
     function_name = request.form["function_name"]
     country = request.form["country_name"]
+    
+    if data.check_country_validity(country):
 
-    if function_name == "Summary of four interesting statistics":
-        page = get_four_stat_summary(country)
-    elif function_name == "Financial account summary":
-        page = get_financial_account_comparison(country)
-    elif function_name == "Age and education comparison":
-        page = get_age_education_comparison(country)
+        if function_name == "Summary of four interesting statistics":
+            page = get_four_stat_summary(country)
+        elif function_name == "Financial account summary":
+            page = get_financial_account_comparison(country)
+        elif function_name == "Age and education comparison":
+            page = get_age_education_comparison(country)
 
-    return render_template("dataStatsPage.html", webpage=page, heading=function_name)
+        return render_template("dataStatsPage.html", webpage=page, heading=function_name)
+    
+    else:
+        render_template("pageNotFound.html")
 
 
 @app.route("/datastatistics")
@@ -59,26 +64,31 @@ def get_four_stat_summary(country):
     and returns a message containing the statistics."""
 
     # if data.check_keyword_validity(country, "economy", data_set) == True:
-    summary = data.get_four_stat_summary_by_country(country)
+    if data.check_country_validity(country):
+    
+        summary = data.four_stat_summary_by_country(country)
 
-    population = summary[0]
-    internet = summary[1]
-    education = summary[2]
-    employment = summary[3]
+        population = summary[0]
+        internet = summary[1]
+        education = summary[2]
+        employment = summary[3]
 
-    first_line = "Population of " + country + ": " + str(population)
-    second_line = (
-        "Percentage of " + country + " that has internet access: " + str(internet)
-    )
-    third_line = (
-        "Percentage of "
-        + country
-        + " that has attained tertiary education or higher: "
-        + str(education)
-    )
-    fourth_line = "Percentage of " + country + " that is employed: " + str(employment)
+        first_line = "Population of " + country + ": " + str(population)
+        second_line = (
+            "Percentage of " + country + " that has internet access: " + str(internet)
+        )
+        third_line = (
+            "Percentage of "
+            + country
+            + " that has attained tertiary education or higher: "
+            + str(education)
+        )
+        fourth_line = "Percentage of " + country + " that is employed: " + str(employment)
 
-    return [first_line, second_line, third_line, fourth_line]
+        return [first_line, second_line, third_line, fourth_line]
+    else:
+        return render_template("pageNotFound.html")
+    
 
 
 @app.route("/financial_account_comparison/<country>")
@@ -88,20 +98,23 @@ def get_financial_account_comparison(country):
     It takes a country as a route parameter and returns a message
     containing the comparison statistics."""
 
-    country_result = data.get_financial_account_status_single_country(country)
-    global_result = data.get_financial_account_status_global()
+    if data.check_country_validity(country):
+        country_result = data.has_financial_account_single_country(country)
+        global_result = data.has_financial_account_global()
 
-    first = (
-        "Percentage of people in "
-        + country
-        + " who have a financial account: "
-        + str(country_result)
-    )
-    second = "Percentage of people worldwide who have a financial account: " + str(
-        global_result
-    )
+        first = (
+            "Percentage of people in "
+            + country
+            + " who have a financial account: "
+            + str(country_result)
+        )
+        second = "Percentage of people worldwide who have a financial account: " + str(
+            global_result
+        )
 
-    return [first, second]
+        return [first, second]
+    else:
+        return render_template("pageNotFound.html")
 
 
 @app.route("/age_education_comparison/<country>")
@@ -110,19 +123,21 @@ def get_age_education_comparison(country):
     the percentage of a country that is worried about financing their education.
     It takes a country as a route parameters and returns a message containing
     the comparison statistics."""
+    if not data.check_country_validity(country):
+        return render_template("pageNotFound.html")
+    else:
+        average_age = data.average_age_by_country(country)
+        financial_worry = data.financial_worry_education_by_country(country)
 
-    average_age = data.get_average_age_by_country(country)
-    financial_worry = data.get_financial_worry_education_by_country(country)
+        first = "Average age of " + country + ": " + str(average_age)
+        second = (
+            "Percentage of people in "
+            + country
+            + " who are worried about financing their education: "
+            + str(financial_worry)
+        )
 
-    first = "Average age of " + country + ": " + str(average_age)
-    second = (
-        "Percentage of people in "
-        + country
-        + " who are worried about financing their education: "
-        + str(financial_worry)
-    )
-
-    return [first, second]
+        return [first, second]
 
 
 @app.route("/help")
@@ -131,6 +146,14 @@ def helper_page():
 
 
 @app.errorhandler(404)
+def page_not_found(e):
+    """This route returns the usage statement for all functions if
+    the page cannot be found. It doesn't take any parameters and returns
+    a help statement for the user."""
+
+    return render_template("pageNotFound.html")
+
+@app.errorhandler(500)
 def page_not_found(e):
     """This route returns the usage statement for all functions if
     the page cannot be found. It doesn't take any parameters and returns
