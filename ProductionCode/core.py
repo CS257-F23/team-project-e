@@ -248,20 +248,27 @@ class Dataset:
 
         return message
     
+    def cast_value_to_integer(self, value):
+        cast_the_value = "SELECT CAST(%s AS int)"
+        cursor = self.connection.cursor()
+        cursor.execute(cast_the_value, (value,))
+        result = cursor.fetchall()
+        return result[0][0]
+    
     def average_age_by_country(self, country):
         """Returns the average age of a country. 
         Input: country (string), data (list)
         Output: average age of the given country (integer)"""
 
         average_age_by_country = "SELECT AVG(age) FROM poll_results INNER JOIN countries on poll_results.country_id = countries.id WHERE countries.country = %s;"
-        #ages_in_country = "SELECT COUNT(age) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.age <> 'None';"
-        #all_ages = "SELECT age FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s;"
         
         cursor = self.connection.cursor()
         cursor.execute(average_age_by_country, (country.strip(),))
         result = cursor.fetchall()
 
-        return result
+        cast_result_to_type_int = self.cast_value_to_integer(result[0])
+    
+        return cast_result_to_type_int
 
         """cursor.execute(all_ages, (country.strip(),))
         actual_ages = cursor.fetchall()
