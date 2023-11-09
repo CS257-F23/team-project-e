@@ -16,18 +16,18 @@ class TestDataset(unittest.TestCase):
 
         keyword = "Peru"
 
-        keyword_validity = self.data.check_keyword_validity(keyword)
+        country_validity = self.data.check_country_validity(keyword)
 
-        self.assertEqual(keyword_validity, True)
+        self.assertEqual(country_validity, True)
     
     def test_check_keyword_validity_edge_case(self):
         """Test checking that check_keyboard_validity returns False for an invalid input"""
 
         keyword = "Earth"
 
-        keyword_validity = self.data.check_keyword_validity(keyword)
+        country_validity = self.data.check_country_validity(keyword)
 
-        self.assertEqual(keyword_validity, False)
+        self.assertEqual(country_validity, False)
 
     def test_list_of_countries(self):
         """Testing if the function correctly returns the list of countries
@@ -111,7 +111,7 @@ class TestDataset(unittest.TestCase):
 
         message = "Attempted to run a query on an invalid country. "
         
-        self.assertIn(self.data.string_of_countries(), internet_access)
+        self.assertIn(message, internet_access)
     
     def test_tertiary_education_by_country(self):
         """Tests that tertiary_education_by_country correctly returns the percentage of a country
@@ -283,7 +283,7 @@ class TestDataset(unittest.TestCase):
         code = subprocess.Popen(["python3", "-u", "cl_code.py", "--function", "age_education_worry_comparison", "--country", "Vietnam"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = "utf8")
         output, err = code.communicate()
         
-        self.assertIn("Average age of Vietnam: 38\nPercentage of people in Vietnam who are worried about financing their education: 40.3", output.strip())
+        self.assertIn('Average age of Vietnam: 38\nPercentage of people in Vietnam who are worried about financing their education: 40.3', output.strip())
 
         code.terminate()
     

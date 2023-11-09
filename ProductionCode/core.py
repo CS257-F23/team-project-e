@@ -2,13 +2,20 @@ import csv, psycopg2
 import ProductionCode.psqlConfig as config #change to import ProductionCode.psqlConfig as config for app to work
 # check that command line portion still works
 
-"""This core.py file will have all function except main and argsparse function from cl_code.py"""
+#TODO tonight: 
+# - delete commented out code
+# - implement check country validity everywhere it needs to go
+# - add updated/appropriate comments
+# - update the query in check country validity to make the function shorter
+# - change function names to "get" for accesssors?
+# - class work?? seems we can do this later?
+# - deal with Afghanistan??
+
+
 
 class Dataset:
+    
     def __init__(self):
-        #self.data = []
-        #self.subset = []
-        #self.header = {}
         self.connection = self.connect()
 
     def connect(self):
@@ -24,12 +31,9 @@ class Dataset:
         Input: null
         Output: [countries]"""
 
-        #all_countries = "SELECT country FROM countries"
-
         cursor = self.connection.cursor()
         cursor.execute("SELECT country FROM countries")
         list_of_all_countries = cursor.fetchall()
-        #print(list_of_all_countries)
 
         return list_of_all_countries
 
@@ -48,16 +52,12 @@ class Dataset:
 
         return string_of_countries
 
-    def check_keyword_validity(self, keyword): # can call list of countries instead of doing the query here again
+    def check_country_validity(self, keyword):
         """ Given a keyword, the column name and data, returns true if the keyword is in the data
         Input: str(keyword), str(keyword_column_title), list[data]
         Output: boolean(is_keyword_in_data)"""
 
-        get_all_countries = "SELECT country FROM countries;"
-
-        cursor = self.connection.cursor()
-        cursor.execute(get_all_countries)
-        all_countries = cursor.fetchall()
+        all_countries = self.list_of_countries()
 
         for country_in_data in all_countries:
             current_country = country_in_data[0]
@@ -87,20 +87,26 @@ class Dataset:
         Input: country (string), data (list)
         Output: percentage of the given country that has a financial account (integer)"""
 
-        total_financial_account_status_responses_by_country = "SELECT COUNT(financial_account_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.financial_account_status <> '';"
-        has_financial_account_by_country = "SELECT COUNT(financial_account_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.financial_account_status = '1';"
+        country_validity = self.check_country_validity(country)
+        if country_validity == True:
 
-        cursor = self.connection.cursor()
+            total_financial_account_status_responses_by_country = "SELECT COUNT(financial_account_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.financial_account_status <> '';"
+            has_financial_account_by_country = "SELECT COUNT(financial_account_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.financial_account_status = '1';"
 
-        cursor.execute(total_financial_account_status_responses_by_country, (country.strip(),))
-        total_financial_account_status_by_country_responses = cursor.fetchall()
+            cursor = self.connection.cursor()
 
-        cursor.execute(has_financial_account_by_country, (country.strip(),))
-        financial_account_status_by_country_result = cursor.fetchall()
+            cursor.execute(total_financial_account_status_responses_by_country, (country.strip(),))
+            total_financial_account_status_by_country_responses = cursor.fetchall()
 
-        percentage = (financial_account_status_by_country_result[0][0] / total_financial_account_status_by_country_responses[0][0]) * 100
+            cursor.execute(has_financial_account_by_country, (country.strip(),))
+            financial_account_status_by_country_result = cursor.fetchall()
 
-        return round(percentage, 1)
+            percentage = (financial_account_status_by_country_result[0][0] / total_financial_account_status_by_country_responses[0][0]) * 100
+
+            return round(percentage, 1)
+
+        else:
+            return "Attempted to run a query on an invalid country. "
 
 
     def has_financial_account_global(self): 
@@ -141,22 +147,26 @@ class Dataset:
         Input: country (string), data (list)
         Output: percentage of the given country that has internet access (integer)"""
 
-        #country_validity = self.check_keyword_validity(country, "economy", self.data)
-        #if country_validity == True:
-        total_internet_responses_by_country = "SELECT COUNT(internet_access) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.internet_access <> '';"
-        has_internet_responses_by_country = "SELECT COUNT(internet_access) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.internet_access = '1';"
-     
-        cursor = self.connection.cursor()
+        country_validity = self.check_country_validity(country)
+        if country_validity == True:
 
-        cursor.execute(total_internet_responses_by_country, (country.strip(),))
-        total_internet_responses_by_country_result = cursor.fetchall()
+            total_internet_responses_by_country = "SELECT COUNT(internet_access) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.internet_access <> '';"
+            has_internet_responses_by_country = "SELECT COUNT(internet_access) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.internet_access = '1';"
+        
+            cursor = self.connection.cursor()
 
-        cursor.execute(has_internet_responses_by_country, (country.strip(),))
-        has_internet_responses_by_country_result = cursor.fetchall()
+            cursor.execute(total_internet_responses_by_country, (country.strip(),))
+            total_internet_responses_by_country_result = cursor.fetchall()
 
-        percentage = (has_internet_responses_by_country_result[0][0] / total_internet_responses_by_country_result[0][0]) * 100
+            cursor.execute(has_internet_responses_by_country, (country.strip(),))
+            has_internet_responses_by_country_result = cursor.fetchall()
 
-        return round(percentage, 1)
+            percentage = (has_internet_responses_by_country_result[0][0] / total_internet_responses_by_country_result[0][0]) * 100
+
+            return round(percentage, 1)
+
+        else:
+            return "Attempted to run a query on an invalid country. "
 
         
     def tertiary_education_by_country(self, country):
@@ -164,20 +174,26 @@ class Dataset:
         Input: country (string), data (list)
         Output: percentage of the given country that has attainted tertiary education (integer)"""
 
-        total_education_responses_by_country = "SELECT COUNT(education_level) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.education_level <> '';"
-        attained_tertiary_education_by_country = "SELECT COUNT(education_level) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.education_level = '3';"
+        country_validity = self.check_country_validity(country)
+        if country_validity == True:
 
-        cursor = self.connection.cursor()
+            total_education_responses_by_country = "SELECT COUNT(education_level) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.education_level <> '';"
+            attained_tertiary_education_by_country = "SELECT COUNT(education_level) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.education_level = '3';"
 
-        cursor.execute(total_education_responses_by_country, (country.strip(),))
-        total_education_responses_by_country_result = cursor.fetchall()
+            cursor = self.connection.cursor()
 
-        cursor.execute(attained_tertiary_education_by_country, (country.strip(),))
-        attained_tertiary_education_by_country_result = cursor.fetchall()
+            cursor.execute(total_education_responses_by_country, (country.strip(),))
+            total_education_responses_by_country_result = cursor.fetchall()
 
-        percentage = (attained_tertiary_education_by_country_result[0][0] / total_education_responses_by_country_result[0][0]) * 100
+            cursor.execute(attained_tertiary_education_by_country, (country.strip(),))
+            attained_tertiary_education_by_country_result = cursor.fetchall()
 
-        return round(percentage, 1)
+            percentage = (attained_tertiary_education_by_country_result[0][0] / total_education_responses_by_country_result[0][0]) * 100
+
+            return round(percentage, 1)
+
+        else:
+            return "Attempted to run a query on an invalid country. "
 
 
     def population_by_country(self, country):
@@ -185,36 +201,47 @@ class Dataset:
         Input: country (string)
         Output: population of the given country (integer)"""
 
-        population_by_country = "SELECT adult_population FROM countries WHERE country = %s;"
+        country_validity = self.check_country_validity(country)
+        if country_validity == True:
 
-        cursor = self.connection.cursor()
+            population_by_country = "SELECT adult_population FROM countries WHERE country = %s;"
 
-        cursor.execute(population_by_country, (country.strip(),))
-        population_by_country_result = cursor.fetchall()
+            cursor = self.connection.cursor()
 
-        return population_by_country_result[0][0]
+            cursor.execute(population_by_country, (country.strip(),))
+            population_by_country_result = cursor.fetchall()
+
+            return population_by_country_result[0][0]
+        
+        else:
+            return "Attempted to run a query on an invalid country. "
 
 
     def employment_by_country(self, country):
         """Returns the percentage of a country that is employed. 
         Input: country (string), data (list)
         Output: percentage of the given country that is employed (integer)"""
-    
 
-        total_employment_responses_by_country = "SELECT COUNT(employment_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.employment_status <> '';"
-        employed_persons_by_country = "SELECT COUNT(employment_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.employment_status = '1';"
+        country_validity = self.check_country_validity(country)
+        if country_validity == True:
 
-        cursor = self.connection.cursor()
+            total_employment_responses_by_country = "SELECT COUNT(employment_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.employment_status <> '';"
+            employed_persons_by_country = "SELECT COUNT(employment_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.employment_status = '1';"
 
-        cursor.execute(total_employment_responses_by_country, (country.strip(),))
-        total_employment_responses_by_country_result = cursor.fetchall()
+            cursor = self.connection.cursor()
 
-        cursor.execute(employed_persons_by_country, (country.strip(),))
-        employed_persons_by_country_result = cursor.fetchall()
+            cursor.execute(total_employment_responses_by_country, (country.strip(),))
+            total_employment_responses_by_country_result = cursor.fetchall()
 
-        percentage = (employed_persons_by_country_result[0][0] / total_employment_responses_by_country_result[0][0]) * 100
+            cursor.execute(employed_persons_by_country, (country.strip(),))
+            employed_persons_by_country_result = cursor.fetchall()
 
-        return round(percentage, 1)
+            percentage = (employed_persons_by_country_result[0][0] / total_employment_responses_by_country_result[0][0]) * 100
+
+            return round(percentage, 1)
+
+        else:
+            return "Attempted to run a query on an invalid country. "
 
 
     def four_stat_summary_by_country(self, country):
@@ -249,10 +276,13 @@ class Dataset:
         return message
     
     def cast_value_to_integer(self, value):
+        """NEEDS DOCSTRING"""
         cast_the_value = "SELECT CAST(%s AS int)"
+
         cursor = self.connection.cursor()
         cursor.execute(cast_the_value, (value,))
         result = cursor.fetchall()
+
         return result[0][0]
     
     def average_age_by_country(self, country):
@@ -260,55 +290,21 @@ class Dataset:
         Input: country (string), data (list)
         Output: average age of the given country (integer)"""
 
-        average_age_by_country = "SELECT AVG(age) FROM poll_results INNER JOIN countries on poll_results.country_id = countries.id WHERE countries.country = %s;"
+        country_validity = self.check_country_validity(country)
+        if country_validity == True:
+
+            average_age_by_country = "SELECT AVG(age) FROM poll_results INNER JOIN countries on poll_results.country_id = countries.id WHERE countries.country = %s;"
+            
+            cursor = self.connection.cursor()
+            cursor.execute(average_age_by_country, (country.strip(),))
+            result = cursor.fetchall()
+
+            cast_result_to_type_int = self.cast_value_to_integer(result[0])
         
-        cursor = self.connection.cursor()
-        cursor.execute(average_age_by_country, (country.strip(),))
-        result = cursor.fetchall()
+            return cast_result_to_type_int
 
-        cast_result_to_type_int = self.cast_value_to_integer(result[0])
-    
-        return cast_result_to_type_int
-
-        """cursor.execute(all_ages, (country.strip(),))
-        actual_ages = cursor.fetchall()
-        print(ages)
-        start = 0
-        for age in actual_ages:
-            start += int(age[0])
-        print(start)"""
-        
-
-
-
-        #cursor.execute(number_of_ages_in_country, (country.strip(),))
-        #number_of_ages = cursor.fetchall()
-
-
-        """adding_ages = 0
-        #print(ages)
-        ages_spliced = ages[:-2]
-        #print(ages_spliced)
-        for age in all_ages:
-            adding_ages +=
-            print(age[0])
-            int_age = int(age[0])
-            if type(age[0]) is not None:
-                print(age[0])
-
-                #print(type(age[0]))
-                
-        
-                
-                #print(type(int_age))
-                adding_ages += int_age
-        #print(type(adding_ages
-        #print(len(number_of_ages))"""
-        
-        #average_age_in_country = (adding_ages / len(number_of_ages))
-
-
-        #return ages
+        else:
+            return "Attempted to run a query on an invalid country. "
 
 
     def financial_worry_education_by_country(self, country):
@@ -316,26 +312,27 @@ class Dataset:
         Input: country (string), data (list)
         Output: percentage of the given country that is worried about financing their education. """
 
-        #country_validity = self.check_keyword_validity(country)
-
-        #if country_validity == True:
+        country_validity = self.check_country_validity(country)
+        if country_validity == True:
         
+            total_financial_worry_responses_by_country = "SELECT COUNT(worry_about_financing_education) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.worry_about_financing_education <> '';"
+            is_worried_about_financing_education_by_country = "SELECT COUNT(worry_about_financing_education) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND (poll_results.worry_about_financing_education = '1' OR poll_results.worry_about_financing_education = '2');"
 
-        total_financial_worry_responses_by_country = "SELECT COUNT(worry_about_financing_education) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.worry_about_financing_education <> '';"
-        is_worried_about_financing_education_by_country = "SELECT COUNT(worry_about_financing_education) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND (poll_results.worry_about_financing_education = '1' OR poll_results.worry_about_financing_education = '2');"
+            cursor = self.connection.cursor()
 
-        cursor = self.connection.cursor()
-
-        cursor.execute(total_financial_worry_responses_by_country, (country.strip(),))
-        total_financial_worry_responses_by_country_result = cursor.fetchall()
+            cursor.execute(total_financial_worry_responses_by_country, (country.strip(),))
+            total_financial_worry_responses_by_country_result = cursor.fetchall()
 
 
-        cursor.execute(is_worried_about_financing_education_by_country, (country.strip(),))
-        is_worried_about_financing_education_by_country_result = cursor.fetchall()
+            cursor.execute(is_worried_about_financing_education_by_country, (country.strip(),))
+            is_worried_about_financing_education_by_country_result = cursor.fetchall()
 
-        percentage = (is_worried_about_financing_education_by_country_result[0][0] / total_financial_worry_responses_by_country_result[0][0]) * 100
+            percentage = (is_worried_about_financing_education_by_country_result[0][0] / total_financial_worry_responses_by_country_result[0][0]) * 100
 
-        return round(percentage, 1)
+            return round(percentage, 1)
+        
+        else:
+            return "Attempted to run a query on an invalid country. "
 
 
     def format_age_financial_worry_by_education_summary(self, country):
@@ -359,13 +356,4 @@ class Dataset:
     
         return message
 
-if __name__ == "__main__":
-    # Afghanistan ID exists in countries but when you run a command with the ID
-    # it does not recognize it and returns 0 rows, only a problem for Afghanistan
-    data = Dataset()
-    print(data.list_of_countries())
-    #print(data.has_financial_account_single_country("Albania"))
-    """print(data.population_by_country("Albania"))
-    print(data.format_four_stat_summary_by_country("Albania"))
-    print(data.check_keyword_validity("Peru"))"""
 

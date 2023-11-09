@@ -12,7 +12,7 @@ data.connect()
 def homepage():
     """This is the homepage of our app. This route takes in no parameters and
     returns the message that is printed to the home page."""
-
+    
     list_of_countries = data.list_of_countries()
     function_names = [
         "Summary of four interesting statistics",
