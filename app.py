@@ -11,10 +11,9 @@ data.connect()
 def homepage():
     """This is the homepage of our app. This route takes in no parameters and
     returns the message that is printed to the home page."""
-
+    
     list_of_countries = data.list_of_countries()
     function_names = ['Summary of four interesting statistics', 'Financial account summary', 'Age and education comparison']
-
     return render_template('homepage.html', countries = list_of_countries, functions = function_names)
 
 @app.route("/get_function_and_country", methods = ["GET","POST"])
@@ -111,5 +110,5 @@ def page_not_found(e):
     return error_message
 
 if __name__ == "__main__":
-    app.run(port = 5104)
+    app.run(port = 5204)
 
