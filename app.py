@@ -136,11 +136,6 @@ def page_not_found(e):
     the page cannot be found. It doesn't take any parameters and returns
     a help statement for the user."""
 
-    error_message = """You must have typed in the wrong route. Remember, to use this website, either: <br />
-    1. Type in /four_stat_summary/[country name], e.g: /four_stat_summary/Nigeria <br />
-    2. Type in /financial_account_comparison/[country name], e.g: /financial_account_comparison/Mexico <br />
-    3. Type in /age_education_comparison/[country_name], e.g: /age_education_comparison/Malawi"""
-
     return render_template("pageNotFound.html")
 
 
