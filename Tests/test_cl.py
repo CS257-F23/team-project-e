@@ -16,7 +16,7 @@ class TestDataset(unittest.TestCase):
 
         keyword = "Peru"
 
-        country_validity = self.data.check_country_validity(keyword)
+        country_validity = self.data.get_country_validity(keyword)
 
         self.assertEqual(country_validity, True)
     
@@ -25,7 +25,7 @@ class TestDataset(unittest.TestCase):
 
         keyword = "Earth"
 
-        country_validity = self.data.check_country_validity(keyword)
+        country_validity = self.data.get_country_validity(keyword)
 
         self.assertEqual(country_validity, False)
 
@@ -33,7 +33,7 @@ class TestDataset(unittest.TestCase):
         """Testing if the function correctly returns the list of countries
         from the data as a string"""
 
-        final_list = self.data.list_of_countries()
+        final_list = self.data.get_list_of_countries()
 
         self.assertEqual(final_list[0], ("Afghanistan",) )
     
@@ -41,7 +41,7 @@ class TestDataset(unittest.TestCase):
         """Test identifying whether string_of_countries correctly returns
         a string of countries"""
 
-        string = self.data.string_of_countries()
+        string = self.data.get_string_of_countries()
         part_string = string[0:11]
 
         result = "Afghanistan"
@@ -53,7 +53,7 @@ class TestDataset(unittest.TestCase):
         country that has a financial account. """
 
         country = "Greece"
-        financial_account_single_country = self.data.has_financial_account_single_country(country)
+        financial_account_single_country = self.data. get_financial_account_status_single_country(country)
         
         result = 97.6
 
@@ -64,7 +64,7 @@ class TestDataset(unittest.TestCase):
         user enters an invalid country. """
 
         country = "Narnia"
-        financial_account_single_country = self.data.has_financial_account_single_country(country)
+        financial_account_single_country = self.data.get_financial_account_status_single_country(country)
 
         message = "Attempted to run a query on an invalid country. "
 
@@ -74,7 +74,7 @@ class TestDataset(unittest.TestCase):
         """Tests that has_financial_account_global correctly returns the percentage of people in all 
         countries worldwide that have a financial account. """
 
-        financial_account_global = self.data.has_financial_account_global()
+        financial_account_global = self.data.get_financial_account_status_global()
 
         result = 65.8
 
@@ -85,7 +85,7 @@ class TestDataset(unittest.TestCase):
         the results of the financial comparison functions. """
 
         country = "Greece"
-        format_comparison = self.data.format_financial_comparison(country)
+        format_comparison = self.data.get_formatted_financial_comparison(country)
 
         result = "Percentage of people in Greece who have a financial account: 97.6\nPercentage of people worldwide who have a financial account: 65.8"
         
@@ -96,7 +96,7 @@ class TestDataset(unittest.TestCase):
         that has internet access. """
 
         country = "Zambia"
-        internet_access = self.data.internet_access_by_country(country)
+        internet_access = self.data.get_internet_access_by_country(country)
 
         result = 26.5
 
@@ -107,7 +107,7 @@ class TestDataset(unittest.TestCase):
         the user enter an invalid country. """
 
         country = "Maine"
-        internet_access = self.data.internet_access_by_country(country)
+        internet_access = self.data.get_internet_access_by_country(country)
 
         message = "Attempted to run a query on an invalid country. "
         
@@ -118,7 +118,7 @@ class TestDataset(unittest.TestCase):
         that has attained tertiary (college) education. """
 
         country = "Ireland"
-        tertiary_education = self.data.tertiary_education_by_country(country)
+        tertiary_education = self.data.get_tertiary_education_by_country(country)
 
         result = 45.6
 
@@ -129,7 +129,7 @@ class TestDataset(unittest.TestCase):
         if the user enters an invalid country. """
 
         country = ""
-        tertiary_education = self.data.tertiary_education_by_country(country)
+        tertiary_education = self.data.get_tertiary_education_by_country(country)
         message = "Attempted to run a query on an invalid country. "
         
         self.assertIn(message, tertiary_education)
@@ -138,9 +138,9 @@ class TestDataset(unittest.TestCase):
         """Tests that population_by_country correctly returns the population of a country. """
 
         country = "China"
-        population = self.data.population_by_country(country)
+        population = self.data.get_population_by_country(country)
 
-        result = "1153772544"
+        result = 1153772544
 
         self.assertEqual(population, result) 
     
@@ -149,7 +149,7 @@ class TestDataset(unittest.TestCase):
         enters an invalid country. """
 
         country = "London"
-        population = self.data.population_by_country(country)
+        population = self.data.get_population_by_country(country)
         
         self.assertEqual("Attempted to run a query on an invalid country. ", population)
     
@@ -157,7 +157,7 @@ class TestDataset(unittest.TestCase):
         """Tests that employment_by_country correctly returns the percentage of a country that is employed. """
 
         country = "Iceland"
-        employment = self.data.employment_by_country(country)
+        employment = self.data.get_employment_by_country(country)
 
         result = 73.3
 
@@ -168,7 +168,7 @@ class TestDataset(unittest.TestCase):
         user enters an invalid country. """
 
         country = "iceland"
-        employment = self.data.employment_by_country(country)
+        employment = self.data.get_employment_by_country(country)
 
         message = "Attempted to run a query on an invalid country. "
         
@@ -179,9 +179,9 @@ class TestDataset(unittest.TestCase):
         results of the four statistics of interest for the given country. """
 
         country = "United States"
-        summary = self.data.four_stat_summary_by_country(country)
+        summary = self.data.get_four_stat_summary_by_country(country)
 
-        result = ['268952128', 94.3, 43.9, 63.1]
+        result = [268952128, 94.3, 43.9, 63.1]
 
 
         self.assertEqual(summary, result)
@@ -190,7 +190,7 @@ class TestDataset(unittest.TestCase):
         """Tests that average_age_by_country correctly returns the average age of a country. """
 
         country = "Brazil"
-        average_age = self.data.average_age_by_country(country)
+        average_age = self.data.get_average_age_by_country(country)
 
         result = 41
 
@@ -201,7 +201,7 @@ class TestDataset(unittest.TestCase):
         an invalid country. """
 
         country = "North America"
-        average_age = self.data.average_age_by_country(country)
+        average_age = self.data.get_average_age_by_country(country)
 
         message = "Attempted to run a query on an invalid country. "
         
@@ -213,7 +213,7 @@ class TestDataset(unittest.TestCase):
         a country that is worried about financing their education. """
 
         country = "Australia"
-        comparison = self.data.financial_worry_education_by_country(country)
+        comparison = self.data.get_financial_worry_education_by_country(country)
 
         result = 8.8
 
@@ -224,7 +224,7 @@ class TestDataset(unittest.TestCase):
         if the user enters an invalid country. """
 
         country = "Perth"
-        comparison = self.data.financial_worry_education_by_country(country)
+        comparison = self.data.get_financial_worry_education_by_country(country)
 
         message = "Attempted to run a query on an invalid country. "
        
@@ -235,7 +235,7 @@ class TestDataset(unittest.TestCase):
         results of the age and financial worry comparison functions. """
 
         country = "Uzbekistan"
-        formatted_comparison = self.data.format_age_financial_worry_by_education_summary(country)
+        formatted_comparison = self.data. get_formatted_age_financial_worry_by_education_summary(country)
 
         result = "Average age of Uzbekistan: 42\nPercentage of people in Uzbekistan who are worried about financing their education: 34.3"
         
@@ -246,11 +246,11 @@ class TestDataset(unittest.TestCase):
     def test_usage_statement(self):
         """Test identifying whether usage_statement will return correct message when no data is given"""
 
-        result = self.data.usage_statement()
+        result = self.data.get_usage_statement()
 
         message = "python3 cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To view this information at any time, type 'python3 cl_code.py -h' in the command line."
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.get_string_of_countries() + "To view this information at any time, type 'python3 cl_code.py -h' in the command line."
         
         self.assertEqual(result, message)
      
@@ -295,10 +295,10 @@ class TestDataset(unittest.TestCase):
 
         message = "python3 ProductionCode/cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.string_of_countries() + "To  \
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.data.get_string_of_countries() + "To  \
             view this information at any time, type 'python3 ProductionCode/cl_code.py -h' in the command line."
         
-        self.assertIn(self.data.string_of_countries(), output.strip())
+        self.assertIn(self.data.get_string_of_countries(), output.strip())
 
         code.terminate()
 
