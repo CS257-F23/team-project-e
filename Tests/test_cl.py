@@ -289,7 +289,7 @@ class TestDataset(unittest.TestCase):
     
     def test_main_edge_case(self):
         """Tests that the main function will print out the usage statement if the user does not enter a function argument. """
-        self.maxDiff = None;
+        self.maxDiff = None
         code = subprocess.Popen(["python3", "-u", "cl_code.py", "--function", "", "--country", "Peru"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = "utf8")
         output, err = code.communicate()
 
