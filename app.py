@@ -30,7 +30,7 @@ def present_stats():
     function_name = request.form["function_name"]
     country = request.form["country_name"]
     
-    if data.check_country_validity(country):
+    if data.get_country_validity(country):
 
         if function_name == "Summary of four interesting statistics":
             page = get_four_stat_summary(country)
@@ -63,10 +63,9 @@ def get_four_stat_summary(country):
     about the given country. It takes a country as a route parameter
     and returns a message containing the statistics."""
 
-    # if data.check_keyword_validity(country, "economy", data_set) == True:
-    if data.check_country_validity(country):
+    if data.get_country_validity(country):
     
-        summary = data.four_stat_summary_by_country(country)
+        summary = data.get_four_stat_summary_by_country(country)
 
         population = summary[0]
         internet = summary[1]
@@ -98,9 +97,9 @@ def get_financial_account_comparison(country):
     It takes a country as a route parameter and returns a message
     containing the comparison statistics."""
 
-    if data.check_country_validity(country):
-        country_result = data.has_financial_account_single_country(country)
-        global_result = data.has_financial_account_global()
+    if data.get_country_validity(country):
+        country_result = data.get_financial_account_status_single_country(country)
+        global_result = data.get_financial_account_status_global()
 
         first = (
             "Percentage of people in "
@@ -123,11 +122,11 @@ def get_age_education_comparison(country):
     the percentage of a country that is worried about financing their education.
     It takes a country as a route parameters and returns a message containing
     the comparison statistics."""
-    if not data.check_country_validity(country):
+    if not data.get_country_validity(country):
         return render_template("pageNotFound.html")
     else:
-        average_age = data.average_age_by_country(country)
-        financial_worry = data.financial_worry_education_by_country(country)
+        average_age = data.get_average_age_by_country(country)
+        financial_worry = data.get_financial_worry_education_by_country(country)
 
         first = "Average age of " + country + ": " + str(average_age)
         second = (
@@ -163,4 +162,4 @@ def page_not_found(e):
 
 
 if __name__ == "__main__":
-    app.run(port=5204, debug = True)
+    app.run(port=5104, debug = True)

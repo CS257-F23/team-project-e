@@ -3,8 +3,8 @@ from ProductionCode.core import *
     
 def argument_parser():
     """Returns the argument that is inputed into the terminal by the user.
-        Input: None 
-        output: command line arguments (string)"""
+    Input: None 
+    Returns: command line arguments (string)"""
     parser = argparse.ArgumentParser(usage = data.get_usage_statement())
     parser.add_argument("--function", type = str, help = "Usage: python3 ProductionCode/cl_code.py --function <function_name> \
                         --country <country_name>\nFunction options:\nfour_stat_summary, financial_account_comparison, age_education_worry_comparison") 

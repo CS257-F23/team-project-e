@@ -1,12 +1,7 @@
 import csv, psycopg2
-import ProductionCode.psqlConfig as config #change to import ProductionCode.psqlConfig as config for app to work
-# check that command line portion still works
+import ProductionCode.psqlConfig as config 
 
-#TODO tonight: 
-# - change function names to "get" for accesssors?
-# - fix what prints when we get the 404 page error
-
-
+#TODO before turning in: fix casting population to which type or not?
 class Dataset:
 
     def __init__(self):
@@ -70,8 +65,7 @@ class Dataset:
         Input: country (string)
         Returns: percentage of the given country that has a financial account (integer)"""
 
-        country_validity = self.get_country_validity(country)
-        if country_validity == True:
+        if self.get_country_validity(country):
 
             total_financial_account_status_responses_by_country = "SELECT COUNT(financial_account_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.financial_account_status <> '';"
             has_financial_account_by_country = "SELECT COUNT(financial_account_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.financial_account_status = '1';"
@@ -118,8 +112,7 @@ class Dataset:
         percentage of people in countries worldwide who have a financial account (integer)
         Returns: formatted results (string)"""
 
-        country_validity = self.get_country_validity(country)
-        if country_validity == True:
+        if self.get_country_validity(country):
 
             country_result = self.get_financial_account_status_single_country(country)
             global_result = self.get_financial_account_status_global()
@@ -136,8 +129,7 @@ class Dataset:
         Input: country (string)
         Returns: percentage of the given country that has internet access (integer)"""
 
-        country_validity = self.get_country_validity(country)
-        if country_validity == True:
+        if self.get_country_validity(country):
 
             total_internet_responses_by_country = "SELECT COUNT(internet_access) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.internet_access <> '';"
             has_internet_responses_by_country = "SELECT COUNT(internet_access) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.internet_access = '1';"
@@ -163,8 +155,7 @@ class Dataset:
         Input: country (string)
         Returns: percentage of the given country that has attainted tertiary education (integer)"""
 
-        country_validity = self.get_country_validity(country)
-        if country_validity == True:
+        if self.get_country_validity(country):
 
             total_education_responses_by_country = "SELECT COUNT(education_level) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.education_level <> '';"
             attained_tertiary_education_by_country = "SELECT COUNT(education_level) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.education_level = '3';"
@@ -190,8 +181,7 @@ class Dataset:
         Input: country (string)
         Returns: population of the given country (integer)"""
 
-        country_validity = self.get_country_validity(country)
-        if country_validity == True:
+        if self.get_country_validity(country):
 
             population_by_country = "SELECT adult_population FROM countries WHERE country = %s;"
 
@@ -200,9 +190,7 @@ class Dataset:
             cursor.execute(population_by_country, (country.strip(),))
             population_by_country_result = cursor.fetchall()
 
-            string_to_integer = self.get_value_as_integer(population_by_country_result[0][0])
-
-            return round(string_to_integer, 0)
+            return population_by_country_result[0][0]
         
         else:
             return "Attempted to run a query on an invalid country. "
@@ -213,8 +201,7 @@ class Dataset:
         Input: country (string)
         Returns: percentage of the given country that is employed (integer)"""
 
-        country_validity = self.get_country_validity(country)
-        if country_validity == True:
+        if self.get_country_validity(country):
 
             total_employment_responses_by_country = "SELECT COUNT(employment_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.employment_status <> '';"
             employed_persons_by_country = "SELECT COUNT(employment_status) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.employment_status = '1';"
@@ -256,8 +243,7 @@ class Dataset:
         Input: country (string)
         Returns: formatted results (string)"""
 
-        country_validity = self.get_country_validity(country)
-        if country_validity == True:
+        if self.get_country_validity(country):
 
             summary = self.get_four_stat_summary_by_country(country)
 
@@ -291,8 +277,7 @@ class Dataset:
         Input: country (string)
         Returns: average age of the given country (integer)"""
 
-        country_validity = self.get_country_validity(country)
-        if country_validity == True:
+        if self.get_country_validity(country):
 
             average_age_by_country = "SELECT AVG(age) FROM poll_results INNER JOIN countries on poll_results.country_id = countries.id WHERE countries.country = %s;"
             
@@ -300,9 +285,9 @@ class Dataset:
             cursor.execute(average_age_by_country, (country.strip(),))
             result = cursor.fetchall()
 
-            cast_result_to_type_int = self.get_value_as_integer(result[0])
+            result_to_integer = self.get_value_as_integer(result[0])
         
-            return cast_result_to_type_int
+            return result_to_integer
 
         else:
             return "Attempted to run a query on an invalid country. "
@@ -313,8 +298,7 @@ class Dataset:
         Input: country (string)
         Returns: percentage of the given country that is worried about financing their education (integer)"""
 
-        country_validity = self.get_country_validity(country)
-        if country_validity == True:
+        if self.get_country_validity(country):
         
             total_financial_worry_responses_by_country = "SELECT COUNT(worry_about_financing_education) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND poll_results.worry_about_financing_education <> '';"
             is_worried_about_financing_education_by_country = "SELECT COUNT(worry_about_financing_education) FROM poll_results INNER JOIN countries ON poll_results.country_id = countries.id WHERE countries.country = %s AND (poll_results.worry_about_financing_education = '1' OR poll_results.worry_about_financing_education = '2');"
@@ -342,8 +326,7 @@ class Dataset:
         Input: country (string)
         Returns: formatted results (string)"""
 
-        country_validity = self.get_country_validity(country)
-        if country_validity == True:
+        if self.get_country_validity(country):
 
             average_age = self.get_average_age_by_country(country)
             financial_worry = self.get_financial_worry_education_by_country(country)
@@ -361,7 +344,7 @@ class Dataset:
 
         message = "python3 cl_code.py --function <function_name> --country <country_name> \
             \nFunction options:\nfour_stat_summary\nfinancial_account_comparison\nage_education_worry_comparison\nCountry options: \
-            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.string_of_countries() + "To view this information at any time, type 'python3 cl_code.py -h' in the command line."
+            \nHint: If the country is multiple words long, enclose the name in quotes.\n" + self.get_string_of_countries() + "To view this information at any time, type 'python3 cl_code.py -h' in the command line."
     
         return message
 
