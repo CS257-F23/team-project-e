@@ -37,7 +37,7 @@ class test_flask_app(unittest.TestCase):
         self.app = app.test_client()
         response = self.app.get('404', follow_redirects = True)
         
-        self.assertIn(b'Page not found', response.data)
+        self.assertIn(b'You must have typed in the wrong route. Remember, to use this website, either: <br />\n    1. Type in /four_stat_summary/[country name], e.g: /four_stat_summary/Nigeria <br />\n    2. Type in /financial_account_comparison/[country name], e.g: /financial_account_comparison/Mexico <br />\n    3. Type in /age_education_comparison/[country_name], e.g: /age_education_comparison/Malawi', response.data)
 
     def test_not_enough_argvs(self):
         """Test function for when there are not enough argumnets in the input"""
