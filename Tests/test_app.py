@@ -36,8 +36,11 @@ class test_flask_app(unittest.TestCase):
         """" Function tests the route of the error handler and correctly returns the response."""
         self.app = app.test_client()
         response = self.app.get('404', follow_redirects = True)
+
+        item = "Remember"
+        page = str(response.data)
         
-        self.assertIn(b'Page not found', response.data)
+        self.assertIn(item, page)
 
     def test_not_enough_argvs(self):
         """Test function for when there are not enough argumnets in the input"""

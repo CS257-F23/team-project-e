@@ -1,7 +1,6 @@
 import csv, psycopg2
 import ProductionCode.psqlConfig as config 
 
-#TODO before turning in: fix casting population to which type or not?
 class Dataset:
 
     def __init__(self):

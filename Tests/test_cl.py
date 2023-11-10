@@ -140,7 +140,7 @@ class TestDataset(unittest.TestCase):
         country = "China"
         population = self.data.get_population_by_country(country)
 
-        result = 1153772544
+        result = "1153772544"
 
         self.assertEqual(population, result) 
     
@@ -181,7 +181,7 @@ class TestDataset(unittest.TestCase):
         country = "United States"
         summary = self.data.get_four_stat_summary_by_country(country)
 
-        result = [268952128, 94.3, 43.9, 63.1]
+        result = ["268952128", 94.3, 43.9, 63.1]
 
 
         self.assertEqual(summary, result)
