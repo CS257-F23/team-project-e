@@ -140,7 +140,7 @@ class TestDataset(unittest.TestCase):
         country = "China"
         population = self.data.get_population_by_country(country)
 
-        result = "1153772544"
+        result = 1153772544.0
 
         self.assertEqual(population, result) 
     
@@ -181,7 +181,7 @@ class TestDataset(unittest.TestCase):
         country = "United States"
         summary = self.data.get_four_stat_summary_by_country(country)
 
-        result = ["268952128", 94.3, 43.9, 63.1]
+        result = [268952128, 94.3, 43.9, 63.1]
 
 
         self.assertEqual(summary, result)
@@ -259,7 +259,7 @@ class TestDataset(unittest.TestCase):
         code = subprocess.Popen(["python3", "-u", "cl_code.py", "--function", "four_stat_summary", "--country", "Canada"], stdin = subprocess.PIPE, stdout = subprocess.PIPE, encoding = "utf8")
         output, err = code.communicate()
 
-        result = "Population of Canada: 32009816\nPercentage of Canada that has internet access: 95.2\nPercentage of Canada that has attained tertiary education or higher: 41.5\nPercentage of Canada that is employed: 62.3"
+        result = "Population of Canada: 32009816.0\nPercentage of Canada that has internet access: 95.2\nPercentage of Canada that has attained tertiary education or higher: 41.5\nPercentage of Canada that is employed: 62.3"
 
         self.assertEqual(output.strip(), result)
 

@@ -14,12 +14,13 @@ def argument_parser():
 
     return arguments
 
-def function_argument_choice(arguments):
-    """ Returns the result associated with the specifc argument the user types into the terminal.
+def get_function_results(arguments):
+    """ Returns the result associated with the specific function argument the user types into 
+    the terminal. If the function is not valid, the usage message is returned.
     Input: command line arguments (string)
-    Returns: results of the given function (string)
+    Returns: results associated with the given function (string)
+    or the usage statement (string)
     """
-
     if arguments.function == "four_stat_summary":
         four_main_stats_of_interest = data.get_formatted_four_stat_summary_by_country(arguments.country)
         return four_main_stats_of_interest
@@ -35,19 +36,51 @@ def function_argument_choice(arguments):
     else:
         usage_statement_message = data.get_usage_statement()
         return usage_statement_message
+    
+def get_results_if_valid_country(arguments):
+    """Calls get_function_results if the user enters a valid country.
+    If the country is not valid, the usage message is returned. 
+    Input: command line arguments (string)
+    Returns: results associated with the given country (string)
+    or the usage statement (string)
+    """
+    if data.get_country_validity(arguments.country):
+        results = get_function_results(arguments)
+        return results
+    else:
+        usage_statement_message = data.get_usage_statement()
+        return usage_statement_message
 
+def has_function_argument(arguments):
+    """Checks that the user provided a function argument through
+    the command line.
+    Input: command line arguments (string)
+    Returns: if a function argument was given or not (boolean)
+    """
+    function_argument = True
+    if arguments.function == None:
+        function_argument = False
+    return function_argument
+
+def has_country_argument(arguments):
+    """Checks that the user provided a country argument through
+    the command line.
+    Input: command line arguments (string)
+    Returns: if a country argument was given or not (boolean)
+    """
+    country_argument = True
+    if arguments.country == None:
+        country_argument = False
+    return country_argument
+            
 def main():
     """Loads the data, parses the command line, and prints the results of the specificed command line function.
     Input: None
-    Output: the results associated with the given arguments (string)"""
-        
+    Returns: the results associated with the given arguments (string)"""    
     arguments = argument_parser()
 
-    country_validity = data.get_country_validity(arguments.country)
-    if country_validity == True:
-        results = function_argument_choice(arguments)
-        print(results)
-        
+    if has_function_argument(arguments) and has_country_argument(arguments):
+            print(get_results_if_valid_country(arguments))
     else:
         usage_statement_message = data.get_usage_statement()
         print(usage_statement_message)
