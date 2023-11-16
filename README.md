@@ -1,2 +1,2 @@
 # CS257-F23-TeamTemplate
-Template for long-term team projects
+Team members: Maddy Brown, Albert Ezem Osakwe, Colin James, Helana Solomon

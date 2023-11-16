@@ -1,4 +1,6 @@
+
 # Byte-compiled / optimized / DLL files
+psqlConfig.py
 __pycache__/
 *.py[cod]
 *$py.class
@@ -158,3 +160,12 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+
+#Personal test file
+
+/personal.py
+/personal.ipynb
+/Education.py
+/htmlcov
+/app2.py
+/psqlConfig.py

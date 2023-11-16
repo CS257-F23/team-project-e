@@ -1,0 +1,35 @@
+<html>
+
+<head>
+    <title> Information About Our Data</title>
+    <link rel="stylesheet" href="{{url_for('static', filename = 'datastyle.css')}}">
+</head>
+
+<body>
+    <nav id = "navbar">
+        <ul>
+            <li> <a href={{url_for('homepage')}}> Home </a></li>
+            <li> <a href={{url_for('statement_about_our_data')}}> Data </a></li>
+            <li> <a href={{url_for('helper_page')}}> Help </a></li>
+        </ul>
+    </nav>
+    <h1> Information About Our Data </h1>
+    <p> The information produced from our functions comes from the World Bank Financial Inclusion data set and is used to produce
+        several pieces
+        of information from our code. The World Bank is an organization that collects data around the world to be used for
+        research and
+        various other purposes. The World Bank operates under an Open Terms of use. This means that "Unless indicated
+        otherwise in
+        the data or indicator metadata, you are free to copy, distribute, adapt, display or include the data in other
+        products for
+        commercial or noncommercial purposes at no cost under a Creative Commons Attribution 4.0 International License."
+        You can find a link to the data, terms of use, and a citation for the data set here:
+    </p>
+    <!-- Link for data and terms of use: -->
+    <a href="https://microdata.worldbank.org/index.php/catalog/4607/study-description">World Bank Financial Inclusion Data</a>
+    <br>
+    <a href="https://microdata.worldbank.org/index.php/terms-of-use">Terms of Use</a>
+    <p> Citation: World Bank. (2023). Global Financial Inclusion (Global Findex) Database 2021 (Version 03) [Data set]. <a href = "https://microdata.worldbank.org/index.php/catalog/4607/study-description">https://microdata.worldbank.org/index.php/catalog/4607/study-description</a></p>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='datastyle.css') }}">
+    <title> World Bank Financial Data Website</title>
+</head>
+
+<body>
+    <nav id="navbar">
+        <ul>
+            <li> <a href={{url_for('homepage')}}> Home </a></li>
+            <li> <a href={{url_for('statement_about_our_data')}}> Data </a></li>
+            <li> <a href={{url_for('helper_page')}}> Help </a></li>
+        </ul>
+    </nav>
+    <h1> Welcome to our World Bank Financial Data Website!</h1>
+    <h2> There are 3 functionalities for this app.</h2>
+    <p> You can either retrieve:</p>
+    <ul>
+        <li>A summary of four interesting statistics about a country</li>
+        <ul>
+            <li> Population of country</li>
+            <li> Percentage of country with internet access</li>
+            <li> Percentage of country that attained teritary education or higher</li>
+            <li> Percentage of country that is employed</li>
+        </ul>
+        <li>A comparison between the percentage of country that has a financial account to the worldwide statistic</li>
+        <li>A comparison between the average age of a country and the percentage of the population that is worried about
+            financing their education</li>
+    </ul>
+    <p>You can use these statistics about various countries to learn about the financial and demographic status of a
+        given country. By providing the comparison of these
+        statistics across multiple countries globally, we provide invaluable data for researchers, professors, and
+        students alike.</p>
+    <p>Note: These sample statistics are not necessarily representative of the true population statistics for each
+        country.</p>
+
+    <p>What type of data do you want to explore?</p>
+    <form action="get_function_and_country" id="function_form" method="POST">
+        <label for="functions"> Choose a function</label>
+        <select id="functions" name="function_name">
+            {% for function in functions: %}
+            <option value="{{function}}"> {{function}}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="country_names"> Choose a country</label>
+        <select id="country_names" name="country_name">
+            {% for country in countries: %}
+            <option value="{{country[0]}}"> {{country[0]}} </option>
+            {%endfor%}
+        </select>
+        <br>
+        <input type="submit" value=Submit>
+    </form>
+</body>
+
+</html>

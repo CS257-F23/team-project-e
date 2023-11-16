@@ -1,0 +1,73 @@
+
+/* Formatting the header bars */
+h1 {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    background-color: #aec6cf;
+    color: black;
+    text-align: center;
+}
+
+/* Formatting the navigation banner */
+nav ul {
+    background-color: #3d426b;
+    list-style-type: none;
+    overflow: hidden;
+}
+
+/* Formatting the buttons within the navigation bar */
+nav li {
+    float: left;
+}
+
+/* Formatting the buttons with color and text */
+nav li a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    padding: 20px 22px;
+    font-size: 16px;
+}
+
+/* Formatting the buttons for when user hovers mouse over them */
+nav li a:hover {
+    color: white;
+    background-color: #88807b;
+}
+
+/* Formatting the prompts font weight */
+#form_prompt, label {
+    font-weight: bold;
+}
+
+/* Formatting prompt text */
+#form_prompt {
+    text-decoration: underline;
+}
+
+/* Formatting the submit button */
+input {
+    background-color: #d4ccbe;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 25px;
+    display: inline-block;
+    border: none;
+}
+
+/* Changing color of submit button when user hovers mouse over */
+input:hover {
+    background-color: #b8b09b;
+}
+
+/* Formatting the font for the body texts of all pages */
+body {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+/* Formatting the margins for the whole page */
+h1, h2, p, form, a, ul {
+    margin-left: 3%;
+    margin-right: 3%; 
+}
