@@ -189,8 +189,8 @@ class Dataset:
             cursor.execute(population_by_country, (country.strip(),))
             population_by_country_result = cursor.fetchall()
 
-            population_as_a_float = self.get_value_as_float(population_by_country_result[0][0])
-            return round(population_as_a_float)
+
+            return round(population_by_country_result[0][0])
         
         else:
             return "Attempted to run a query on an invalid country. "
@@ -258,32 +258,7 @@ class Dataset:
         
         else:
             return "Attempted to run a query on an invalid country. "
-
-    def get_value_as_float(self, value):
-        """Casts the result of a query into an float. 
-        Input: value (decimal, string, etc.)
-        Returns: value (integer)"""
-
-        cast_the_value = "SELECT CAST(%s AS float)"
-
-        cursor = self.connection.cursor()
-        cursor.execute(cast_the_value, (value,))
-        result = cursor.fetchall()
-
-        return result[0][0]
-    def get_value_as_integer(self, value):
-        """Casts the result of a query into an integer. 
-        Input: value (decimal, string, etc.)
-        Returns: value (integer)"""
-
-        cast_the_value = "SELECT CAST(%s AS int)"
-
-        cursor = self.connection.cursor()
-        cursor.execute(cast_the_value, (value,))
-        result = cursor.fetchall()
-
-        return result[0][0]
-    
+     
     def get_average_age_by_country(self, country):
         """Returns the average age of a country. 
         Input: country (string)
@@ -296,10 +271,8 @@ class Dataset:
             cursor = self.connection.cursor()
             cursor.execute(average_age_by_country, (country.strip(),))
             result = cursor.fetchall()
-
-            result_to_integer = self.get_value_as_integer(result[0])
         
-            return result_to_integer
+            return round(result[0][0])
 
         else:
             return "Attempted to run a query on an invalid country. "
